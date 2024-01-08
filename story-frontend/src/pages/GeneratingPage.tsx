@@ -39,7 +39,7 @@ const GeneratingPage = () => {
         <DescribeInput/>
       </section>
       <footer>
-      <Link to="/generated">
+      <Link to="/generated-1">
        <GeneratingButton/>
         </Link>
       </footer>

@@ -11,7 +11,7 @@ const ApiRequest = () => {
   const { selectedPage } = usePage();
   const { theme } = useTheme();
   const { describe } = useDescribe();
-
+  
   return (
     <div>
   <div>선택된 장르: {selectedGenre}</div>
