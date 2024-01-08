@@ -1,22 +1,23 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+// src/contexts/PageContext.tsx
+import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 
-// Context 생성
-const PageContext = createContext<{
-  selectedPage: string;
-  setSelectedPage: React.Dispatch<React.SetStateAction<string>>;
-}>({
-  selectedPage: '',
-  setSelectedPage: () => {},
-});
+interface PageContextType {
+  selectedPage: number;
+  setSelectedPage: (page: number) => void;
+}
 
-// GenreProvider에 대한 타입을 정의합니다.
-type PageProviderProps = {
-  children: ReactNode; // ReactNode 타입을 사용하여 children을 정의합니다.
-};
+const PageContext = createContext<PageContextType | undefined>(undefined);
 
-// Context Provider 컴포넌트
-export const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
-  const [selectedPage, setSelectedPage] = useState('');
+export const PageProvider = ({ children }: { children: ReactNode }) => {
+  // 초기값을 sessionStorage에서 읽어옴. 데이터가 없는 경우 기본값 0을 사용
+  const [selectedPage, setSelectedPage] = useState<number>(
+    () => JSON.parse(sessionStorage.getItem('selectedPage') || '0')
+  );
+
+  // selectedPage 상태가 변경될 때마다 sessionStorage에 저장
+  useEffect(() => {
+    sessionStorage.setItem('selectedPage', JSON.stringify(selectedPage));
+  }, [selectedPage]);
 
   return (
     <PageContext.Provider value={{ selectedPage, setSelectedPage }}>
@@ -25,5 +26,11 @@ export const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
   );
 };
 
-// Context를 사용하기 위한 커스텀 훅
-export const usePage = () => useContext(PageContext);
+// usePage 훅
+export const usePage = () => {
+  const context = useContext(PageContext);
+  if (context === undefined) {
+    throw new Error('usePage must be used within a PageProvider');
+  }
+  return context;
+};
