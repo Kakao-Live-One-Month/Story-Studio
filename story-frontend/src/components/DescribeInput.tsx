@@ -1,16 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import '../styles/GenreSelect.css'; // GenreSelect 스타일시트 경로
+import React from 'react';
+import { useDescribe } from '../contexts/DescribeContext';
+import '../styles/GenreSelect.css';
 
+const ThemeInput: React.FC = () => {
+  const { setDescribe } = useDescribe();
 
-
-const DescribeInput = () => {
-
+  // 이벤트 매개변수에 대한 타입을 React.ChangeEvent<HTMLTextAreaElement>로 지정
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDescribe(event.target.value);
+  };
 
   return (
     <div>
-      <textarea placeholder="원하는 내용을 입력하세요. (선택)"></textarea>
+      <textarea 
+        className="describe-input" 
+        placeholder="원하는 내용을 입력하세요. (선택)"
+        onChange={handleChange}
+      ></textarea>
     </div>
   );
 };
 
-export default DescribeInput;
+export default ThemeInput;

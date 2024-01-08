@@ -7,6 +7,7 @@ import ThemeInput from '../components/ThemeInput';
 import DescribeInput from '../components/DescribeInput';
 import GenreSelect from '../components/GenreSelect';
 import PageSelect from '../components/PageSelect';
+import GeneratingButton from '../components/GeneratingButton';
 
 
 const GeneratingPage = () => {
@@ -39,7 +40,7 @@ const GeneratingPage = () => {
       </section>
       <footer>
       <Link to="/generated">
-        <button>만들기</button>
+       <GeneratingButton/>
         </Link>
       </footer>
 

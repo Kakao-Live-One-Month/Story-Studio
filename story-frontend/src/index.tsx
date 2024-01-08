@@ -5,6 +5,8 @@ import App from './App';
 import reportWebVitals from './utils/reportWebVitals';
 import { GenreProvider } from './contexts/GenreContext';
 import { PageProvider } from './contexts/PageContext';
+import { ThemeProvider } from './contexts/ThemeContext';
+import { DescribeProvider } from './contexts/DescribeContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -13,7 +15,11 @@ root.render(
   <React.StrictMode>
     <GenreProvider>
     <PageProvider>
+    <ThemeProvider>
+    <DescribeProvider>
      <App />
+     </DescribeProvider>
+     </ThemeProvider>
     </PageProvider>
     </GenreProvider>
   </React.StrictMode>
