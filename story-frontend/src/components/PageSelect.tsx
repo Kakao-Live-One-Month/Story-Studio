@@ -6,7 +6,6 @@ const PageSelect = () => {
   const {selectedPage, setSelectedPage } = usePage(); // setSelectedPage 함수 사용
   
   useEffect(() => {
-    // 컴포넌트가 마운트될 때 selectedPage를 리셋
     setSelectedPage(9);
   }, [setSelectedPage]);
 

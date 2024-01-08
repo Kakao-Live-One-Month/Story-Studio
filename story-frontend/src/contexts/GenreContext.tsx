@@ -9,9 +9,9 @@ const GenreContext = createContext<{
   setSelectedGenre: () => {},
 });
 
-// GenreProvider에 대한 타입을 정의합니다.
+
 type GenreProviderProps = {
-  children: ReactNode; // ReactNode 타입을 사용하여 children을 정의합니다.
+  children: ReactNode; 
 };
 
 // Context Provider 컴포넌트

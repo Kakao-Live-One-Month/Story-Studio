@@ -1,5 +1,3 @@
-// src/App.tsx
-
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import MainPage from './pages/MainPage'; 
@@ -17,7 +15,7 @@ const App = () => {
     // 동화 생성 1페이지 ~ selectedPage
     ...Array.from({ length: selectedPage }, (_, i) => ({
       path: `/generated-${i + 1}`,
-      element: <GeneratedPage number={i + 1} />, // 가정: GeneratedPage 컴포넌트에 숫자를 prop으로 전달
+      element: <GeneratedPage number={i + 1} />, 
     })),
   ];
 
