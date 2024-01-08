@@ -1,0 +1,24 @@
+/* src/GeneratingPage.css */
+
+.options-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; /* 각 버튼 사이에 균등한 공간을 두도록 조정합니다. */
+    max-width: 500px; /* 컨테이너의 최대 너비를 설정합니다. */
+    margin: auto; /* 중앙 정렬을 위해 자동 마진을 사용합니다. */
+  }
+  
+  .option-button {
+    padding: 10px 20px;
+    margin-bottom: 10px; /* 버튼 사이의 수직 간격을 추가합니다. */
+    flex: 0 1 calc(20% - 10px); /* flex-basis를 사용하여 버튼이 차지하는 공간을 계산합니다. */
+    text-align: center;
+    /* 나머지 스타일은 유지 */
+  }
+  
+  .option-button.selected {
+    background-color: #C879FF;
+    color: white;
+    /* 나머지 스타일은 유지 */
+  }
+  
