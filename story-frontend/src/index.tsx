@@ -1,15 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './styles/index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import reportWebVitals from './utils/reportWebVitals';
+import { GenreProvider } from './contexts/GenreContext';
+import { PageProvider } from './contexts/PageContext';
+import { ThemeProvider } from './contexts/ThemeContext';
+import { DescribeProvider } from './contexts/DescribeContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <GenreProvider>
+    <PageProvider>
+    <ThemeProvider>
+    <DescribeProvider>
+     <App />
+     </DescribeProvider>
+     </ThemeProvider>
+    </PageProvider>
+    </GenreProvider>
   </React.StrictMode>
 );
 

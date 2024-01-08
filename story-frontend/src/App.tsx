@@ -1,13 +1,23 @@
+// src/App.tsx
+
 import React from 'react';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import MainPage from './pages/MainPage'; // GeneratingPage 컴포넌트를 임포트합니다.
+import GeneratingPage from './pages/GeneratingPage'; // GeneratingPage 컴포넌트를 임포트합니다.
+import GeneratedPage from './pages/GeneratedPage'; // GeneratingPage 컴포넌트를 임포트합니다.
 
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <h1 className='text-6xl text-center text-blue-400'>tailwind</h1>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/generating" element={<GeneratingPage />} />
+        <Route path="/generated" element={<GeneratedPage />} />
+      </Routes>
+    </Router>
   );
-}
+};
+
 
 export default App;
