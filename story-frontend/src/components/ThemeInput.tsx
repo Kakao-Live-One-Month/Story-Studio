@@ -1,7 +1,6 @@
 // src/components/ThemeInput.tsx
 import React from 'react';
 import { useTheme } from '../contexts/ThemeContext';
-import '../styles/GenreSelect.css';
 
 const ThemeInput: React.FC = () => {
   const { setTheme } = useTheme();

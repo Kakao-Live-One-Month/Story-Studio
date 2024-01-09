@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/GenreSelect.css'; // GenreSelect 스타일시트 경로
 import { useGenre } from '../contexts/GenreContext'; 
 
 const options = ['판타지', '모험', '동물', '경쟁', '우정', '사랑', '과학', '교훈', '가족', '수업'];

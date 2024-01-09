@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/PageSelect.css'; 
 import { usePage } from '../contexts/PageContext'; // 커스텀 훅 임포트
 
 const PageSelect = () => {
