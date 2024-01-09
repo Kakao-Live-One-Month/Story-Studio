@@ -1,18 +1,35 @@
 // src/GeneratingPage.tsx
 import { useNavigate } from 'react-router-dom';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { usePage } from '../contexts/PageContext';
-
 
 // props의 타입을 정의하는 인터페이스
 interface GeneratedPageProps {
   number: number;
+  lastSession: number; 
 }
 
-const GeneratedPage: React.FC<GeneratedPageProps> = ({ number }) => {
-  // 컴포넌트의 로직을 여기에 추가합니다.
+const GeneratedPage: React.FC<GeneratedPageProps> = ({ number, lastSession }) => {
+  
   const { selectedPage } = usePage();
   const navigate = useNavigate();
+
+
+  // generateOption 함수의 예시 구현.
+  // ApiRequest에서 Import한 함수 사용할 것.
+  const generateOption = () => {
+    console.log('generateOption called');
+  };
+
+  
+  useEffect(() => {
+    // number % 3 === 0 이면서 lastSession !== 0일 때 함수를 호출합니다.
+    if (number % 3 === 0 && lastSession !== 0) {
+      generateOption();
+    }
+  }, [number, lastSession]); // 의존성 배열에 number와 lastSession을 넣어줍니다.
+
+
 
   const goToNextPage = () => {
     const nextPage = (number+1).toString();

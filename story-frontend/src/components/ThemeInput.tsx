@@ -1,6 +1,7 @@
 // src/components/ThemeInput.tsx
 import React from 'react';
 import { useTheme } from '../contexts/ThemeContext';
+import '../styles/GenreSelect.css';
 
 const ThemeInput: React.FC = () => {
   const { setTheme } = useTheme();
@@ -12,12 +13,11 @@ const ThemeInput: React.FC = () => {
 
   return (
     <div>
-      <div className='pb-9 text-4xl text-center'>주제</div>
       <textarea 
-        className="resize-none w-[750px] h-[70px] rounded-md shadow-inner-dark p-4"
+        className="theme-input" 
         placeholder="예시)밤에만 움직이는 인형"
         onChange={handleChange}
-      />  
+      ></textarea>
     </div>
   );
 };

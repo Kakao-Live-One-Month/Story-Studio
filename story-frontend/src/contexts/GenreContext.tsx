@@ -27,3 +27,6 @@ export const GenreProvider: React.FC<GenreProviderProps> = ({ children }) => {
 
 // Context를 사용하기 위한 커스텀 훅
 export const useGenre = () => useContext(GenreContext);
+
+
+export default useGenre;

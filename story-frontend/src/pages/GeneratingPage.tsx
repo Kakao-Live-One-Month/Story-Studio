@@ -1,16 +1,25 @@
-// src/GeneratingPage.tsx
-import React from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import '../components/GenreSelect'; 
-import ThemeInput from '../components/ThemeInput';
-import DescribeInput from '../components/DescribeInput';
-import GenreSelect from '../components/GenreSelect';
-import PageSelect from '../components/PageSelect';
-import GeneratingButton from '../components/GeneratingButton';
-
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import '../styles/GeneratingPage.css'; 
+import { ThemeInput, DescribeInput, GenreSelect, PageSelect } from '../components';
+import { StartApiRequest } from '../api/ApiRequest';
+import { useTheme, useGenre, usePage, useDescribe } from '../contexts';
 
 const GeneratingPage = () => {
 
+//입력값 초기화
+  const { setSelectedGenre } = useGenre();
+  const { setSelectedPage } = usePage();
+  const { setTheme } = useTheme();
+  const { setDescribe } = useDescribe();
+
+  useEffect(() => {
+    setSelectedPage(9);
+    setSelectedGenre('');
+    setTheme('');
+    setDescribe('');
+  }, [setSelectedPage, setSelectedGenre, setTheme, setDescribe]);
+// 
 
   return (
 
@@ -47,7 +56,7 @@ const GeneratingPage = () => {
 
       <footer className='mb-40'>
         <Link to="/generated-1">
-          <GeneratingButton/>
+        <StartApiRequest/>
         </Link>
       </footer>
     </div>
