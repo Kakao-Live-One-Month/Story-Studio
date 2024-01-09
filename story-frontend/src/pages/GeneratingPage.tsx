@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ThemeInput, DescribeInput, GenreSelect, PageSelect } from '../components';
-import { StartApiRequest } from '../api/ApiRequest';
 import { useTheme, useGenre, usePage, useDescribe } from '../contexts';
+import GeneratingButton from '../components/GeneratingButton';
 
-const GeneratingPage = () => {
+const GeneratingPage: React.FC = () => {
 
 //입력값 초기화
   const { setSelectedGenre } = useGenre();
@@ -18,7 +18,7 @@ const GeneratingPage = () => {
     setTheme('');
     setDescribe('');
   }, [setSelectedPage, setSelectedGenre, setTheme, setDescribe]);
-// 
+
 
   return (
 
@@ -55,7 +55,7 @@ const GeneratingPage = () => {
 
       <footer className='mb-40'>
         <Link to="/generated-1">
-        <StartApiRequest/>
+          <GeneratingButton />
         </Link>
       </footer>
     </div>

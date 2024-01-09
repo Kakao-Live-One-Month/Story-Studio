@@ -12,17 +12,17 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <GenreProvider>
-    <PageProvider>
-    <ThemeProvider>
-    <DescribeProvider>
-     <App />
-     </DescribeProvider>
-     </ThemeProvider>
-    </PageProvider>
-    </GenreProvider>
-  </React.StrictMode>
+
+  <GenreProvider>
+  <PageProvider>
+  <ThemeProvider>
+  <DescribeProvider>
+    <App />
+    </DescribeProvider>
+    </ThemeProvider>
+  </PageProvider>
+  </GenreProvider>
+
 );
 
 // If you want to start measuring performance in your app, pass a function

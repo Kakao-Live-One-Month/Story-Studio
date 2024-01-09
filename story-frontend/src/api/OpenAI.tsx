@@ -1,6 +1,6 @@
-import OPENAI_API_KEY from './application-secret.json';
+import OPENAI_API_KEY from '../application-secret.json';
 
-export const OpenAI = async (prompt: string) => {
+export const OpenAI = async (prompt: string): Promise<string> => {
   const apiKey = OPENAI_API_KEY;
   const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
   
@@ -11,7 +11,7 @@ export const OpenAI = async (prompt: string) => {
         'Authorization': `Bearer ${apiKey.OPENAI_API_KEY}`
     },
     body: JSON.stringify({
-        model: "gpt-4",
+        model: "gpt-3.5-turbo",
         messages: [
             {
                 role: "user",
@@ -40,9 +40,7 @@ export const OpenAI = async (prompt: string) => {
         throw new Error('올바른 형식의 API 응답이 아닙니다.');
     }
 
-    const apiResponse = data.choices[0].message.content;
-    // console.log(apiResponse);
-    // console.log("타입: ", typeof(apiResponse));
+    const apiResponse: string = data.choices[0].message.content;
     return apiResponse;
   } catch (error) {
       console.error('OpenAI API 호출 중 오류 발생:', error);

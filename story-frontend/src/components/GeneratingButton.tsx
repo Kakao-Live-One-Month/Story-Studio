@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { StartApiRequest } from '../api/ApiRequest';
-
-
 
 const GeneratingButton = () => {
 
@@ -11,7 +8,6 @@ const GeneratingButton = () => {
       <button className='p-3 text-[25px] rounded-full w-52 font-serif text-black bg-indigo-300 hover:bg-indigo-400'>
         만들기
       </button>
-      <StartApiRequest/>
     </div>
   );
 };
