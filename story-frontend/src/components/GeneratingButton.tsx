@@ -9,7 +9,9 @@ const GeneratingButton = () => {
 
   return (
     <div>
-      <button>만들기</button>
+      <button className='p-3 text-[25px] rounded-full w-52 font-serif text-black bg-indigo-300 hover:bg-indigo-400'>
+        만들기
+      </button>
       <ApiRequest/>
     </div>
   );
