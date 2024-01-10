@@ -53,21 +53,20 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({ number, lastSession }) =>
  
 
   useEffect(() => {
+    setShowLoaging(true);
 
-    // number % 3 === 0 이면서 lastSession !== 0일 때 함수를 호출합니다.
     if (number % 3 === 0 && number!==selectedPage) {
-
-      setShowLoaging(true);
-    //if number not in pastpage{
+      
+    if (!pastpage.includes(number)){
       const response = generateOption();
       setQnoption(response);
-    //setPastpage([...pastpage, number]);
+      setPastpage([...pastpage, number]);
+      console.log(pastpage);
       setShowModal(true);
       // number가 변경될 때 모달 표시 상태를 결정 
-      //} else { setShowModal(false); 
-      //}
+      } else { setShowModal(false); 
+      }
   
-    console.log(number);
     if (storyArray)
     {
       setCurrentPageStory(storyArray[number - 1]);
@@ -83,13 +82,15 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({ number, lastSession }) =>
 
 
 
-
   useEffect(() => {
     if (number % 3 === 0 && number!==selectedPage) {
       const response = generateOption();
       setQnoption(response);
     }
   }, [choice]); // 의존성 배열에 number와 lastSession을 넣어줍니다.
+
+
+  
 
   const goToNextPage = () => {
     const nextPage = (number+1).toString();
