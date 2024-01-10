@@ -54,29 +54,14 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({ number, lastSession }) =>
 
   useEffect(() => {
     setShowLoaging(true);
-
     if (number % 3 === 0 && number!==selectedPage) {
-      
-    if (!pastpage.includes(number)){
-      const response = generateOption();
-      setQnoption(response);
-      setPastpage([...pastpage, number]);
-      console.log(pastpage);
-      setShowModal(true);
-      // number가 변경될 때 모달 표시 상태를 결정 
-      } else { setShowModal(false); 
-      }
   
-    if (storyArray)
-    {
-      setCurrentPageStory(storyArray[number - 1]);
-    }
-    console.log(currentPageStory);
-
-    } else {
-      setShowModal(false);
-    }
-
+      if (storyArray)
+      {
+       setCurrentPageStory(storyArray[number - 1]);
+      }
+      console.log(currentPageStory);
+    } 
   }, [number]); 
 
 
@@ -90,12 +75,26 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({ number, lastSession }) =>
   }, [choice]); // 의존성 배열에 number와 lastSession을 넣어줍니다.
 
 
-  
 
   const goToNextPage = () => {
     const nextPage = (number+1).toString();
-    navigate(`/generated-${nextPage}`);
+    if (number % 3 === 0 && showModal === false && number!==selectedPage) {
+      if (!pastpage.includes(number)){
+        const response = generateOption();
+        setQnoption(response);
+        setPastpage([...pastpage, number]);
+        console.log(pastpage);
+        setShowModal(true);
+        // number가 변경될 때 모달 표시 상태를 결정 
+        } else { 
+          setShowModal(false); 
+          navigate(`/generated-${nextPage}`);
+        }
+    }else{
+      navigate(`/generated-${nextPage}`);
+    }
   };
+
 
   // number가 1보다 큰 경우에만 navigate 함수를 호출
   const goToPreviousPage = () => {
