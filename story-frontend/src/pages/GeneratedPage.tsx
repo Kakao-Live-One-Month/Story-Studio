@@ -2,7 +2,7 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useTheme, useGenre, usePage, useDescribe } from '../contexts';
-import { StartApiRequest, generateOption, callNextSession, callLastSession } from '../api/ApiRequest';
+import { startApiRequest, generateOption, callNextSession, callLastSession } from '../api/ApiRequest';
 import OptionModal from '../components/OptionModal';
 
 // props의 타입을 정의하는 인터페이스
@@ -34,7 +34,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({ number, lastSession }) =>
   useEffect(() => {
     const firstApiRequest = async () => {
       try {
-        let contentsArray = await StartApiRequest(theme, selectedGenre, selectedPage, describe);
+        let contentsArray = await startApiRequest(theme, selectedGenre, selectedPage, describe);
         console.log(contentsArray);
 
         if (!contentsArray)

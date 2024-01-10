@@ -1,17 +1,16 @@
-import OPENAI_API_KEY from './application-secret.json';
+import secretJsonData from './application-secret.json';
 
 export const OpenAI = async (prompt: string): Promise<string> => {
-  const apiKey = OPENAI_API_KEY;
   const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
   
   const requestOptions = {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey.OPENAI_API_KEY}`
+        'Authorization': `Bearer ${secretJsonData.OPENAI_API_KEY}`
     },
     body: JSON.stringify({
-        model: "gpt-4",
+        model: `${secretJsonData.GPT_VERSION}`,
         messages: [
             {
                 role: "user",
@@ -41,6 +40,7 @@ export const OpenAI = async (prompt: string): Promise<string> => {
     }
 
     const apiResponse: string = data.choices[0].message.content;
+
     return apiResponse;
   } catch (error) {
       console.error('OpenAI API 호출 중 오류 발생:', error);
