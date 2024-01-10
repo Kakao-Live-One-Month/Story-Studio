@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ThemeInput, DescribeInput, GenreSelect, PageSelect } from '../components';
+import { StartApiRequest } from '../api/ApiRequest';
 import { useTheme, useGenre, usePage, useDescribe } from '../contexts';
 import GeneratingButton from '../components/GeneratingButton';
 
@@ -12,12 +13,15 @@ const GeneratingPage: React.FC = () => {
   const { setTheme } = useTheme();
   const { setDescribe } = useDescribe();
 
-  useEffect(() => {
-    setSelectedPage(9);
-    setSelectedGenre('');
-    setTheme('');
-    setDescribe('');
-  }, [setSelectedPage, setSelectedGenre, setTheme, setDescribe]);
+  // useEffect(() => {
+  //   setSelectedPage(9);
+  //   setSelectedGenre('');
+  //   setTheme('');
+  //   setDescribe('');
+  // }, [setSelectedPage, setSelectedGenre, setTheme, setDescribe]);
+// 
+
+
 
 
   return (
@@ -55,7 +59,7 @@ const GeneratingPage: React.FC = () => {
 
       <footer className='mb-40'>
         <Link to="/generated-1">
-          <GeneratingButton />
+        <GeneratingButton />
         </Link>
       </footer>
     </div>

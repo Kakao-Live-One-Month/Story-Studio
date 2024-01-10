@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import { MainPage, GeneratingPage, GeneratedPage }from './pages'; 
 import { usePage } from './contexts/PageContext';
 
 const App = () => {
   // 라우트 설정을 배열로 정의
+  const [choice, setChoice] = useState<number | null>(null);
   const { selectedPage } = usePage();
   const lastSession = selectedPage%3;
   const routes = [

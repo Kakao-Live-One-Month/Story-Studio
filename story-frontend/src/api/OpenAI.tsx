@@ -1,4 +1,4 @@
-import OPENAI_API_KEY from '../application-secret.json';
+import OPENAI_API_KEY from './application-secret.json';
 
 export const OpenAI = async (prompt: string): Promise<string> => {
   const apiKey = OPENAI_API_KEY;
@@ -11,7 +11,7 @@ export const OpenAI = async (prompt: string): Promise<string> => {
         'Authorization': `Bearer ${apiKey.OPENAI_API_KEY}`
     },
     body: JSON.stringify({
-        model: "gpt-3.5-turbo",
+        model: "gpt-4",
         messages: [
             {
                 role: "user",

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useTheme, useGenre, usePage, useDescribe } from '../contexts';
 import { StartApiRequest } from '../api/ApiRequest';
+import OptionModal from '../components/OptionModal';
 
 // props의 타입을 정의하는 인터페이스
 interface GeneratedPageProps {
@@ -11,12 +12,18 @@ interface GeneratedPageProps {
 }
 
 const GeneratedPage: React.FC<GeneratedPageProps> = ({ number, lastSession }) => {
+  
   const { selectedGenre } = useGenre();
   const { theme } = useTheme();
   const { describe } = useDescribe();
   const { selectedPage } = usePage();
-
   const navigate = useNavigate();
+
+  const [showModal, setShowModal] = useState(false);
+  const [qnoption, setQnoption] = useState<string[]>();
+  const options = ["Question", "option1", "option2", "option3"];//qnoption의 예시
+
+  const [choice, setChoice] = useState<number | null>(null);
 
   const [storyArray, setStoryArray] = useState<string[]>([]);
   const [currentPageStory, setCurrentPageStory] = useState<string>("undefind");
@@ -26,10 +33,10 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({ number, lastSession }) =>
       try {
         let contentsArray = await StartApiRequest(theme, selectedGenre, selectedPage, describe);
         console.log(contentsArray);
-        
+
         if (!contentsArray)
         {
-          contentsArray = [];
+            contentsArray = [] as string[];
         };
 
         setStoryArray([...storyArray, ...contentsArray]);
@@ -37,16 +44,10 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({ number, lastSession }) =>
         console.error('Error StartApiRequest data:', error);
       }
     };
-  
+
     firstApiRequest();
   }, []);
-
-  // generateOption 함수의 예시 구현.
-  // ApiRequest에서 Import한 함수 사용할 것.
-  const generateOption = () => {
-    console.log('generateOption called');
-  };
-
+ 
 
   useEffect(() => {
     // number % 3 === 0 이면서 lastSession !== 0일 때 함수를 호출합니다.
@@ -61,6 +62,48 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({ number, lastSession }) =>
     console.log(currentPageStory);
   }, [number, lastSession, storyArray]); // 의존성 배열에 number와 lastSession을 넣어줍니다.
 
+  // generateOption 함수의 예시 구현.
+  // ApiRequest에서 Import한 함수 사용할 것.
+  const generateOption = () => {
+    console.log('generateOption called');
+    let options: string[] = ["hello", "world"];
+    return options;
+  };
+
+  const callNextSession = (choice : number) => {
+    let story:string[] = ["hello", "world"];
+    return story;
+  };
+
+  const callLastSession = () => {
+    let story:string[] = ["hello", "world"];
+    return story;
+  };
+  //
+  
+
+
+  useEffect(() => {
+    // number % 3 === 0 이면서 lastSession !== 0일 때 함수를 호출합니다.
+    if (number % 3 === 0 && number!==selectedPage) {
+      const response = generateOption();
+      setQnoption(response);
+      setShowModal(true);
+      // number가 변경될 때 모달 표시 상태를 결정
+    } else {
+      setShowModal(false);
+    }
+  }, [number]);
+
+
+
+
+  useEffect(() => {
+    if (number % 3 === 0 && number!==selectedPage) {
+      const response = generateOption();
+      setQnoption(response);
+    }
+  }, [choice]); // 의존성 배열에 number와 lastSession을 넣어줍니다.
 
   const goToNextPage = () => {
     const nextPage = (number+1).toString();
@@ -131,6 +174,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({ number, lastSession }) =>
             backgroundColor: 'white',
             width: '100%', 
             height: '100%', 
+
           }} >
             {currentPageStory}
           </div>
@@ -150,6 +194,11 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({ number, lastSession }) =>
         </div>
 
       </div>
+
+      {showModal && (
+       <OptionModal QnOptions={options} setChoice={setChoice} choice={choice} setShowModal={setShowModal} goToNextPage={goToNextPage}/>
+       )}
+
       <div style={{
         padding: '10px',
         textAlign: 'center',
