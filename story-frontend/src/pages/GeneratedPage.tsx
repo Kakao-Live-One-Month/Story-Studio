@@ -2,7 +2,7 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useTheme, useGenre, usePage, useDescribe } from '../contexts';
-import { StartApiRequest } from '../api/ApiRequest';
+import { StartApiRequest, generateOption, callNextSession, callLastSession } from '../api/ApiRequest';
 import OptionModal from '../components/OptionModal';
 
 // props의 타입을 정의하는 인터페이스
@@ -20,6 +20,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({ number, lastSession }) =>
   const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState(false);
+  const [showLoading, setShowLoaging] = useState(false);
   const [qnoption, setQnoption] = useState<string[]>();
   const options = ["Question", "option1", "option2", "option3"];//qnoption의 예시
 
@@ -27,6 +28,8 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({ number, lastSession }) =>
 
   const [storyArray, setStoryArray] = useState<string[]>([]);
   const [currentPageStory, setCurrentPageStory] = useState<string>("undefind");
+
+  const [pastpage, setPastpage] = useState<number[]>([]);
 
   useEffect(() => {
     const firstApiRequest = async () => {
@@ -50,50 +53,33 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({ number, lastSession }) =>
  
 
   useEffect(() => {
+
     // number % 3 === 0 이면서 lastSession !== 0일 때 함수를 호출합니다.
-    if (number % 3 === 0 && lastSession !== 0) {
-      generateOption();
-    }
+    if (number % 3 === 0 && number!==selectedPage) {
+
+      setShowLoaging(true);
+    //if number not in pastpage{
+      const response = generateOption();
+      setQnoption(response);
+    //setPastpage([...pastpage, number]);
+      setShowModal(true);
+      // number가 변경될 때 모달 표시 상태를 결정 
+      //} else { setShowModal(false); 
+      //}
+  
     console.log(number);
     if (storyArray)
     {
       setCurrentPageStory(storyArray[number - 1]);
     }
     console.log(currentPageStory);
-  }, [number, lastSession, storyArray]); // 의존성 배열에 number와 lastSession을 넣어줍니다.
 
-  // generateOption 함수의 예시 구현.
-  // ApiRequest에서 Import한 함수 사용할 것.
-  const generateOption = () => {
-    console.log('generateOption called');
-    let options: string[] = ["hello", "world"];
-    return options;
-  };
-
-  const callNextSession = (choice : number) => {
-    let story:string[] = ["hello", "world"];
-    return story;
-  };
-
-  const callLastSession = () => {
-    let story:string[] = ["hello", "world"];
-    return story;
-  };
-  //
-  
-
-
-  useEffect(() => {
-    // number % 3 === 0 이면서 lastSession !== 0일 때 함수를 호출합니다.
-    if (number % 3 === 0 && number!==selectedPage) {
-      const response = generateOption();
-      setQnoption(response);
-      setShowModal(true);
-      // number가 변경될 때 모달 표시 상태를 결정
     } else {
       setShowModal(false);
     }
-  }, [number]);
+
+  }, [number]); 
+
 
 
 

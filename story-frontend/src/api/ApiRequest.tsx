@@ -29,7 +29,7 @@ interface StoryType {
                               + `모든 아이템과 값은 쌍따옴표로 감싸주세요. `
                               + `JSON 외의 설명을 쓰지 마세요.`;
 
-                              
+
 const apiResponse: string = await OpenAI(totalPrompt);
   const splitResponse: string = apiResponse.split("\n").join('');
   const splitResponse2: string = splitResponse.split("\"").join('');
@@ -52,4 +52,22 @@ const apiResponse: string = await OpenAI(totalPrompt);
     console.error('API 호출 또는 JSON 파싱 에러: ', error);
     return undefined;
   };
+};
+
+
+
+
+export const generateOption = () => {
+  let options: string[] = ["hello", "world"];
+  return options;
+};
+
+export const callNextSession = (choice : number) => {
+  let story:string[] = ["hello", "world"];
+  return story;
+};
+
+export const callLastSession = () => {
+  let story:string[] = ["hello", "world"];
+  return story;
 };
