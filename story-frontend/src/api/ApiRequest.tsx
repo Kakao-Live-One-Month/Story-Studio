@@ -1,5 +1,6 @@
 // src/components/SomeOtherComponent.tsx
 import { OpenAI } from './OpenAI';
+import { ImageAI } from './ImageAI';
 
 interface StoryPageType {
   page_id: number
@@ -31,6 +32,8 @@ const jsonPrompt: string =  `완벽한 JSON 형식으로 {"pages": [{"page_id": 
 
 let prevStory: string = "";
 
+const imagePromptArray: string[] = [];
+
 const callOpenAIAndTransformApiResponse = async (prompt: string) => {
   const apiResponse: string = await OpenAI(prompt);
   const splitResponse: string = apiResponse.split("\n").join('');
@@ -60,6 +63,7 @@ export const startApiRequest = async (theme: string, selectedGenre: string, sele
     {
       contentsArray.push(parsedData.pages[i].content);
       prevStory = prevStory + " " + parsedData.pages[i].content;
+      imagePromptArray.push(parsedData.pages[i].summery);
     }
   }
 
@@ -100,8 +104,6 @@ export const generateOption = async () => {
   }
 };
 
-
-
 export const callNextSession = async (selectedOption : string, selectedPage: number, currentPage: number) => {
   try {
     const optionPrompt: string = `[${prevStory}]에 [${selectedOption}]을 반영해서 다음 이어질 이야기를 만들어 주세요. `
@@ -120,6 +122,7 @@ export const callNextSession = async (selectedOption : string, selectedPage: num
       {
         contentsArray.push(parsedData.pages[i].content);
         prevStory = prevStory + " " + parsedData.pages[i].content;
+        imagePromptArray.push(parsedData.pages[i].summery);
       }
     }
 
@@ -133,4 +136,29 @@ export const callNextSession = async (selectedOption : string, selectedPage: num
 // export const callLastSession = () => {
 //   let story:string[] = ["hello", "world"];
 //   return story;
+// };
+
+export const imageCreateApiRequest = async (currentPage: number) => {
+  try {
+    const imageSummery: string = imagePromptArray[currentPage - 1];
+    const imagePrompt: string = `${imageSummery}`;
+
+    const imageUrlApiResponse: string = await ImageAI(imagePrompt);
+    // imageUrlArray.push(imageUrlApiResponse);
+
+    return imageUrlApiResponse;
+  } catch (error) {
+    console.log("이미지 요청 실패", error);
+  }
+};
+
+// // 이미 방문한적 있는 페이지의 이미지를 불러오는 함수 
+// export const getImage = (currentPage: number) => {
+//   if (imageUrlArray[currentPage - 1]) {
+//     const imageUrl = imageUrlArray[currentPage - 1];
+//     return imageUrl;
+//   }
+//   else {
+//     console.log("이미지 없음");
+//   }
 // };
