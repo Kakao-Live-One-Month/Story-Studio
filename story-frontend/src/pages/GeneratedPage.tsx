@@ -2,7 +2,7 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useTheme, useGenre, usePage, useDescribe } from '../contexts';
-import { startApiRequest, generateOption, callNextSession, callLastSession } from '../api/ApiRequest';
+import { startApiRequest, generateOption, callNextSession } from '../api/ApiRequest';
 import OptionModal from '../components/OptionModal';
 
 // props의 타입을 정의하는 인터페이스
