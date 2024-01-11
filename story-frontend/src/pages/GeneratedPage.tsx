@@ -27,7 +27,10 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({ number, lastSession }) =>
   const [choice, setChoice] = useState<number | null>(null);
 
   const [storyArray, setStoryArray] = useState<string[]>([]);
+  const [imageUrlArray, setImageUrlArray] = useState<string[]>([]);
+
   const [currentPageStory, setCurrentPageStory] = useState<string>("undefind");
+  const [currentPageImageUrl, setCurrentPageImageUrl] = useState<string>("undefind");
 
   const [pastpage, setPastpage] = useState<number[]>([]);
 

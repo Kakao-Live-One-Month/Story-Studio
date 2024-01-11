@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ThemeInput, DescribeInput, GenreSelect, PageSelect } from '../components';
-import { StartApiRequest } from '../api/ApiRequest';
 import { useTheme, useGenre, usePage, useDescribe } from '../contexts';
 import GeneratingButton from '../components/GeneratingButton';
 
