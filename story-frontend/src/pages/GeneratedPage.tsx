@@ -50,7 +50,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({ number, lastSession }) =>
 
     firstApiRequest();
   }, []);
- 
+
 
   useEffect(() => {
     setShowLoaging(true);
@@ -58,7 +58,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({ number, lastSession }) =>
   
       if (storyArray)
       {
-       setCurrentPageStory(storyArray[number - 1]);
+        setCurrentPageStory(storyArray[number - 1]);
       }
       console.log(currentPageStory);
     } 
