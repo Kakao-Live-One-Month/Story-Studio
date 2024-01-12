@@ -49,29 +49,29 @@ export const GoToNextPage: React.FC<GoToNextPageProps> = ({ setShowModal, showMo
 
 
 
-    export const GoToPreviousPage = () => {
-        const navigate = useNavigate();
-        const param = useParams();
-        const page_id = Number(param.page_id);
-        const prePage = (page_id-1);
-        const goToPreviousPage = () => {
-        if (page_id > 1) {
-          navigate(`/generated/${page_id - 1}`);
-        }
-        }
-        return (
-            <div style={{
-                position: 'absolute', // 'absolute'는 Position 타입에 포함된 값입니다.
-                left: 0,
-                top: '50%',
-                transform: 'translateY(-50%)',
-                zIndex: 10000,
-                cursor: page_id > 1 ? 'pointer' : 'default',
-                fontSize: '24px',
-                padding: '0 10px',
-                opacity: page_id > 1 ? 1 : 0.5,
-                pointerEvents: page_id > 1 ? 'auto' : 'none',}} onClick={page_id > 1 ? goToPreviousPage : undefined}>
-             {'<'}
-            </div>
-        )
-      };
+export const GoToPreviousPage = () => {
+  const navigate = useNavigate();
+  const param = useParams();
+  const page_id = Number(param.page_id);
+  const prePage = (page_id-1);
+  const goToPreviousPage = () => {
+    if (page_id > 1) {
+      navigate(`/generated/${page_id - 1}`);
+    }
+  }
+  return (
+    <div style={{
+      position: 'absolute', // 'absolute'는 Position 타입에 포함된 값입니다.
+      left: 0,
+      top: '50%',
+      transform: 'translateY(-50%)',
+      zIndex: 10000,
+      cursor: page_id > 1 ? 'pointer' : 'default',
+      fontSize: '24px',
+      padding: '0 10px',
+      opacity: page_id > 1 ? 1 : 0.5,
+      pointerEvents: page_id > 1 ? 'auto' : 'none',}} onClick={page_id > 1 ? goToPreviousPage : undefined}>
+      {'<'}
+    </div>
+  )
+};

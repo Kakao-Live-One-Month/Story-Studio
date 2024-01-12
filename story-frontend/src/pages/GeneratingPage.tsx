@@ -58,7 +58,7 @@ const GeneratingPage: React.FC = () => {
 
       <footer className='mb-40'>
         <Link to="/generated">
-        <GeneratingButton />
+          <GeneratingButton />
         </Link>
       </footer>
     </div>
