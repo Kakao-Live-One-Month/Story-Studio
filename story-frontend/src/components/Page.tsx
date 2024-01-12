@@ -1,39 +1,36 @@
 // src/GeneratingPage.tsx
 import { useNavigate, useParams } from 'react-router-dom';
-import React, { useState, useEffect, Component } from 'react';
-import { useTheme, useGenre, usePage, useDescribe } from '../contexts';
-import { generateOption, callNextSession } from '../api/ApiRequest';
+import React, { useState, useEffect } from 'react';
 import Image from '../components/Image';
 import { error } from 'console';
-
-type Props = {};
-type State = {};
-
-
 
 // props의 타입을 정의하는 인터페이스
 interface PageProps {
   lastSession: number; 
   setStoryArray: React.Dispatch<React.SetStateAction<string[]>>;
   storyArray: string[];
+  setImageUrlArray: React.Dispatch<React.SetStateAction<string[]>>;
+  imageUrlArray: string[];
+  setIsVisitedPage: React.Dispatch<React.SetStateAction<boolean[]>>;
+  isVisitedPage: boolean[];
+  checkStoryCall: boolean;
 }
 
-const Page: React.FC<PageProps> = ({lastSession, setStoryArray, storyArray}) => {
-
-  const { selectedGenre } = useGenre();
-  const { theme } = useTheme();
-  const { describe } = useDescribe();
-  const { selectedPage } = usePage();
+const Page: React.FC<PageProps> = ({
+  lastSession, 
+  storyArray, 
+  setImageUrlArray, 
+  imageUrlArray,
+  setIsVisitedPage,
+  isVisitedPage,
+  checkStoryCall
+}) => {
   const [showModal, setShowModal] = useState(false);
   const [showLoading, setShowLoaging] = useState(false);
-  const [qnoption, setQnoption] = useState<string[]>();
-  const options = ["Question", "option1", "option2", "option3"];//qnoption의 예시
-  const [choice, setChoice] = useState<number | null>(null);
   const [currentPageStory, setCurrentPageStory] = useState<string>("undefind");
-  const [pastpage, setPastpage] = useState<number[]>([]);
   const param = useParams();
   const page_id = Number(param.page_id);
-  console.log(page_id);
+  // console.log(page_id);  
 
 
   useEffect(() => {
@@ -42,45 +39,41 @@ const Page: React.FC<PageProps> = ({lastSession, setStoryArray, storyArray}) => 
       {
         setCurrentPageStory(storyArray[page_id - 1]);
       }
-      console.log(currentPageStory);
-
-  }, [page_id]); 
-
-
+  }, [page_id, storyArray]); 
 
 
   return (
-    <div>
-      <div>
-        {/* 생성이미지 */}
-        <Image/>
-
-      </div>
-
-      <div style={{alignItems:'center', width: '200px', // 뷰포트 전체 너비
-      height: '200px', backgroundColor: 'rgba(255, 255, 255, 0.3)', // 반투명 배경
-      zIndex: 9000}}>
-      <p>안녕안녕안녕{currentPageStory}</p>
-      </div>
+    <div style={{
+      display: 'flex',
+      height: '800px',
+      width: '100%',
+    }}>
     
-
-      {/* {showModal && (
-       <OptionModal setChoice={setChoice} choice={choice} setShowModal={setShowModal} page_id={page_id}/>
-       )} */}
+      <div style={{
+        width: '50%',
+        backgroundColor: 'grey'
+      }}>
+        <Image 
+          imageUrlArray={imageUrlArray} 
+          setImageUrlArray={setImageUrlArray}
+          page_id={page_id}
+          setIsVisitedPage={setIsVisitedPage}
+          isVisitedPage={isVisitedPage}
+          checkStoryCall={checkStoryCall}
+        />
+      </div>
 
       <div style={{
-        padding: '10px',
-        textAlign: 'center',
+        width: '50%', 
       }}>
-
+        <div style={{
+          backgroundColor: 'white',
+        }}>
+          <p>{currentPageStory}</p>
+        </div>
+      </div>
     </div>
-    </div>
-
-
   );
-  
-
-
-} 
+}; 
 
 export default Page;
