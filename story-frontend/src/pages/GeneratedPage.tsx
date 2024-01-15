@@ -2,7 +2,7 @@
 import { useNavigate, Outlet,useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useTheme, useGenre, usePage, useDescribe } from '../contexts';
-import { startApiRequest, callNextSession } from '../api/ApiRequest';
+import { startApiRequest, callNextSession, generateOption } from '../api/ApiRequest';
 import OptionModal from '../components/OptionModal';
 import Loading from '../components/Loading';
 import { GoToNextPage, GoToPreviousPage } from '../components/PreNextButton';
@@ -26,14 +26,14 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
 
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const [showLoading, setShowLoaging] = useState(false);
-  
+  const [showLoading, setShowLoading] = useState(false);
+  const [qnOptions, setQnoption] = useState<string[]>([]);
   const [pastpage, setPastpage] = useState<number[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>("");
   
   const firstApiRequest = async () => {
     try {
-      setShowLoaging(true);
+      setShowLoading(true);
       let contentsArray = await startApiRequest(theme, selectedGenre, selectedPage, describe);
       console.log(contentsArray);
 
@@ -43,7 +43,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
       };
 
       setStoryArray([...contentsArray]);
-      setShowLoaging(false);
+      setShowLoading(false);
       navigate(`/generated/1`);
     } catch (error) {
       console.error('Error StartApiRequest data:', error);
@@ -52,15 +52,34 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
 
   const callNextSessionFunc = async () => {
     try {
+      setShowLoading(true);
       const nextStorys = await callNextSession(selectedOption, selectedPage, page_id);
       setStoryArray([...storyArray, ...nextStorys]);
       setCheckStoryCall(true);
-  
+      setShowLoading(false);
       return nextStorys;
     } catch (error) {
       console.error("callNextSession 에러: ", error);
     }
   };
+
+
+  const callOptions = async () => {
+    if(!Number.isNaN(page_id) && page_id !== undefined && page_id !== selectedPage){
+    try {
+      const optionResponse = await generateOption(); 
+      setQnoption(optionResponse); 
+      setCheckStoryCall(false);
+    } catch (error) {
+      console.error('generateOption 호출 중 오류 발생:', error);
+    }
+  }
+};
+
+  useEffect(() => {
+  callOptions();
+  }, [storyArray]); 
+
 
 
   useEffect(() => {
@@ -102,19 +121,23 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
         
         <GoToPreviousPage/>
         
-        {showLoading && (
-          <Loading/>
-        )}
+      
         
+      
         <Outlet />
-
+        
         <GoToNextPage  setShowModal={setShowModal} showModal={showModal} setPastpage={setPastpage} pastpage={pastpage}/>
       </div>
 
+      {showLoading && (
+          <Loading/>
+        )}
+    
       {showModal && (
-        <OptionModal setShowModal={setShowModal} page_id={page_id} setSelectedOption={setSelectedOption} setCheckStoryCall={setCheckStoryCall} />
+        <OptionModal setShowModal={setShowModal} page_id={page_id} setSelectedOption={setSelectedOption} setCheckStoryCall={setCheckStoryCall} qnOptions={qnOptions} />
       )} 
-
+ 
+   
       <div style={{
         padding: '10px',
         textAlign: 'center',

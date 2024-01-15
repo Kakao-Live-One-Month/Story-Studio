@@ -47,7 +47,7 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
   useEffect(() => {
     if (checkStoryCall)
     {
-      callImageUrl();
+      // callImageUrl();
     }
   }, [page_id, checkStoryCall]);
 
