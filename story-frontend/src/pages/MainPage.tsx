@@ -10,19 +10,19 @@ const MainPage: React.FC = () => {
         className="absolute top-0 left-0 w-full h-full bg-cover bg-center z-[-2]"
         /* style={{ backgroundImage: 'url("../../img/bg.png")'}} */
       />
-      <div className="border flex items-stretch border-black border-solid max-md:max-w-full max-md:flex-wrap">
+      <div className="flex items-stretch max-md:max-w-full max-md:flex-wrap">
         <div className="font-sans relative w-full">
           <GenreProvider>
-          <header className="pt-16 pb-8 text-black text-center relative h-[80vh] flex flex-col justify-center items-center">
-          <div
-            className="absolute top-0 left-0 w-full h-full bg-cover bg-center z-[-1]"
-            style={{
-              backgroundImage: 'url("../../img/headerbg.png")',
-            }}
-          />
-          <Link to="/" className="absolute top-0 left-0 p-8">
-                <img src="../../img/logo.png" alt="Image" className="cursor-pointer"/>
-              </Link>
+            <header className="pt-16 pb-8 text-black text-center relative h-[80vh] flex flex-col justify-center items-center">
+              <div
+                className="absolute top-0 left-0 w-full h-full bg-cover bg-center z-[-1]"
+                style={{
+                  backgroundImage: 'url("../../img/headerbg.png")',
+                }}
+              />
+              <Link to="/" className="absolute top-0 left-0 p-5">
+                  <img src="../../img/logo.png" alt="Image" className="cursor-pointer w-20 h-20 md:w-24 md:h-24 lg:w-32 lg:h-32 "/>
+                </Link>
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold">이야기 작업실</h1>
               <p className="text-xl text-gray-700 my-4 lg:my-8 lg:text-2xl">
                 작은 작업실에서 펼쳐내는 큰 꿈의 이야기
