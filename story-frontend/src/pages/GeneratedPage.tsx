@@ -77,24 +77,21 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
 };
 
   useEffect(() => {
-  // callOptions();
+    //callOptions();
   }, [storyArray]); 
-
-
 
   useEffect(() => {
     firstApiRequest();
   }, []);
 
-
   useEffect(() => {
     if (!checkStoryCall)
     {
-      // callNextSessionFunc();
+      //callNextSessionFunc();
     }
 
   }, [selectedOption]);
-//md:w-[1000px]
+
   return (
     <div className='container justify-center mx-auto flex h-[700px] flex-wrap bg-blue-100 px-4 py-4'>
         <div className='relative flex bg-green-200'>
