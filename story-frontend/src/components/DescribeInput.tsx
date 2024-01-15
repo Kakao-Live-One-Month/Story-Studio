@@ -11,11 +11,11 @@ const DescribeInpt: React.FC = () => {
   };
 
   return (
-    <div className='flex flex-col bg-slate-300 pb-10 pt-4'>
+    <div className='flex flex-col pb-10 pt-4'>
       <p className="pb-4 text-center">줄거리</p>
       <textarea 
-        className="mx-auto h-32 w-2/3" 
-        placeholder="원하는 내용을 입력하세요. (선택)"
+        className="mx-auto h-32 p-2 w-4/5 text-sm" 
+        placeholder=" 예시) 인형이 친구들과 함께 여행했으면 좋겠어!"
         onChange={handleChange}
       />
     </div>
