@@ -9,30 +9,17 @@ interface OptionMadalProps {
     page_id: number;
     setSelectedOption: React.Dispatch<React.SetStateAction<string>>;
     setCheckStoryCall: React.Dispatch<React.SetStateAction<boolean>>;
+    qnOptions: string[];
   }
 
-const OptionModal: React.FC<OptionMadalProps> = ({ setShowModal, page_id, setSelectedOption, setCheckStoryCall }) => {
+const OptionModal: React.FC<OptionMadalProps> = ({ setShowModal, page_id, setSelectedOption, setCheckStoryCall, qnOptions}) => {
   const navigate = useNavigate();
-  const [qnOptions, setQnoption] = useState<string[]>([]);
+
   const [choice, setChoice] = useState<number>(0);
   const { selectedPage } = usePage();
   // const options = ["Question", "option1", "option2", "option3"];//qnoption의 예시
 
-  const callOptions = async () => {
-    if (page_id % 3 === 0 && page_id !== selectedPage) {
-      try {
-        const optionResponse = await generateOption(); 
-        setQnoption(optionResponse); 
-        setCheckStoryCall(false);
-      } catch (error) {
-        console.error('generateOption 호출 중 오류 발생:', error);
-      }
-    }
-  };
 
-  useEffect(() => {
-    callOptions();
-  }, []); 
 
 
   const handleButtonClick = (index : number) => {
@@ -49,7 +36,20 @@ const OptionModal: React.FC<OptionMadalProps> = ({ setShowModal, page_id, setSel
   };
 
   return (
-    <div>
+    <div
+    style={{
+    position: 'absolute',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '20px',
+    // backgroundSize: 'cover',
+    width: '100vh', 
+    height: '100vh', 
+    zIndex: 10001,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)', // 반투명 배경
+    }}>
+
       <button onClick={() => setShowModal(false)}>닫기</button>
       <p>{qnOptions[0]}</p>
       {qnOptions.slice(1).map((options, index) => (
