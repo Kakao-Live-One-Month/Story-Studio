@@ -44,12 +44,12 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
     }
   };
 
-  useEffect(() => {
-    if (checkStoryCall)
-    {
-      callImageUrl();
-    }
-  }, [page_id, checkStoryCall]);
+  // useEffect(() => {
+  //   if (checkStoryCall)
+  //   {
+  //     callImageUrl();
+  //   }
+  // }, [page_id, checkStoryCall]);
 
   return (
     <div>

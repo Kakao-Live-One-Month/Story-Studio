@@ -63,18 +63,18 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
   };
 
 
-  useEffect(() => {
-    firstApiRequest();
-  }, []);
+  // useEffect(() => {
+  //   firstApiRequest();
+  // }, []);
 
 
-  useEffect(() => {
-    if (!checkStoryCall)
-    {
-      callNextSessionFunc();
-    }
+  // useEffect(() => {
+  //   if (!checkStoryCall)
+  //   {
+  //     callNextSessionFunc();
+  //   }
 
-  }, [selectedOption]);
+  // }, [selectedOption]);
 
   return (
     <div style={{
