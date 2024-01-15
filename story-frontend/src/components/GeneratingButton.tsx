@@ -6,10 +6,8 @@ const GeneratingButton = () => {
 
 
   return (
-    <div>
-      <button className='p-3 text-[25px] rounded-full w-52 font-serif text-black bg-indigo-300 hover:bg-indigo-400'>
-        만들기
-      </button>
+    <div className="flex bg-amber-300">
+      <button className="mx-auto h-12 w-32 bg-purple-400 rounded-full">만들기</button>
     </div>
   );
 };

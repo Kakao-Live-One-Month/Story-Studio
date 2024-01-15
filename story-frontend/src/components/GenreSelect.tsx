@@ -25,17 +25,21 @@ const GenreSelect = () => {
   };
 
   return (
-    <div className="options-container">
-      {options.map((option, index) => (
-        <button
-          key={index}
-          onClick={() => toggleOption(option)}
-          className={`option-button ${selectedOptions.includes(option) ? 'selected' : ''}`}
-        >
-          {option}
-        </button>
-      ))}
-      <div>선택된 장르: {selectedGenre}</div> {/* 선택된 장르를 화면에 표시합니다. */}
+    <div className="bg-red-200 pb-8 pt-4">
+      <p className="pb-4 text-center">장르</p>
+      <div className="grid grid-cols-2 gap-4 bg-red-100 px-6 md:grid-cols-5">
+        {options.map((option, index) => (
+          <button
+            key={index}
+            onClick={() => toggleOption(option)}
+            className={`h-12 w-full bg-green-500 rounded-full ${selectedOptions.includes(option) ? 'selected' : ''}`}
+          >
+            {option}
+          </button>
+        ))}
+        
+        <div>선택된 장르: {selectedGenre}</div>
+      </div>
     </div>
   );
 };

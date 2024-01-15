@@ -15,15 +15,16 @@ const PageSelect = () => {
   };
 
   return (
-    <div className="page-select-container">
-      <input
-        type="range"
-        min="4"
+    <div className="flex flex-col bg-orange-400 py-10 pt-4 px-10">
+      <p className="pb-4 text-center">페이지 수</p>
+      <input 
+        type="range" 
+        min="4" 
         max="15"
         value={selectedPage}
         onChange={handleSliderChange}
-        className="slider"
-      />
+        className="slider" />
+
       <div>선택된 페이지 수: {selectedPage}</div>
     </div>
   );
