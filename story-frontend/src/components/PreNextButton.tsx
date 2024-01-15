@@ -32,7 +32,7 @@ export const GoToNextPage: React.FC<GoToNextPageProps> = ({ setShowModal, showMo
 
   return (
     <div 
-      className='mx-auto my-auto'
+      className='mx-auto my-auto text-3xl'
       style={{
         cursor: 'pointer',
         zIndex: 10000,
@@ -58,7 +58,7 @@ export const GoToPreviousPage = () => {
   }
   return (
     <div 
-      className='mx-auto my-auto'
+      className='mx-auto my-auto text-3xl'
       style={{
         zIndex: 10000,
         cursor: page_id > 1 ? 'pointer' : 'default',

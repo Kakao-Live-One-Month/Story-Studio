@@ -41,8 +41,8 @@ const Page: React.FC<PageProps> = ({
 
 
   return (
-      <div className="flex h-full w-[1200px] bg-red-200 p-4">
-        <div className="flex w-full my-auto bg-cyan-400">
+      <div className="flex h-full w-[1200px] p-4">
+        <div className="flex w-full my-auto">
           <Image 
             imageUrlArray={imageUrlArray} 
             setImageUrlArray={setImageUrlArray}
@@ -53,8 +53,8 @@ const Page: React.FC<PageProps> = ({
           />
         </div>
 
-        <div className="flex w-full bg-cyan-300">
-          <p className='my-auto p-10'>{currentPageStory}</p>
+        <div className="flex w-full ">
+          <p className='my-auto text-3xl p-10'>{currentPageStory}</p>
         </div>
       </div>
   );

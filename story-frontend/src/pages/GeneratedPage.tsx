@@ -94,12 +94,12 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
 
   return (
     <div className='container justify-center mx-auto flex h-[700px] flex-wrap bg-blue-100 px-4 py-4'>
-        <div className='relative flex bg-green-200'>
-          <div className="absolute left-5 top-5 bg-red-500 text-2xl">x</div>
+        <div className='relative flex'>
+          <div className="absolute left-2 top-2 text-bold text-4xl">x</div>
           <GoToPreviousPage/>
           <Outlet />
           <GoToNextPage  setShowModal={setShowModal} showModal={showModal} setPastpage={setPastpage} pastpage={pastpage}/>
-          <div className="absolute bottom-5 right-5 bg-red-500 text-2xl">{page_id}/{selectedPage}</div>
+          <div className="absolute bottom-5 right-5 text-2xl">{page_id}/{selectedPage}</div>
         </div>
    
       {showLoading && (
