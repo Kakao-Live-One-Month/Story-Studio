@@ -1,51 +1,55 @@
-// src/GeneratingPage.tsx
-import React from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import '../styles/GeneratingPage.css'; // GeneratingPage 스타일시트 경로
-import '../components/GenreSelect'; // GeneratingPage 스타일시트 경로
-import ThemeInput from '../components/ThemeInput';
-import DescribeInput from '../components/DescribeInput';
-import GenreSelect from '../components/GenreSelect';
-import PageSelect from '../components/PageSelect';
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { ThemeInput, DescribeInput, GenreSelect, PageSelect } from '../components';
+import { useTheme, useGenre, usePage, useDescribe } from '../contexts';
 import GeneratingButton from '../components/GeneratingButton';
 
+const GeneratingPage: React.FC = () => {
 
-const GeneratingPage = () => {
-  // 이 컴포넌트의 상태와 로직을 여기에 추가합니다.
+//입력값 초기화
+  const { setSelectedGenre } = useGenre();
+  const { setSelectedPage } = usePage();
+  const { setTheme } = useTheme();
+  const { setDescribe } = useDescribe();
+
+  // useEffect(() => {
+  //   setSelectedPage(9);
+  //   setSelectedGenre('');
+  //   setTheme('');
+  //   setDescribe('');
+  // }, [setSelectedPage, setSelectedGenre, setTheme, setDescribe]);
+// 
+
+
+
 
   return (
 
-    <div className="generating-page-container">
+    <div className='container mx-auto flex flex-col flex-wrap bg-blue-100 px-10 py-16 md:w-[700px]'>
+      <div className="h-full bg-cyan-200 py-10">
+        <p className="text-center text-5xl">나만의 동화책 만들기</p>
+      </div>
 
-      <header>
-        <h2>나만의 동화책 만들기</h2>
-      </header>
-      <section className="theme-container">
+      {/* 주제 입력 영역*/}
       <ThemeInput/>
-         {/* <textarea className="theme-input" placeholder="예시)밤에만 움직이는 인형"></textarea> */}
-      </section>
-      <section className="options-section">
-        {/* 옵션 버튼과 기타 UI 요소 */}
-        <GenreSelect/>
-      </section>
-      <section className="slider-section">
-        <PageSelect/>
-        {/* 슬라이더 UI 요소 */}
-      </section>
-      <section className="textarea-section">
-        
-        {/* 텍스트 입력 영역 */}
-        {/* <textarea placeholder="원하는 내용을 입력하세요. (선택)"></textarea> */}
-        <DescribeInput/>
-      </section>
-      <footer>
-      <Link to="/generated-1">
-       <GeneratingButton/>
-        </Link>
-      </footer>
+      
 
+      {/* 장르 버튼 */}
+      <GenreSelect/>
+   
+
+      {/* 페이지 수 결정 슬라이더*/}
+      <PageSelect/>
+      
+
+      {/* 내용 입력 영역 */}
+      <DescribeInput/>
+
+       {/* 만들기 버튼 */}
+      <Link to="/generated">
+        <GeneratingButton />
+      </Link>
     </div>
-
   );
 };
 

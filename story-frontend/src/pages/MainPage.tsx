@@ -8,7 +8,6 @@ const MainPage: React.FC = () => {
       {/* 상단 경계선 및 배경 설정 */}
       <div className="border flex items-stretch gap-10 px-10 border-black border-solid max-md:max-w-full max-md:flex-wrap">
 
-
       <div className="border border-black w-0 shrink-0 h-[full]" />
       <div className="border border-black w-0 shrink-0 h-[full]" />
       <div className="border border-black w-0 shrink-0 h-[full]" />
