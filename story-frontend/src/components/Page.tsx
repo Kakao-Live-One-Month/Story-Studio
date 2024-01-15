@@ -3,26 +3,21 @@ import { useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import Image from '../components/Image';
 import { error } from 'console';
+import { usePage } from '../contexts/PageContext';
 
 // props의 타입을 정의하는 인터페이스
 interface PageProps {
-  lastSession: number; 
   setStoryArray: React.Dispatch<React.SetStateAction<string[]>>;
   storyArray: string[];
   setImageUrlArray: React.Dispatch<React.SetStateAction<string[]>>;
   imageUrlArray: string[];
-  setIsVisitedPage: React.Dispatch<React.SetStateAction<boolean[]>>;
-  isVisitedPage: boolean[];
   checkStoryCall: boolean;
 }
 
 const Page: React.FC<PageProps> = ({
-  lastSession, 
   storyArray, 
   setImageUrlArray, 
   imageUrlArray,
-  setIsVisitedPage,
-  isVisitedPage,
   checkStoryCall
 }) => {
   const [showModal, setShowModal] = useState(false);
@@ -31,6 +26,9 @@ const Page: React.FC<PageProps> = ({
   const param = useParams();
   const page_id = Number(param.page_id);
   // console.log(page_id);  
+  const { selectedPage } = usePage();
+  const [isVisitedPage, setIsVisitedPage] = useState<boolean[]>(new Array(selectedPage).fill(false));
+  const lastSession = selectedPage%3;
 
 
   useEffect(() => {
