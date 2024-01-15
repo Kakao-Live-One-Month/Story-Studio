@@ -30,9 +30,9 @@ const OptionModal: React.FC<OptionMadalProps> = ({ setShowModal, page_id, setSel
     }
   };
 
-  // useEffect(() => {
-  //   callOptions();
-  // }, []); 
+  useEffect(() => {
+    callOptions();
+  }, []); 
 
 
   const handleButtonClick = (index : number) => {
