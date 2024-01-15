@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/GenreSelect.css'; // GenreSelect 스타일시트 경로
-import ApiRequest from '../api/ApiRequest';
 
 
 
@@ -8,9 +6,8 @@ const GeneratingButton = () => {
 
 
   return (
-    <div>
-      <button>만들기</button>
-      <ApiRequest/>
+    <div className="flex bg-amber-300">
+      <button className="mx-auto h-12 w-32 bg-purple-400 rounded-full">만들기</button>
     </div>
   );
 };

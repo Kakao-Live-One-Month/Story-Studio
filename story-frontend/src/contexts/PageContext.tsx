@@ -34,3 +34,5 @@ export const usePage = () => {
   }
   return context;
 };
+
+export default usePage;

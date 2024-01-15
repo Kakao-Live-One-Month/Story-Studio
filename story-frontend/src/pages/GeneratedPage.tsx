@@ -1,43 +1,80 @@
 // src/GeneratingPage.tsx
-import { useNavigate } from 'react-router-dom';
-import React from 'react';
-import { usePage } from '../contexts/PageContext';
-
+import { useNavigate, Outlet,useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useTheme, useGenre, usePage, useDescribe } from '../contexts';
+import { startApiRequest, callNextSession } from '../api/ApiRequest';
+import OptionModal from '../components/OptionModal';
+import Loading from '../components/Loading';
+import { GoToNextPage, GoToPreviousPage } from '../components/PreNextButton';
 
 // props의 타입을 정의하는 인터페이스
 interface GeneratedPageProps {
-  number: number;
+  setStoryArray: React.Dispatch<React.SetStateAction<string[]>>;
+  storyArray: string[];
+  setCheckStoryCall: React.Dispatch<React.SetStateAction<boolean>>;
+  checkStoryCall: boolean;
 }
 
-const GeneratedPage: React.FC<GeneratedPageProps> = ({ number }) => {
-  // 컴포넌트의 로직을 여기에 추가합니다.
+const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray, setCheckStoryCall, checkStoryCall}) => {
+  const param = useParams();
+  const page_id = Number(param.page_id);
+
+  const { selectedGenre } = useGenre();
+  const { theme } = useTheme();
+  const { describe } = useDescribe();
   const { selectedPage } = usePage();
+
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [showLoading, setShowLoaging] = useState(false);
+  
+  const [pastpage, setPastpage] = useState<number[]>([]);
+  const [selectedOption, setSelectedOption] = useState<string>("");
+  
+  const firstApiRequest = async () => {
+    try {
+      setShowLoaging(true);
+      let contentsArray = await startApiRequest(theme, selectedGenre, selectedPage, describe);
+      console.log(contentsArray);
 
-  const goToNextPage = () => {
-    const nextPage = (number+1).toString();
-    navigate(`/generated-${nextPage}`);
-  };
+      if (!contentsArray)
+      {
+          contentsArray = [] as string[];
+      };
 
-  // number가 1보다 큰 경우에만 navigate 함수를 호출
-  const goToPreviousPage = () => {
-    const prePage = (number-1).toString();
-    if (number > 1) {
-      navigate(`/generated-${prePage}`);
+      setStoryArray([...contentsArray]);
+      setShowLoaging(false);
+      navigate(`/generated/1`);
+    } catch (error) {
+      console.error('Error StartApiRequest data:', error);
     }
   };
 
-  const previousButtonStyle: React.CSSProperties = {
-    position: 'absolute', // 'absolute'는 Position 타입에 포함된 값입니다.
-    left: 0,
-    top: '50%',
-    transform: 'translateY(-50%)',
-    cursor: number > 1 ? 'pointer' : 'default',
-    fontSize: '24px',
-    padding: '0 10px',
-    opacity: number > 1 ? 1 : 0.5,
-    pointerEvents: number > 1 ? 'auto' : 'none',
+  const callNextSessionFunc = async () => {
+    try {
+      const nextStorys = await callNextSession(selectedOption, selectedPage, page_id);
+      setStoryArray([...storyArray, ...nextStorys]);
+      setCheckStoryCall(true);
+  
+      return nextStorys;
+    } catch (error) {
+      console.error("callNextSession 에러: ", error);
+    }
   };
+
+
+  useEffect(() => {
+    firstApiRequest();
+  }, []);
+
+
+  useEffect(() => {
+    if (!checkStoryCall)
+    {
+      callNextSessionFunc();
+    }
+
+  }, [selectedOption]);
 
   return (
     <div style={{
@@ -53,6 +90,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({ number }) => {
       }}>
         <span style={{ fontWeight: 'bold', fontSize: '24px' }}>X</span>
       </div>
+
       <div style={{
         height: '100%',
         backgroundColor: 'lightgrey',
@@ -61,52 +99,27 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({ number }) => {
         alignItems: 'center',
         position: 'relative', 
       }}>
+        
+        <GoToPreviousPage/>
+        
+        {showLoading && (
+          <Loading/>
+        )}
+        
+        <Outlet />
 
-        {/* Previous page button */}
-        <div style={previousButtonStyle} onClick={number > 1 ? goToPreviousPage : undefined}>
-        {'<'}
-        </div>
-
-        <div style={{
-          width: '50%',
-          height: '800px',
-          backgroundColor: 'grey'
-        }}>
-          Image
-        </div>
-        <div style={{
-          width: '50%', 
-          height: '800px'
-
-        }}>
-          <div style={{
-            backgroundColor: 'white',
-            width: '100%', 
-            height: '100%', 
-
-          }} >cvdslvkdsl
-          </div>
-        </div>
-
-        {/* Next page button */}
-        <div style={{
-          position: 'absolute',
-          right: 0,
-          top: '50%',
-          transform: 'translateY(-50%)',
-          cursor: 'pointer',
-          fontSize: '24px',
-          padding: '0 10px',
-        }} onClick={goToNextPage}>
-          {'>'}
-        </div>
-
+        <GoToNextPage  setShowModal={setShowModal} showModal={showModal} setPastpage={setPastpage} pastpage={pastpage}/>
       </div>
+
+      {showModal && (
+        <OptionModal setShowModal={setShowModal} page_id={page_id} setSelectedOption={setSelectedOption} setCheckStoryCall={setCheckStoryCall} />
+      )} 
+
       <div style={{
         padding: '10px',
         textAlign: 'center',
       }}>
-        {number}/{selectedPage}
+        {page_id}/{selectedPage}
       </div>
     </div>
   );

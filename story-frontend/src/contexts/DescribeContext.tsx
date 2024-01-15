@@ -25,3 +25,5 @@ export const useDescribe = () => {
   }
   return context;
 };
+
+export default useDescribe;
