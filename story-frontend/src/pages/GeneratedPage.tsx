@@ -77,7 +77,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
 };
 
   useEffect(() => {
-  callOptions();
+  // callOptions();
   }, [storyArray]); 
 
 
@@ -90,7 +90,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
   useEffect(() => {
     if (!checkStoryCall)
     {
-      callNextSessionFunc();
+      // callNextSessionFunc();
     }
 
   }, [selectedOption]);
