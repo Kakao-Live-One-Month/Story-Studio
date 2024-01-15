@@ -6,6 +6,7 @@ import { startApiRequest, callNextSession, generateOption } from '../api/ApiRequ
 import OptionModal from '../components/OptionModal';
 import Loading from '../components/Loading';
 import { GoToNextPage, GoToPreviousPage } from '../components/PreNextButton';
+import { convertToPDF } from '../utils/jsPDF';
 
 // props의 타입을 정의하는 인터페이스
 interface GeneratedPageProps {
@@ -13,9 +14,10 @@ interface GeneratedPageProps {
   storyArray: string[];
   setCheckStoryCall: React.Dispatch<React.SetStateAction<boolean>>;
   checkStoryCall: boolean;
+  isVisitedPage: boolean[];
 }
 
-const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray, setCheckStoryCall, checkStoryCall}) => {
+const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray, setCheckStoryCall, checkStoryCall, isVisitedPage}) => {
   const param = useParams();
   const page_id = Number(param.page_id);
 
@@ -93,13 +95,31 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
 
   }, [selectedOption]);
 
+  // PDF 변환 테스트 함수입니다. 컴포넌트 옮길 예정 
+  const testhandlePDFDownload = () => {
+    const pdfBlob = convertToPDF(capturedPageImages);
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.download = 'document.pdf';
+    link.click();
+  };
+
   return (
     <div className='container justify-center mx-auto flex h-[700px] flex-wrap bg-blue-100 px-4 py-4'>
         <div className='relative flex'>
           <div className="absolute left-2 top-2 text-bold text-4xl">x</div>
           <GoToPreviousPage/>
           <Outlet />
-          <GoToNextPage  setShowModal={setShowModal} showModal={showModal} setPastpage={setPastpage} pastpage={pastpage}/>
+          <GoToNextPage 
+            setShowModal={setShowModal} 
+            showModal={showModal} 
+            setPastpage={setPastpage} 
+            pastpage={pastpage}
+            capturedPageImages={capturedPageImages}
+            setCapturedPageImages={setCapturedPageImages}
+            isVisitedPage={isVisitedPage}
+          />
           <div className="absolute bottom-5 right-5 text-2xl">{page_id}/{selectedPage}</div>
         </div>
    
@@ -110,6 +130,9 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
       {showModal && (
         <OptionModal setShowModal={setShowModal} page_id={page_id} setSelectedOption={setSelectedOption} setCheckStoryCall={setCheckStoryCall} qnOptions={qnOptions} />
       )}
+
+      {/* PDF테스트 버튼 */}
+      <button onClick={testhandlePDFDownload}>Convert to PDF Test</button>
     </div>
   );
 };
