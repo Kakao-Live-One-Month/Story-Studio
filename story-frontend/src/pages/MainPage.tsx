@@ -1,37 +1,70 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import '../styles/MainPage.css';
 import { GenreProvider } from '../contexts/GenreContext';
-const MainPage = () => {
-  // 페이지에 필요한 상태(state) 또는 기능(function)을 여기에 추가합니다.
 
+const MainPage: React.FC = () => {
   return (
-    <div className="main-container">
-   <GenreProvider>
+    <div className="bg-transparent flex flex-col justify-center items-stretch">
+      {/* 상단 경계선 및 배경 설정 */}
+      <div className="border flex items-stretch gap-10 px-10 border-black border-solid max-md:max-w-full max-md:flex-wrap">
 
-      <header className="main-header">
-        <h1>이야기 작업실</h1>
-        <p>작은 작업실에서 펼쳐내는 큰 꿈의 이야기<br />
-        AI와 작가의 만남을 통해 새로운 이야기를 만나보세요.</p>
-        <Link to="/generating">
-        <button className="start-button">바로가기</button>
-        </Link>
-      </header>
-      <section className="content-section">
-        <div className="content-box">
-          <h2>AI를 활용한 맞춤형 이야기</h2>
-          <p>시가 사용자의 일상에 따른 맞춤형 이야기를 생성합니다. 저희의 전신을 어루만져 영감을 불어넣는 스토리텔링은 당신에게 나 전달합니다.</p>
-  
-        </div>
-        <div className="content-box">
-          <h2>챗봇 상호작용하기</h2>
-          <p>상호작용 이야기의 전개에 자유 게임하며 새로운 흥분을 맛보십시오. 이야기 속의 다양한 선택지를 통해 자신만의 독창적 세계를 만들어 보세요.</p>
-   
-        </div>
-      </section>
-      {/* 기타 섹션/컴포넌트는 여기에 추가합니다. */}
+      <div className="border border-black w-0 shrink-0 h-[full]" />
+      <div className="border border-black w-0 shrink-0 h-[full]" />
+      <div className="border border-black w-0 shrink-0 h-[full]" />
 
-      </GenreProvider>
+      <div className="font-sans ">
+        <GenreProvider>
+          <header className="text-black text-center my-32 relative">
+          <div
+            className="absolute top-0 left-0 w-full h-full bg-cover bg-center"
+            style={{ backgroundImage: 'url("../../img/3.png")', zIndex: -1}}
+          />
+            <h1 className="text-8xl font-bold">이야기 작업실</h1>
+            <p className="text-2xl text-gray-700 my-8">
+              작은 작업실에서 펼쳐내는 큰 꿈의 이야기
+              <br />
+              AI와 창작의 문을 열고 새로운 이야기를 만나보세요.
+            </p>
+            <Link to="/generating">
+              <button className="block mx-auto mt-10 px-20 py-10 bg-black rounded-full text-white text-4xl cursor-pointer">
+                바로가기
+              </button>
+            </Link>
+          </header>
+
+          <section className="flex justify-around ">
+            <div className="flex w-3/5 mx-8 my-16 px-11 py-20 bg-gray-200 rounded-[30px]">
+              <div>
+                <h2 className="text-3xl font-bold pb-2">AI를 활용한 맞춤형 이야기</h2>
+                <p className="text-2xl">
+                AI가 사용자의 입력에 따른 맞춤형 이야기를 생성합니다. 주제와 컨셉을 입력하여 인공지능과 함께 스토리를 만들어 나갑니다.
+                </p>
+              </div>
+              <img src="../../img/2.png" alt="Image" className="max-w-full h-auto" />
+            </div>
+            
+            <div className="border border-black">
+            </div>
+
+            <div className="flex w-3/5 mx-8 my-16 px-11 py-20 bg-gray-200 rounded-[30px]">
+              
+            <img src="../../img/1.png" alt="Image" className="max-w-full h-auto" />
+              <div>
+                <h2 className="text-3xl font-bold pb-2">챗봇 상호작용하기</h2>
+                <p className="text-2xl">
+                사용자는 이야기의 전개에 직접 개입하여 새로운 흐름을 만듭니다. 이야기 속의 다양한 선택지를 골라 자신만의 동화 세계를 만들어 보세요.
+                </p>
+              </div>
+            </div>
+          </section>
+          {/* 기타 섹션/컴포넌트는 여기에 추가합니다. */}
+        </GenreProvider>
+      </div>
+      
+      <div className="border border-black w-0 shrink-0 h-[full]" />
+      <div className="border border-black w-0 shrink-0 h-[full]" />
+      <div className="border border-black w-0 shrink-0 h-[full]" />
+      </div>
     </div>
   );
 };
