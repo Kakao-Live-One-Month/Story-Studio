@@ -24,13 +24,13 @@ interface selectionType {
 
 interface selectionData {
   selection: selectionType;
-}
+};
 
 const jsonPrompt: string =  `완벽한 JSON 형식으로 {"pages": [{"page_id": , "content": , "summery": }, ]}으로 작성해주세요. `
                           + `page_id의 값은 페이지의 번호입니다. `
                           + `content의 값은 해당 페이지의 내용으로 3문장의 문단으로 만들어주세요. `
                           + `summery의 값은 해당 페이지의 간단한 장면 요약을 넣어주세요. `
-                          + `모든 값은 반드시 있어야 합니다. ` 
+                          + `모든 값은 반드시 있어야 합니다. `
                           + `모든 아이템과 값은 쌍따옴표로 감싸주세요. `
                           + `JSON 외의 설명을 쓰지 마세요.`;
 
