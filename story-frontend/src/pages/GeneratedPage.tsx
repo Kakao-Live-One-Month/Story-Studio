@@ -30,6 +30,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
   const [qnOptions, setQnoption] = useState<string[]>([]);
   const [pastpage, setPastpage] = useState<number[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>("");
+  const [capturedPageImages, setCapturedPageImages] = useState<string[]>([]);
   
   const firstApiRequest = async () => {
     try {
