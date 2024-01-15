@@ -41,36 +41,22 @@ const Page: React.FC<PageProps> = ({
 
 
   return (
-    <div style={{
-      display: 'flex',
-      height: '800px',
-      width: '100%',
-    }}>
-    
-      <div style={{
-        width: '50%',
-        backgroundColor: 'grey'
-      }}>
-        <Image 
-          imageUrlArray={imageUrlArray} 
-          setImageUrlArray={setImageUrlArray}
-          page_id={page_id}
-          setIsVisitedPage={setIsVisitedPage}
-          isVisitedPage={isVisitedPage}
-          checkStoryCall={checkStoryCall}
-        />
-      </div>
+      <div className="flex h-full w-[1200px] bg-red-200 p-4">
+        <div className="flex w-full bg-cyan-400">
+          <Image 
+            imageUrlArray={imageUrlArray} 
+            setImageUrlArray={setImageUrlArray}
+            page_id={page_id}
+            setIsVisitedPage={setIsVisitedPage}
+            isVisitedPage={isVisitedPage}
+            checkStoryCall={checkStoryCall}
+          />
+        </div>
 
-      <div style={{
-        width: '50%', 
-      }}>
-        <div style={{
-          backgroundColor: 'white',
-        }}>
-          <p>{currentPageStory}</p>
+        <div className="flex w-full bg-cyan-300">
+          <p className='p-10'>{currentPageStory}</p>
         </div>
       </div>
-    </div>
   );
 }; 
 

@@ -94,56 +94,24 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
     }
 
   }, [selectedOption]);
-
+//md:w-[1000px]
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      minHeight: '100vh',
-    }}>
-      <div style={{
-        height: '100%',
-        alignSelf: 'flex-start',
-        padding: '10px',
-        cursor: 'pointer'
-      }}>
-        <span style={{ fontWeight: 'bold', fontSize: '24px' }}>X</span>
-      </div>
-
-      <div style={{
-        height: '100%',
-        backgroundColor: 'lightgrey',
-        flex: '1',
-        display: 'flex',
-        alignItems: 'center',
-        position: 'relative', 
-      }}>
-        
-        <GoToPreviousPage/>
-        
-      
-        
-      
-        <Outlet />
-        
-        <GoToNextPage  setShowModal={setShowModal} showModal={showModal} setPastpage={setPastpage} pastpage={pastpage}/>
-      </div>
-
+    <div className='container justify-center mx-auto flex h-[700px] flex-wrap bg-blue-100 px-4 py-4'>
+        <div className='relative flex bg-green-200'>
+          <div className="absolute left-5 top-5 bg-red-500 text-2xl">x</div>
+          <GoToPreviousPage/>
+          <Outlet />
+          <GoToNextPage  setShowModal={setShowModal} showModal={showModal} setPastpage={setPastpage} pastpage={pastpage}/>
+          <div className="absolute bottom-5 right-5 bg-red-500 text-2xl">{page_id}/{selectedPage}</div>
+        </div>
+   
       {showLoading && (
-          <Loading/>
-        )}
-    
+        <Loading/>
+      )}
+      
       {showModal && (
         <OptionModal setShowModal={setShowModal} page_id={page_id} setSelectedOption={setSelectedOption} setCheckStoryCall={setCheckStoryCall} qnOptions={qnOptions} />
-      )} 
- 
-   
-      <div style={{
-        padding: '10px',
-        textAlign: 'center',
-      }}>
-        {page_id}/{selectedPage}
-      </div>
+      )}
     </div>
   );
 };

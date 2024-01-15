@@ -31,17 +31,14 @@ export const GoToNextPage: React.FC<GoToNextPageProps> = ({ setShowModal, showMo
   };
 
   return (
-    <div style={{
-      position: 'absolute',
-      right: 0,
-      top: '50%',
-      transform: 'translateY(-50%)',
-      cursor: 'pointer',
-      fontSize: '24px',
-      padding: '0 10px',
-      zIndex: 10000,
-    }} onClick={goToNextPage}>
-      {'>'}
+    <div 
+      className='mx-auto my-auto'
+      style={{
+        cursor: 'pointer',
+        zIndex: 10000,
+      }} 
+      onClick={goToNextPage}>
+        {'>'}
     </div>
   );
 };
@@ -60,17 +57,15 @@ export const GoToPreviousPage = () => {
     }
   }
   return (
-    <div style={{
-      position: 'absolute', // 'absolute'는 Position 타입에 포함된 값입니다.
-      left: 0,
-      top: '50%',
-      transform: 'translateY(-50%)',
-      zIndex: 10000,
-      cursor: page_id > 1 ? 'pointer' : 'default',
-      fontSize: '24px',
-      padding: '0 10px',
-      opacity: page_id > 1 ? 1 : 0.5,
-      pointerEvents: page_id > 1 ? 'auto' : 'none',}} onClick={page_id > 1 ? goToPreviousPage : undefined}>
+    <div 
+      className='mx-auto my-auto'
+      style={{
+        zIndex: 10000,
+        cursor: page_id > 1 ? 'pointer' : 'default',
+        opacity: page_id > 1 ? 1 : 0.5,
+        pointerEvents: page_id > 1 ? 'auto' : 'none',
+      }} 
+      onClick={page_id > 1 ? goToPreviousPage : undefined}>
       {'<'}
     </div>
   )
