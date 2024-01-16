@@ -26,9 +26,9 @@ const GenreSelect = () => {
 
   return (
     <div className="pb-8 pt-4">
-      <p className="pb-4 text-center">장르</p>
+      <p className="pb-4 text-center font-gowun-batang text-xl">장르</p>
 
-      <div className="grid grid-cols-2 gap-4 px-6 md:grid-cols-5">
+      <div className="grid grid-cols-2 gap-4 px-6 md:grid-cols-5 font-gowun-batang pb-4">
         {options.map((option, index) => {
           const isSelected = selectedOptions.includes(option);
           const colorClass = isSelected ? 
@@ -54,7 +54,6 @@ const GenreSelect = () => {
           );
         })}
       </div>
-      <div className='p-4 text-center text-sm w-full'>선택된 장르: {selectedGenre}</div>
     </div>
   );
 };

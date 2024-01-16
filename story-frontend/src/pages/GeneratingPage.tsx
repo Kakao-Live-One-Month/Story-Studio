@@ -21,27 +21,29 @@ const GeneratingPage: React.FC = () => {
 // 
 
   return (
-    <div className='container mx-auto flex flex-col flex-wrap bg-gray-100 px-10 py-16 md:w-[700px]'>
-      <div className="h-full py-10">
-        <p className="text-center text-4xl">나만의 동화책 만들기</p>
+    <div className='bg-gray-50'>
+      <div className='container mx-auto flex flex-col flex-wrap px-10 py-16 md:w-[700px] bg-gray-100'>
+        <div className="h-full py-10">
+          <p className="text-center text-4xl font-gowun-batang">나만의 동화책 만들기</p>
+        </div>
+
+        {/* 주제 입력 영역*/}
+        <ThemeInput/>
+
+        {/* 장르 버튼 */}
+        <GenreSelect/>
+
+        {/* 페이지 수 결정 슬라이더*/}
+        <PageSelect/>
+
+        {/* 내용 입력 영역 */}
+        <DescribeInput/>
+
+        {/* 만들기 버튼 */}
+        <Link to="/generated">
+          <GeneratingButton />
+        </Link>
       </div>
-
-      {/* 주제 입력 영역*/}
-      <ThemeInput/>
-
-      {/* 장르 버튼 */}
-      <GenreSelect/>
-
-      {/* 페이지 수 결정 슬라이더*/}
-      <PageSelect/>
-
-      {/* 내용 입력 영역 */}
-      <DescribeInput/>
-
-       {/* 만들기 버튼 */}
-      <Link to="/generated">
-        <GeneratingButton />
-      </Link>
     </div>
   );
 };
