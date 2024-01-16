@@ -93,7 +93,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
   }, [selectedOption]);
 
   return (
-    <div className='container justify-center mx-auto flex h-[700px] flex-wrap bg-blue-100 px-4 py-4'>
+    <div className='container justify-center mx-auto flex h-[700px] flex-wrap bg-blue-100 px-4 py-4 font-gaegu'>
         <div className='relative flex'>
           <div className="absolute left-2 top-2 text-bold text-4xl">x</div>
           <GoToPreviousPage/>

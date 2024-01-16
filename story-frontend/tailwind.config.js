@@ -17,6 +17,7 @@ module.exports = {
       },
       fontFamily: {
         'gowun-batang': ['Gowun Batang', 'serif'],
+        'gaegu':['Gaegu', 'sans-serif'],
       },
     },
   },
