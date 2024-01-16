@@ -1,6 +1,7 @@
 // src/components/ThemeInput.tsx
 import React, { useEffect, useState } from 'react';
 import { imageCreateApiRequest } from '../api/ApiRequest';
+import axios from 'axios';
 
 interface ImageProps {
   imageUrlArray: string[];
@@ -27,10 +28,11 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
     try {
       if (!isVisitedPage[page_id - 1]) 
       {
-        const newImageUrl = await imageCreateApiRequest(page_id);
+        const imageUrl: string = await imageCreateApiRequest(page_id);
+        const fetchedImageUrl: string = await imageUrlConvertToBlob(imageUrl);
 
-        setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
-        setImageUrl(newImageUrl);
+        setImageUrlArray(prevArray => [...prevArray, fetchedImageUrl]);
+        setImageUrl(fetchedImageUrl);
         visitPage(page_id);
       } 
       else 
@@ -43,10 +45,29 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
     }
   };
 
+  const imageUrlConvertToBlob = async (imageUrl: string) => {
+    try {
+      console.log(0);
+      const response = await axios.get(imageUrl, {
+        responseType: 'blob',
+      });
+
+      const blob = response.data;
+      const file = new File([blob], 'image.png', { type: 'image/png'});
+      console.log(1);
+      const url = URL.createObjectURL(file);
+      console.log(2);
+      return url;
+    } catch (error) {
+      console.error('image fetching error: ', error);
+      throw error;
+    }
+  };
+
   useEffect(() => {
     if (checkStoryCall)
     {
-      // callImageUrl();
+      callImageUrl();
     }
   }, [page_id, checkStoryCall]);
 

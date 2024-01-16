@@ -5,7 +5,7 @@ export const capturePage = async () => {
   const element = document.getElementById(pageElementId);
 
   if (element) {
-    const canvas = await html2canvas(element);
+    const canvas = await html2canvas(element, {allowTaint : true, useCORS : true});
     const capturePageImage: string = canvas.toDataURL('image/png');
 
     return capturePageImage;
