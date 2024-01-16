@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useParams} from 'react-router-dom';
 import { MainPage, GeneratingPage, GeneratedPage }from './pages'; 
-
+import { usePage } from './contexts/PageContext';
 import { Page } from './components';
 
 const App = () => {
@@ -11,7 +11,8 @@ const App = () => {
   const param = useParams();
   const page_id = Number(param.page_id);
   console.log(page_id);
-
+  const { selectedPage } = usePage();
+  const [isVisitedPage, setIsVisitedPage] = useState<boolean[]>(new Array(selectedPage).fill(false));
   const [checkStoryCall, setCheckStoryCall] = useState<boolean>(true);
 
   return (
@@ -19,7 +20,7 @@ const App = () => {
       <Routes>
       <Route path="/" element={<MainPage />}/> 
       <Route path="/generating" element={<GeneratingPage />}/>
-      <Route path="generated" element={<GeneratedPage setStoryArray={setStoryArray} storyArray={storyArray} setCheckStoryCall={setCheckStoryCall} checkStoryCall={checkStoryCall} />}>
+      <Route path="generated" element={<GeneratedPage setStoryArray={setStoryArray} storyArray={storyArray} setCheckStoryCall={setCheckStoryCall} checkStoryCall={checkStoryCall} isVisitedPage={isVisitedPage} />}>
         <Route 
           path=":page_id" 
           element={
@@ -28,6 +29,8 @@ const App = () => {
               storyArray={storyArray} 
               setImageUrlArray={setImageUrlArray}
               imageUrlArray={imageUrlArray}
+              setIsVisitedPage={setIsVisitedPage}
+              isVisitedPage={isVisitedPage}
               checkStoryCall={checkStoryCall}
             />
           }

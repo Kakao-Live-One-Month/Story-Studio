@@ -27,12 +27,11 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
     try {
       if (!isVisitedPage[page_id - 1]) 
       {
-        const newImageUrl = await imageCreateApiRequest(page_id);
+        const newImageUrl: string = await imageCreateApiRequest(page_id);
 
         setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
         setImageUrl(newImageUrl);
         visitPage(page_id);
-        
       } 
       else 
       {

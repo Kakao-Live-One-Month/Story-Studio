@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { usePage } from '../contexts';
+import { capturePage } from '../utils/capturePage';
 
 
 interface GoToNextPageProps {
@@ -8,15 +9,36 @@ interface GoToNextPageProps {
   setPastpage: React.Dispatch<React.SetStateAction<number[]>>;
   pastpage: number[];
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  capturedPageImages: string[];
+  setCapturedPageImages: React.Dispatch<React.SetStateAction<string[]>>;
+  isVisitedPage: boolean[];
 }
 
-export const GoToNextPage: React.FC<GoToNextPageProps> = ({ setShowModal, showModal, setPastpage, pastpage }) => {
+export const GoToNextPage: React.FC<GoToNextPageProps> = ({ 
+  setShowModal, 
+  showModal, 
+  setPastpage, 
+  pastpage, 
+  setCapturedPageImages, 
+  capturedPageImages,
+  isVisitedPage 
+}) => {
   const { selectedPage } = usePage();
   const navigate = useNavigate();
   const param = useParams<{ page_id: string }>(); // URL 파라미터의 타입을 명시적으로 지정
   const page_id = Number(param.page_id);
+  const [allVisitedPage, setAllVisitedPage] = useState<boolean>(false);
 
-  const goToNextPage = () => {
+  const goToNextPage = async () => {
+    if (!isVisitedPage[page_id] && !allVisitedPage) {
+      const caputuredPageImage: string = await capturePage();
+      setCapturedPageImages([...capturedPageImages, caputuredPageImage]);
+      
+      if (page_id === selectedPage) {
+        setAllVisitedPage(true);
+      }
+    }
+
     if (page_id % 3 === 0 && !showModal && page_id !== selectedPage) {
       if (!pastpage.includes(page_id)) {
         setPastpage([...pastpage, page_id]);
