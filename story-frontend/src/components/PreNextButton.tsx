@@ -54,10 +54,9 @@ export const GoToNextPage: React.FC<GoToNextPageProps> = ({
 
   return (
     <div 
-      className='mx-auto my-auto text-3xl'
+      className='mx-auto my-auto text-3xl z-10'
       style={{
         cursor: 'pointer',
-        zIndex: 10000,
       }} 
       onClick={goToNextPage}>
         {'>'}
@@ -80,9 +79,8 @@ export const GoToPreviousPage = () => {
   }
   return (
     <div 
-      className='mx-auto my-auto text-3xl'
+      className='mx-auto my-auto text-3xl z-10'
       style={{
-        zIndex: 10000,
         cursor: page_id > 1 ? 'pointer' : 'default',
         opacity: page_id > 1 ? 1 : 0.5,
         pointerEvents: page_id > 1 ? 'auto' : 'none',

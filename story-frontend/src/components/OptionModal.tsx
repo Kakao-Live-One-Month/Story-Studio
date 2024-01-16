@@ -19,9 +19,6 @@ const OptionModal: React.FC<OptionMadalProps> = ({ setShowModal, page_id, setSel
   const { selectedPage } = usePage();
   // const options = ["Question", "option1", "option2", "option3"];//qnoption의 예시
 
-
-
-
   const handleButtonClick = (index : number) => {
     console.log(index);
     setChoice(index);
@@ -35,36 +32,62 @@ const OptionModal: React.FC<OptionMadalProps> = ({ setShowModal, page_id, setSel
     navigate(`/generated/${page_id + 1}`);
   };
 
-  return (
-    <div
-    style={{
-    position: 'absolute',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: '20px',
-    // backgroundSize: 'cover',
-    width: '100vh', 
-    height: '100vh', 
-    zIndex: 10001,
-    backgroundColor: 'rgba(255, 255, 255, 0.8)', // 반투명 배경
-    }}>
+  const buttonImages = [
+    '../../img/option1.png',
+    '../../img/option2.png',
+    '../../img/option3.png',
+  ];
 
-      <button onClick={() => setShowModal(false)}>닫기</button>
-      <p>{qnOptions[0]}</p>
-      {qnOptions.slice(1).map((options, index) => (
-        <button
-          key={index}
-          style={{ 
-            backgroundColor: choice === index + 1 ? 'blue' : 'grey',
-            color: 'white'
-          }}
-          onClick={() => handleButtonClick(index + 1)}
-        >
-          {options}
-        </button>
-      ))}
-      <button onClick={handleCompleteSelection}>선택 완료</button>
+  const buttonImagesSelected = [
+    '../../img/selectoption1.png',
+    '../../img/selectoption2.png',
+    '../../img/selectoption3.png',
+  ];
+
+  return (
+    <div className="flex justify-center fixed left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 transform rounded bg-white bg-opacity-80 p-8 z-20">
+      {/* 모달 내용이 담길 컨테이너 */}
+      <div className="flex flex-col justify-center xl:w-[1000px] mx-auto w-3/4">
+        <div>
+          <button onClick={() => setShowModal(false)} className="top-0 left-0 text-black text-xl md:text-2xl underline">내용 다시 보기</button>
+        </div>
+
+        <div className="flex flex-col justify-center items-center py-20">
+          {/* 질문 */}
+          <p className="py-12 text-center text-3xl md:text-4xl">{qnOptions[0]}</p>
+          
+          {/* 선택지 버튼 */}
+          <div className="grid items-end w-full space-y-5 p-5">    
+            {qnOptions.slice(1).map((options, index) => (
+              
+              <button
+                key={index}
+                className={`text-black text-xl md:text-2xl text-center w-full h-[96px] cursor-pointer`}
+                onClick={() => handleButtonClick(index + 1)}
+                style={{
+                  backgroundImage: `url(${choice === index + 1 ? buttonImagesSelected[index] : buttonImages[index]})`,
+                  backgroundSize: '100% 100%',
+                  backgroundPosition: 'center',
+                }}
+              >
+                {options}
+              </button>
+
+            ))}
+          </div>
+
+          <div className="w-full px-5 py-8">
+            {/* 선택 완료 버튼 */}
+            <button
+              onClick={handleCompleteSelection}
+              className="bg-black text-white text-xl md:text-2xl py-7 w-full rounded-[70px] cursor-pointer"
+            >
+              선택 완료
+            </button>
+          </div>
+
+        </div>
+      </div>
     </div>
   );
 };
