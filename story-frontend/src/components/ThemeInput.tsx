@@ -12,9 +12,9 @@ const ThemeInput: React.FC = () => {
 
   return (
     <div className="flex flex-col pb-10 pt-4">
-      <p className="pb-4 text-center">주제</p>
+      <p className="pb-4 text-center font-gowun-batang text-xl">주제</p>
       <textarea 
-        className="mx-auto p-2 h-9 w-4/5 text-sm" 
+        className="mx-auto p-2 h-9 w-4/5 text-sm font-gowun-batang" 
         placeholder=" 예시) 밤에만 움직이는 인형" 
         onChange={handleChange} />
     </div>

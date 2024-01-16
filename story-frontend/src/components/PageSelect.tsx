@@ -18,7 +18,7 @@ const PageSelect = () => {
 
   return (
     <div className="flex flex-col py-10 pt-4 px-10">
-      <p className="pb-4 text-center">페이지 수</p>
+      <p className="pb-4 text-center font-gowun-batang text-xl">페이지 수</p>
       <input 
         type="range" 
         min="4" 
@@ -27,20 +27,18 @@ const PageSelect = () => {
         onChange={handleSliderChange}
         className="slider" />
 
-      <div className="relative">
+      <div className="relative pb-6">
         {marks.map(mark => {
           const leftStyle = {
             left: `calc(${((mark - 4) / totalMarks) * 100}% - ${(String(mark).length * 8) / 2}px)` // 숫자의 길이에 따라 조정
           };
           return (
-            <span key={mark} className="absolute text-sm" style={leftStyle}>
+            <span key={mark} className="absolute text-sm font-gowun-batang" style={leftStyle}>
               {mark}
             </span>
           );
         })}
       </div>
-
-      <div className="pt-8 text-center text-sm w-full">선택된 페이지 수: {selectedPage}</div>
     </div>
   );
 };
