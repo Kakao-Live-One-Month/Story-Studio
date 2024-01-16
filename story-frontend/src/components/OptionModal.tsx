@@ -9,30 +9,17 @@ interface OptionMadalProps {
     page_id: number;
     setSelectedOption: React.Dispatch<React.SetStateAction<string>>;
     setCheckStoryCall: React.Dispatch<React.SetStateAction<boolean>>;
+    qnOptions: string[];
   }
 
-const OptionModal: React.FC<OptionMadalProps> = ({ setShowModal, page_id, setSelectedOption, setCheckStoryCall }) => {
+const OptionModal: React.FC<OptionMadalProps> = ({ setShowModal, page_id, setSelectedOption, setCheckStoryCall, qnOptions}) => {
   const navigate = useNavigate();
-  const [qnOptions, setQnoption] = useState<string[]>([]);
+
   const [choice, setChoice] = useState<number>(0);
   const { selectedPage } = usePage();
   // const options = ["Question", "option1", "option2", "option3"];//qnoption의 예시
 
-  const callOptions = async () => {
-    if (page_id % 3 === 0 && page_id !== selectedPage) {
-      try {
-        const optionResponse = await generateOption(); 
-        setQnoption(optionResponse); 
-        setCheckStoryCall(false);
-      } catch (error) {
-        console.error('generateOption 호출 중 오류 발생:', error);
-      }
-    }
-  };
 
-  useEffect(() => {
-    callOptions();
-  }, []); 
 
 
   const handleButtonClick = (index : number) => {
@@ -61,6 +48,7 @@ const OptionModal: React.FC<OptionMadalProps> = ({ setShowModal, page_id, setSel
   ];
 
   return (
+
     <div className="flex justify-center fixed left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 transform rounded bg-white bg-opacity-80 p-8">
       {/* 모달 내용이 담길 컨테이너 */}
       <div className="flex flex-col justify-center xl:w-[1000px] mx-auto w-3/4">
@@ -104,6 +92,36 @@ const OptionModal: React.FC<OptionMadalProps> = ({ setShowModal, page_id, setSel
 
         </div>
       </div>
+=======
+    <div
+    style={{
+    position: 'absolute',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '20px',
+    // backgroundSize: 'cover',
+    width: '100vh', 
+    height: '100vh', 
+    zIndex: 10001,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)', // 반투명 배경
+    }}>
+
+      <button onClick={() => setShowModal(false)}>닫기</button>
+      <p>{qnOptions[0]}</p>
+      {qnOptions.slice(1).map((options, index) => (
+        <button
+          key={index}
+          style={{ 
+            backgroundColor: choice === index + 1 ? 'blue' : 'grey',
+            color: 'white'
+          }}
+          onClick={() => handleButtonClick(index + 1)}
+        >
+          {options}
+        </button>
+      ))}
+      <button onClick={handleCompleteSelection}>선택 완료</button>
     </div>
   );
   

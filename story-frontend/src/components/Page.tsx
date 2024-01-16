@@ -4,9 +4,9 @@ import React, { useState, useEffect } from 'react';
 import Image from '../components/Image';
 import { error } from 'console';
 
+
 // props의 타입을 정의하는 인터페이스
 interface PageProps {
-  lastSession: number; 
   setStoryArray: React.Dispatch<React.SetStateAction<string[]>>;
   storyArray: string[];
   setImageUrlArray: React.Dispatch<React.SetStateAction<string[]>>;
@@ -17,7 +17,6 @@ interface PageProps {
 }
 
 const Page: React.FC<PageProps> = ({
-  lastSession, 
   storyArray, 
   setImageUrlArray, 
   imageUrlArray,
@@ -33,6 +32,7 @@ const Page: React.FC<PageProps> = ({
   // console.log(page_id);  
 
 
+
   useEffect(() => {
     setShowLoaging(true);
       if (storyArray)
@@ -43,36 +43,22 @@ const Page: React.FC<PageProps> = ({
 
 
   return (
-    <div style={{
-      display: 'flex',
-      height: '800px',
-      width: '100%',
-    }}>
-    
-      <div style={{
-        width: '50%',
-        backgroundColor: 'grey'
-      }}>
-        <Image 
-          imageUrlArray={imageUrlArray} 
-          setImageUrlArray={setImageUrlArray}
-          page_id={page_id}
-          setIsVisitedPage={setIsVisitedPage}
-          isVisitedPage={isVisitedPage}
-          checkStoryCall={checkStoryCall}
-        />
-      </div>
+      <div id="story-page" className="flex h-full w-[1200px] p-4">
+        <div className="flex w-full my-auto">
+          <Image 
+            imageUrlArray={imageUrlArray} 
+            setImageUrlArray={setImageUrlArray}
+            page_id={page_id}
+            setIsVisitedPage={setIsVisitedPage}
+            isVisitedPage={isVisitedPage}
+            checkStoryCall={checkStoryCall}
+          />
+        </div>
 
-      <div style={{
-        width: '50%', 
-      }}>
-        <div style={{
-          backgroundColor: 'white',
-        }}>
-          <p>{currentPageStory}</p>
+        <div className="flex w-full ">
+          <p className='my-auto text-3xl p-10'>{currentPageStory}</p>
         </div>
       </div>
-    </div>
   );
 }; 
 

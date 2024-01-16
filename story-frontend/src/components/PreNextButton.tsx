@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { usePage } from '../contexts';
+import { capturePage } from '../utils/capturePage';
 
 
 interface GoToNextPageProps {
@@ -8,15 +9,36 @@ interface GoToNextPageProps {
   setPastpage: React.Dispatch<React.SetStateAction<number[]>>;
   pastpage: number[];
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  capturedPageImages: string[];
+  setCapturedPageImages: React.Dispatch<React.SetStateAction<string[]>>;
+  isVisitedPage: boolean[];
 }
 
-export const GoToNextPage: React.FC<GoToNextPageProps> = ({ setShowModal, showModal, setPastpage, pastpage }) => {
+export const GoToNextPage: React.FC<GoToNextPageProps> = ({ 
+  setShowModal, 
+  showModal, 
+  setPastpage, 
+  pastpage, 
+  setCapturedPageImages, 
+  capturedPageImages,
+  isVisitedPage 
+}) => {
   const { selectedPage } = usePage();
   const navigate = useNavigate();
   const param = useParams<{ page_id: string }>(); // URL 파라미터의 타입을 명시적으로 지정
   const page_id = Number(param.page_id);
+  const [allVisitedPage, setAllVisitedPage] = useState<boolean>(false);
 
-  const goToNextPage = () => {
+  const goToNextPage = async () => {
+    if (!isVisitedPage[page_id] && !allVisitedPage) {
+      const caputuredPageImage: string = await capturePage();
+      setCapturedPageImages([...capturedPageImages, caputuredPageImage]);
+      
+      if (page_id === selectedPage) {
+        setAllVisitedPage(true);
+      }
+    }
+
     if (page_id % 3 === 0 && !showModal && page_id !== selectedPage) {
       if (!pastpage.includes(page_id)) {
         setPastpage([...pastpage, page_id]);
@@ -31,17 +53,14 @@ export const GoToNextPage: React.FC<GoToNextPageProps> = ({ setShowModal, showMo
   };
 
   return (
-    <div style={{
-      position: 'absolute',
-      right: 0,
-      top: '50%',
-      transform: 'translateY(-50%)',
-      cursor: 'pointer',
-      fontSize: '24px',
-      padding: '0 10px',
-      zIndex: 10000,
-    }} onClick={goToNextPage}>
-      {'>'}
+    <div 
+      className='mx-auto my-auto text-3xl'
+      style={{
+        cursor: 'pointer',
+        zIndex: 10000,
+      }} 
+      onClick={goToNextPage}>
+        {'>'}
     </div>
   );
 };
@@ -60,17 +79,15 @@ export const GoToPreviousPage = () => {
     }
   }
   return (
-    <div style={{
-      position: 'absolute', // 'absolute'는 Position 타입에 포함된 값입니다.
-      left: 0,
-      top: '50%',
-      transform: 'translateY(-50%)',
-      zIndex: 10000,
-      cursor: page_id > 1 ? 'pointer' : 'default',
-      fontSize: '24px',
-      padding: '0 10px',
-      opacity: page_id > 1 ? 1 : 0.5,
-      pointerEvents: page_id > 1 ? 'auto' : 'none',}} onClick={page_id > 1 ? goToPreviousPage : undefined}>
+    <div 
+      className='mx-auto my-auto text-3xl'
+      style={{
+        zIndex: 10000,
+        cursor: page_id > 1 ? 'pointer' : 'default',
+        opacity: page_id > 1 ? 1 : 0.5,
+        pointerEvents: page_id > 1 ? 'auto' : 'none',
+      }} 
+      onClick={page_id > 1 ? goToPreviousPage : undefined}>
       {'<'}
     </div>
   )
