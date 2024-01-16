@@ -13,7 +13,6 @@ const App = () => {
   console.log(page_id);
   const { selectedPage } = usePage();
   const [isVisitedPage, setIsVisitedPage] = useState<boolean[]>(new Array(selectedPage).fill(false));
-  const lastSession = selectedPage%3;
   const [checkStoryCall, setCheckStoryCall] = useState<boolean>(true);
 
   return (
@@ -21,12 +20,11 @@ const App = () => {
       <Routes>
       <Route path="/" element={<MainPage />}/> 
       <Route path="/generating" element={<GeneratingPage />}/>
-      <Route path="generated" element={<GeneratedPage setStoryArray={setStoryArray} storyArray={storyArray} setCheckStoryCall={setCheckStoryCall} checkStoryCall={checkStoryCall} />}>
+      <Route path="generated" element={<GeneratedPage setStoryArray={setStoryArray} storyArray={storyArray} setCheckStoryCall={setCheckStoryCall} checkStoryCall={checkStoryCall} isVisitedPage={isVisitedPage} />}>
         <Route 
           path=":page_id" 
           element={
             <Page 
-              lastSession={lastSession} 
               setStoryArray={setStoryArray} 
               storyArray={storyArray} 
               setImageUrlArray={setImageUrlArray}

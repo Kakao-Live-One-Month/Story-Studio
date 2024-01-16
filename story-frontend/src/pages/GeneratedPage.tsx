@@ -2,10 +2,11 @@
 import { useNavigate, Outlet,useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useTheme, useGenre, usePage, useDescribe } from '../contexts';
-import { startApiRequest, callNextSession } from '../api/ApiRequest';
+import { startApiRequest, callNextSession, generateOption } from '../api/ApiRequest';
 import OptionModal from '../components/OptionModal';
 import Loading from '../components/Loading';
 import { GoToNextPage, GoToPreviousPage } from '../components/PreNextButton';
+import { convertToPDF } from '../utils/jsPDF';
 
 // props의 타입을 정의하는 인터페이스
 interface GeneratedPageProps {
@@ -13,9 +14,10 @@ interface GeneratedPageProps {
   storyArray: string[];
   setCheckStoryCall: React.Dispatch<React.SetStateAction<boolean>>;
   checkStoryCall: boolean;
+  isVisitedPage: boolean[];
 }
 
-const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray, setCheckStoryCall, checkStoryCall}) => {
+const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray, setCheckStoryCall, checkStoryCall, isVisitedPage}) => {
   const param = useParams();
   const page_id = Number(param.page_id);
 
@@ -26,14 +28,15 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
 
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const [showLoading, setShowLoaging] = useState(false);
-  
+  const [showLoading, setShowLoading] = useState(false);
+  const [qnOptions, setQnoption] = useState<string[]>([]);
   const [pastpage, setPastpage] = useState<number[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>("");
+  const [capturedPageImages, setCapturedPageImages] = useState<string[]>([]);
   
   const firstApiRequest = async () => {
     try {
-      setShowLoaging(true);
+      setShowLoading(true);
       let contentsArray = await startApiRequest(theme, selectedGenre, selectedPage, describe);
       console.log(contentsArray);
 
@@ -43,7 +46,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
       };
 
       setStoryArray([...contentsArray]);
-      setShowLoaging(false);
+      setShowLoading(false);
       navigate(`/generated/1`);
     } catch (error) {
       console.error('Error StartApiRequest data:', error);
@@ -52,10 +55,11 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
 
   const callNextSessionFunc = async () => {
     try {
+      setShowLoading(true);
       const nextStorys = await callNextSession(selectedOption, selectedPage, page_id);
       setStoryArray([...storyArray, ...nextStorys]);
       setCheckStoryCall(true);
-  
+      setShowLoading(false);
       return nextStorys;
     } catch (error) {
       console.error("callNextSession 에러: ", error);
@@ -63,64 +67,72 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
   };
 
 
+  const callOptions = async () => {
+    if(!Number.isNaN(page_id) && page_id !== undefined && page_id !== selectedPage){
+    try {
+      const optionResponse = await generateOption(); 
+      setQnoption(optionResponse); 
+      setCheckStoryCall(false);
+    } catch (error) {
+      console.error('generateOption 호출 중 오류 발생:', error);
+    }
+  }
+};
+
+  useEffect(() => {
+    //callOptions();
+  }, [storyArray]); 
+
   useEffect(() => {
     firstApiRequest();
   }, []);
 
-
   useEffect(() => {
     if (!checkStoryCall)
     {
-      callNextSessionFunc();
+      //callNextSessionFunc();
     }
 
   }, [selectedOption]);
 
+  // PDF 변환 테스트 함수입니다. 컴포넌트 옮길 예정 
+  const testhandlePDFDownload = () => {
+    const pdfBlob = convertToPDF(capturedPageImages);
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.download = 'document.pdf';
+    link.click();
+  };
+
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      minHeight: '100vh',
-    }}>
-      <div style={{
-        height: '100%',
-        alignSelf: 'flex-start',
-        padding: '10px',
-        cursor: 'pointer'
-      }}>
-        <span style={{ fontWeight: 'bold', fontSize: '24px' }}>X</span>
-      </div>
-
-      <div style={{
-        height: '100%',
-        backgroundColor: 'lightgrey',
-        flex: '1',
-        display: 'flex',
-        alignItems: 'center',
-        position: 'relative', 
-      }}>
-        
-        <GoToPreviousPage/>
-        
-        {showLoading && (
-          <Loading/>
-        )}
-        
-        <Outlet />
-
-        <GoToNextPage  setShowModal={setShowModal} showModal={showModal} setPastpage={setPastpage} pastpage={pastpage}/>
-      </div>
-
+    <div className='container justify-center mx-auto flex h-[700px] flex-wrap bg-blue-100 px-4 py-4'>
+        <div className='relative flex'>
+          <div className="absolute left-2 top-2 text-bold text-4xl">x</div>
+          <GoToPreviousPage/>
+          <Outlet />
+          <GoToNextPage 
+            setShowModal={setShowModal} 
+            showModal={showModal} 
+            setPastpage={setPastpage} 
+            pastpage={pastpage}
+            capturedPageImages={capturedPageImages}
+            setCapturedPageImages={setCapturedPageImages}
+            isVisitedPage={isVisitedPage}
+          />
+          <div className="absolute bottom-5 right-5 text-2xl">{page_id}/{selectedPage}</div>
+        </div>
+   
+      {showLoading && (
+        <Loading/>
+      )}
+      
       {showModal && (
-        <OptionModal setShowModal={setShowModal} page_id={page_id} setSelectedOption={setSelectedOption} setCheckStoryCall={setCheckStoryCall} />
-      )} 
+        <OptionModal setShowModal={setShowModal} page_id={page_id} setSelectedOption={setSelectedOption} setCheckStoryCall={setCheckStoryCall} qnOptions={qnOptions} />
+      )}
 
-      <div style={{
-        padding: '10px',
-        textAlign: 'center',
-      }}>
-        {page_id}/{selectedPage}
-      </div>
+      {/* PDF테스트 버튼 */}
+      <button onClick={testhandlePDFDownload}>Convert to PDF Test</button>
     </div>
   );
 };
