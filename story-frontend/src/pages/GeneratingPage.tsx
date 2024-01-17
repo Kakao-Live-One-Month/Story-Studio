@@ -21,8 +21,13 @@ const GeneratingPage: React.FC = () => {
 // 
 
   return (
-    <div className='bg-gray-50'>
-      <div className='container mx-auto flex flex-col flex-wrap px-10 py-16 md:w-[700px] bg-gray-100'>
+    <div className='bg-gray-50 h-screen'
+      style={{
+        backgroundImage: `url('/img/paper-wall.png')`,
+        backgroundSize: 'cover',
+      }}
+    >
+      <div className='container mx-auto flex flex-col flex-wrap px-10 py-16 md:w-[700px]'>
         <div className="h-full py-10">
           <p className="text-center text-4xl font-gowun-batang">나만의 동화책 만들기</p>
         </div>
