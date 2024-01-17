@@ -1,7 +1,7 @@
 // src/GeneratingPage.tsx
 import { useNavigate, Outlet,useParams, Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { useTheme, useGenre, usePage, useDescribe } from '../contexts';
+import { useTheme, useGenre, usePage, useDescribe, useLoading } from '../contexts';
 import { startApiRequest, callNextSession, generateOption } from '../api/ApiRequest';
 import OptionModal from '../components/OptionModal';
 import Loading from '../components/Loading';
@@ -20,7 +20,7 @@ interface GeneratedPageProps {
 const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray, setCheckStoryCall, checkStoryCall, isVisitedPage}) => {
   const param = useParams();
   const page_id = Number(param.page_id);
-
+  const { isLoading, setLoading } = useLoading();
   const { selectedGenre } = useGenre();
   const { theme } = useTheme();
   const { describe } = useDescribe();
@@ -28,7 +28,6 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
 
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const [showLoading, setShowLoading] = useState(false);
   const [qnOptions, setQnoption] = useState<string[]>([]);
   const [pastpage, setPastpage] = useState<number[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>("");
@@ -36,7 +35,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
   
   const firstApiRequest = async () => {
     try {
-      setShowLoading(true);
+      setLoading(true);
       let contentsArray = await startApiRequest(theme, selectedGenre, selectedPage, describe);
       console.log(contentsArray);
 
@@ -46,7 +45,6 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
       };
 
       setStoryArray([...contentsArray]);
-      setShowLoading(false);
       navigate(`/generated/1`);
     } catch (error) {
       console.error('Error StartApiRequest data:', error);
@@ -55,11 +53,9 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
 
   const callNextSessionFunc = async () => {
     try {
-      setShowLoading(true);
       const nextStorys = await callNextSession(selectedOption, selectedPage, page_id);
       setStoryArray([...storyArray, ...nextStorys]);
       setCheckStoryCall(true);
-      setShowLoading(false);
       return nextStorys;
     } catch (error) {
       console.error("callNextSession 에러: ", error);
@@ -136,7 +132,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
           <div className="absolute bottom-5 right-5 text-2xl">{page_id}/{selectedPage}</div>
         </div>
     
-        {showLoading && (
+        {isLoading && (
           <Loading/>
         )}
         

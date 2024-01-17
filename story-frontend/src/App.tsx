@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useParams} from 'react-router-dom';
-import { MainPage, GeneratingPage, GeneratedPage }from './pages'; 
+import { MainPage, GeneratingPage, GeneratedPage, EndingPage }from './pages'; 
 import { usePage } from './contexts/PageContext';
 import { Page } from './components';
 
@@ -36,6 +36,7 @@ const App = () => {
           }
         />
         </Route>
+        <Route path="/ending" element={<EndingPage />}/>
       </Routes>
     </Router>
   );

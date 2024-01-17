@@ -25,20 +25,29 @@ const Page: React.FC<PageProps> = ({
   checkStoryCall
 }) => {
   const [showModal, setShowModal] = useState(false);
-  const [showLoading, setShowLoaging] = useState(false);
   const [currentPageStory, setCurrentPageStory] = useState<string>("undefind");
   const param = useParams();
   const page_id = Number(param.page_id);
   // console.log(page_id);  
 
 
-
-  useEffect(() => {
-    setShowLoaging(true);
-      if (storyArray)
-      {
+  const currentText = async () => {
+    try {
+      if (storyArray[page_id - 1]!== undefined) {
         setCurrentPageStory(storyArray[page_id - 1]);
       }
+      else {
+        setCurrentPageStory("undefind");
+      }
+    }
+     catch (error) {
+      console.error('이미지 생성 에러:', error);
+    }
+  };
+
+
+  useEffect(() => {
+    currentText();
   }, [page_id, storyArray]); 
 
 

@@ -7,6 +7,7 @@ import { GenreProvider } from './contexts/GenreContext';
 import { PageProvider } from './contexts/PageContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { DescribeProvider } from './contexts/DescribeContext';
+import { LoadingProvider } from './contexts/LoadingContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,7 +17,9 @@ root.render(
     <PageProvider>
     <ThemeProvider>
     <DescribeProvider>
+     <LoadingProvider>
      <App />
+     </LoadingProvider>
      </DescribeProvider>
      </ThemeProvider>
     </PageProvider>
