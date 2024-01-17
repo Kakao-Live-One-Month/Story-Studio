@@ -1,6 +1,7 @@
 import secretJsonData from './application-secret.json';
 import axios from 'axios';
 
+
 export const ImageAI = async (prompt: string): Promise<string> => {
   const apiEndpoint = 'https://api.openai.com/v1/images/generations'
 

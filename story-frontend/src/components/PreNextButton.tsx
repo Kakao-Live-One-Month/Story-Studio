@@ -31,8 +31,8 @@ export const GoToNextPage: React.FC<GoToNextPageProps> = ({
 
   const goToNextPage = async () => {
     if (!isVisitedPage[page_id] && !allVisitedPage) {
-      const caputuredPageImage: string = await capturePage();
-      setCapturedPageImages([...capturedPageImages, caputuredPageImage]);
+      // const caputuredPageImage: string = await capturePage();
+      // setCapturedPageImages([...capturedPageImages, caputuredPageImage]);
       
       if (page_id === selectedPage) {
         setAllVisitedPage(true);

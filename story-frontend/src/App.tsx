@@ -15,6 +15,9 @@ const App = () => {
   const [isVisitedPage, setIsVisitedPage] = useState<boolean[]>(new Array(selectedPage).fill(false));
   const [checkStoryCall, setCheckStoryCall] = useState<boolean>(true);
 
+  // fetch('http://localhost:8080/api/convert')
+  //   .then((response) => response.json())
+  //   .then((data) => console.log(data));
   return (
     <Router>
       <Routes>
