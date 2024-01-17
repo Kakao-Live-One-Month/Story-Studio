@@ -21,7 +21,7 @@ const MainPage: React.FC = () => {
               }}
             />
             <Link to="/" className="absolute top-0 left-0 p-5">
-                <img src="../../img/logo.png" alt="Image" className="cursor-pointer w-20 h-20 md:w-24 md:h-24 lg:w-32 lg:h-32 "/>
+                <img src="../../img/logo.png" alt="Image" className="cursor-pointer w-10 sm:w-16 md:w-20"/>
               </Link>
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold">이야기 작업실</h1>
               <p className="text-xl text-gray-700 my-4 lg:my-8 lg:text-2xl">
