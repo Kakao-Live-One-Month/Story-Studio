@@ -39,15 +39,17 @@ export const GoToNextPage: React.FC<GoToNextPageProps> = ({
       }
     }
 
-    if (page_id % 3 === 0 && !showModal && page_id !== selectedPage) {
-      if (!pastpage.includes(page_id)) {
-        setPastpage([...pastpage, page_id]);
-        setShowModal(true);
-      } else {
-        setShowModal(false); 
-        navigate(`/generated/${page_id + 1}`);
-      }
+    if (page_id === selectedPage) {
+      navigate(`/ending`);
+    } else if (page_id % 3 === 0 && !showModal && page_id !== selectedPage) {
+        if (!pastpage.includes(page_id)) {
+          setShowModal(true);
+        } else {
+          setShowModal(false); 
+          navigate(`/generated/${page_id + 1}`);
+        }
     } else {
+      setPastpage([...pastpage, page_id]);
       navigate(`/generated/${page_id + 1}`);
     }
   };
