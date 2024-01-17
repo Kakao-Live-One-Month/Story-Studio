@@ -28,11 +28,9 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
 
   const callImageUrl = async (i: number) => {
     try {
-      if (!isVisitedPage[page_id - 1]) {
         // const newImageUrl = await imageCreateApiRequest(page_id+i);
         // setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
         console.log("imageUrl");
-      } 
       setLoading(false);
     } catch (error) {
       console.error('이미지 생성 에러:', error);
@@ -41,7 +39,7 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
 
   const currentImage = async () => {
     try {
-      if (!isVisitedPage[page_id - 1])  {
+      if (!isVisitedPage[page_id - 1]) {
         if (imageUrlArray[page_id - 1]!== undefined) {
           setImageUrl(imageUrlArray[page_id - 1]);
           visitPage(page_id);
@@ -57,24 +55,27 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
   };
 
   useEffect(() => {
-    if(page_id % 3 == 1){
-      if (selectedPage-page_id > 1){
-        for(let i=0; i<3; i++){
-         callImageUrl(i);
-        console.log("callImageUrl3:", page_id+i);
-        }
-      }else{
-        for(let i=0; i<selectedPage-page_id+1 ; i++){
-        callImageUrl(i);
-        console.log("callImageUrl%3", page_id+i);
-        }
-      } 
-    }
+    if (!isVisitedPage[page_id - 1]) {
+      if(page_id % 3 == 1){
+        if (selectedPage-page_id > 1){
+          for(let i=0; i<3; i++){
+          callImageUrl(i);
+          console.log("callImageUrl3:", page_id+i);
+          }
+        }else{
+          for(let i=0; i<selectedPage-page_id+1 ; i++){
+          callImageUrl(i);
+          console.log("callImageUrl%3", page_id+i);
+          }
+        } 
+      }
+     }
   }, [page_id, checkStoryCall]);
 
 
     useEffect(() => {
-      currentImage()
+      currentImage();
+      visitPage(page_id);
     },[page_id]);
 
 
