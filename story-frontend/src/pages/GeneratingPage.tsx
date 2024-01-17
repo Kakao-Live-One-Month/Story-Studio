@@ -21,7 +21,7 @@ const GeneratingPage: React.FC = () => {
 // 
 
   return (
-    <div className='bg-gray-50 h-screen'
+    <div className='h-screen'
       style={{
         backgroundImage: `url('/img/paper-wall.png')`,
         backgroundSize: 'cover',

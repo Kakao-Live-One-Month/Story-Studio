@@ -107,10 +107,13 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
 
   return (
 
-      <div className='justify-center mx-auto flex h-[700px] w-[1440px] flex-wrap bg-purple-100 mt-20 px-4 py-4 font-gaegu'
-        
-      >
-        <div className='relative flex bg-gray-100'>
+      <div className='justify-center mx-auto flex h-[700px] w-[1440px] flex-wrap bg-purple-100 mt-32 px-4 py-4 font-gaegu'>
+        <div className='relative flex bg-white'
+          style={{
+            backgroundImage: `url('/img/paper-wall.png')`,
+            backgroundSize: 'cover',
+          }}
+        >
           <div className="absolute left-2 top-2 text-bold text-4xl bg-purple-300">x</div>
           <GoToPreviousPage/>
           <Outlet />
