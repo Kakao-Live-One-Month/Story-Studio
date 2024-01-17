@@ -28,6 +28,10 @@ const GeneratingPage: React.FC = () => {
       }}
     >
       <div className='container mx-auto flex flex-col flex-wrap px-10 py-16 md:w-[700px]'>
+        <Link to="/" className="absolute top-0 left-0 p-5">
+          <img src="../../img/logo.png" alt="Image" className="cursor-pointer w-10 sm:w-16 md:w-20"/>
+        </Link>
+
         <div className="h-full py-10">
           <p className="text-center text-4xl font-gowun-batang">나만의 동화책 만들기</p>
         </div>
