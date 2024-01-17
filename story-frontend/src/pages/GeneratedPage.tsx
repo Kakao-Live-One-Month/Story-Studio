@@ -76,11 +76,11 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
 };
 
   useEffect(() => {
-    //callOptions();
+    callOptions();
   }, [storyArray]); 
 
   useEffect(() => {
-    //firstApiRequest();
+    firstApiRequest();
   }, []);
 
   useEffect(() => {
