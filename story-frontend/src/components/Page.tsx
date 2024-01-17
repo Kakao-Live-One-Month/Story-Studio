@@ -33,18 +33,30 @@ const Page: React.FC<PageProps> = ({
 
 
 
-  useEffect(() => {
-    setShowLoaging(true);
-      if (storyArray)
-      {
-        setCurrentPageStory(storyArray[page_id - 1]);
+  const currentText = async () => {
+    try {
+      if (storyArray[page_id - 1] !== undefined) {
+        // 문장부호 뒤에 두 개의 줄바꿈 문자 추가 및 첫 줄에 스페이스 추가
+        const formattedStory = " " + storyArray[page_id - 1].replace(/([.?!])\s*/g, "$1\n\n\ ");
+        setCurrentPageStory(formattedStory);
       }
-  }, [page_id, storyArray]); 
+      else {
+        setCurrentPageStory("undefined");
+      }
+    }
+    catch (error) {
+      console.error('이미지 생성 에러:', error);
+    }
+  };
+
+  useEffect(() => {
+    currentText();
+  }, [page_id, storyArray]);
 
 
   return (
-      <div id="story-page" className="flex h-full w-[1200px] p-4">
-        <div className="flex w-full my-auto">
+      <div id="story-page" className="flex h-full w-[1200px] p-4 bg-yellow-200">
+        <div className="w-1/2 bg-red-200 p-12 flex justify-center items-center">
           <Image 
             imageUrlArray={imageUrlArray} 
             setImageUrlArray={setImageUrlArray}
@@ -55,8 +67,11 @@ const Page: React.FC<PageProps> = ({
           />
         </div>
 
-        <div className="flex w-full ">
-          <p className='my-auto text-3xl p-10'>{currentPageStory}</p>
+        <div className="w-1/2 bg-red-100 p-12 flex items-center">
+          <p 
+            className='text-3xl bg-blue-200'
+            style={{ whiteSpace: 'pre-wrap' }}
+          >{currentPageStory}</p>
         </div>
       </div>
   );
