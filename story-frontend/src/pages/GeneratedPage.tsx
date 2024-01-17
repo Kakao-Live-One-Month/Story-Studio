@@ -106,9 +106,12 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
   };
 
   return (
-    <div className='container justify-center mx-auto flex h-[700px] flex-wrap bg-blue-100 px-4 py-4 font-gaegu'>
-        <div className='relative flex'>
-          <div className="absolute left-2 top-2 text-bold text-4xl">x</div>
+
+      <div className='justify-center mx-auto flex h-[700px] w-[1440px] flex-wrap bg-purple-100 mt-20 px-4 py-4 font-gaegu'
+        
+      >
+        <div className='relative flex bg-gray-100'>
+          <div className="absolute left-2 top-2 text-bold text-4xl bg-purple-300">x</div>
           <GoToPreviousPage/>
           <Outlet />
           <GoToNextPage 
@@ -122,18 +125,21 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
           />
           <div className="absolute bottom-5 right-5 text-2xl">{page_id}/{selectedPage}</div>
         </div>
-   
-      {showLoading && (
-        <Loading/>
-      )}
-      
-      {showModal && (
-        <OptionModal setShowModal={setShowModal} page_id={page_id} setSelectedOption={setSelectedOption} setCheckStoryCall={setCheckStoryCall} qnOptions={qnOptions} />
-      )}
+    
+        {showLoading && (
+          <Loading/>
+        )}
+        
+        {showModal && (
+          <OptionModal setShowModal={setShowModal} page_id={page_id} setSelectedOption={setSelectedOption} setCheckStoryCall={setCheckStoryCall} qnOptions={qnOptions} />
+        )}
 
-      {/* PDF테스트 버튼 */}
-      <button onClick={testhandlePDFDownload}>Convert to PDF Test</button>
-    </div>
+        {/* PDF테스트 버튼 */}
+        <div className='bg-red-300 h-4 absolute'>
+          <button onClick={testhandlePDFDownload}>Convert to PDF Test</button>
+        </div>
+      </div>
+  
   );
 };
 
