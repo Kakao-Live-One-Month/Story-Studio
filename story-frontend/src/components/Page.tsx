@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import Image from '../components/Image';
 import { error } from 'console';
 
-
 // props의 타입을 정의하는 인터페이스
 interface PageProps {
   setStoryArray: React.Dispatch<React.SetStateAction<string[]>>;
@@ -54,26 +53,27 @@ const Page: React.FC<PageProps> = ({
   }, [page_id, storyArray]);
 
 
-  return (
-      <div id="story-page" className="flex h-full w-[1200px] p-4 bg-yellow-200">
-        <div className="w-1/2 bg-red-200 p-12 flex justify-center items-center">
-          <Image 
-            imageUrlArray={imageUrlArray} 
-            setImageUrlArray={setImageUrlArray}
-            page_id={page_id}
-            setIsVisitedPage={setIsVisitedPage}
-            isVisitedPage={isVisitedPage}
-            checkStoryCall={checkStoryCall}
-          />
-        </div>
 
-        <div className="w-1/2 bg-red-100 p-12 flex items-center">
-          <p 
-            className='text-3xl bg-blue-200'
-            style={{ whiteSpace: 'pre-wrap' }}
-          >{currentPageStory}</p>
-        </div>
+  return (
+    <div id="story-page" className="flex h-full w-[1200px] p-4 bg-yellow-200">
+      <div className="w-1/2 bg-red-200 p-12 flex justify-center items-center">
+        <Image 
+          imageUrlArray={imageUrlArray} 
+          setImageUrlArray={setImageUrlArray}
+          page_id={page_id}
+          setIsVisitedPage={setIsVisitedPage}
+          isVisitedPage={isVisitedPage}
+          checkStoryCall={checkStoryCall}
+        />
       </div>
+
+      <div className="w-1/2 bg-red-100 p-12 flex items-center">
+        <p 
+          className='text-3xl bg-blue-200'
+          style={{ whiteSpace: 'pre-wrap' }}
+        >{currentPageStory}</p>
+      </div>
+    </div>
   );
 }; 
 
