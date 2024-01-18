@@ -81,7 +81,9 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
 ///////////////////////////////////////////////////////////////////
 
   useEffect(() => {
+  if(storyArray.length === 0){
     firstApiRequest();
+  }
   }, []);
 
 
@@ -93,7 +95,14 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
 
  
   useEffect(() => {
-    if (!checkStoryCall && page_id%3 === 1){
+    if (!checkStoryCall && page_id%3 === 1 && !isVisitedPage[page_id]){
+      callNextSessionFunc();
+    }
+  }, [selectedOption]);
+
+
+  useEffect(() => {
+    if (selectedPage == page_id){
       callNextSessionFunc();
     }
   }, [selectedOption]);
@@ -111,7 +120,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
   };
 
 
-  
+
   return (
     <div className='h-screen w-screen flex justify-center items-center bg-blue-100 px-4 py-4'
       style={{
