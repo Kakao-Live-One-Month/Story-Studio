@@ -11,10 +11,11 @@ interface ImageProps {
   checkStoryCall: boolean;
   setImageUrlArray: React.Dispatch<React.SetStateAction<string[]>>;
   setIsVisitedPage: React.Dispatch<React.SetStateAction<boolean[]>>;
+  storyArray: string[];
 
 }
 
-const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, isVisitedPage, setIsVisitedPage, checkStoryCall}) => {
+const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, isVisitedPage, setIsVisitedPage, checkStoryCall, storyArray}) => {
   const [imageUrl, setImageUrl] = useState<string>('');
   const { isLoading, setLoading } = useLoading();
   const { selectedPage } = usePage();
@@ -34,9 +35,9 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
   const callImageUrl = async (i: number) => {
     try {
       if(!isVisitedPage[page_id - 1]){
-        // setLoading(true);
-        await delay(6000);  // 3초 지연
-        setImageUrlArray(['abc', 'def', 'ghi']);
+   
+        await delay(10000);  // 3초 지연
+        setImageUrlArray(['abc', 'def', 'ghi', 'abc', 'def', 'ghi', 'abc', 'def', 'ghi']);
         // const newImageUrl = await imageCreateApiRequest(page_id+i);
         // setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
         console.log("imageUrl");
@@ -49,9 +50,6 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
   const currentImage = async () => {
     try {
       console.log("currentImage");
-      if (!isVisitedPage[page_id - 1]) {
-        visitPage(page_id);
-      }
       setImageUrl(imageUrlArray[page_id - 1]);
       await delay(3000);
       setLoading(false);
@@ -66,7 +64,8 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
 ///////////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    if (checkStoryCall) {
+    setLoading(true);
+    if ( checkStoryCall && storyArray[page_id - 1] !== undefined) {
       if(page_id % 3 == 1){
         if (selectedPage-page_id > 1){
           for(let i=0; i<3; i++){
@@ -81,16 +80,19 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
         } 
       }
      }
-  }, [page_id, checkStoryCall]);
+  }, [page_id]);
 
 
   useEffect(() => {
     if(imageUrlArray.length !== 0){
-    // currentImage();
+    currentImage();
     }
   },[page_id, imageUrlArray]);
 
 
+  useEffect(() => {
+    console.log("storyArrayChange");
+  },[storyArray]);
 ///////////////////////////////////////////////////////////////////
 
 

@@ -28,7 +28,7 @@ const OptionModal: React.FC<OptionMadalProps> = ({ setShowModal, page_id, setSel
     setShowModal(false);
     console.log("초이스: ", choice);
     setSelectedOption(qnOptions[choice]);
-
+    setCheckStoryCall(false);
     navigate(`/generated/${page_id + 1}`);
   };
 

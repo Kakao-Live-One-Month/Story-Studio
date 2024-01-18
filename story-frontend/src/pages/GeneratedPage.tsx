@@ -3,11 +3,10 @@ import { useNavigate, Outlet, useParams, Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useTheme, useGenre, usePage, useDescribe, useLoading } from '../contexts';
 import { startApiRequest, callNextSession, generateOption } from '../api/ApiRequest';
-import{ OptionModal, Loading } from '../components';
+import { OptionModal, Loading } from '../components';
 import { GoToNextPage, GoToPreviousPage } from '../components/PreNextButton';
 import { convertToPDF } from '../utils/jsPDF';
 
-// props의 타입을 정의하는 인터페이스
 interface GeneratedPageProps {
   setCheckStoryCall: React.Dispatch<React.SetStateAction<boolean>>;
   setStoryArray: React.Dispatch<React.SetStateAction<string[]>>;
@@ -18,32 +17,59 @@ interface GeneratedPageProps {
 
 const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray, setCheckStoryCall, checkStoryCall, isVisitedPage}) => {
   const param = useParams();
-  const page_id = Number(param.page_id);
   const { isLoading, setLoading } = useLoading();
   const { selectedGenre } = useGenre();
   const { theme } = useTheme();
   const { describe } = useDescribe();
   const { selectedPage } = usePage();
+  const page_id = Number(param.page_id);
 
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [qnOptions, setQnoption] = useState<string[]>([]);
-  const [pastpage, setPastpage] = useState<number[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [capturedPageImages, setCapturedPageImages] = useState<string[]>([]);
+
+  /////////////////////////////////////////////////////////////////////////////////
+  const saveToLocalStorage = (storyArray: string[]): void => {
+    localStorage.setItem('storyArray', JSON.stringify(storyArray));
+  };
+
+  const loadFromLocalStorage = (): string[] | null => {
+    const savedData = localStorage.getItem('storyArray');
+    return savedData ? JSON.parse(savedData) : null;
+  };
+
+  useEffect(() => {
+    const loadedStoryArray = loadFromLocalStorage();
+    console.log("loadedStoryArray", loadedStoryArray)
+    if (loadedStoryArray) {
+      setStoryArray(loadedStoryArray);
+    }else{
+      firstApiRequest();
+      navigate(`/generated/1`); 
+    }
+  }, []);
+
+  useEffect(() => {
+    saveToLocalStorage(storyArray);
+  }, [storyArray]);
   
+  /////////////////////////////////////////////////////////////////////////////////
+  
+
   const firstApiRequest = async () => {
     try {
-      // setLoading(true);
+      setLoading(true);
       let contentsArray = await startApiRequest(theme, selectedGenre, selectedPage, describe);
-      console.log(contentsArray);
+      console.log("firstApiRequest");
 
       if (!contentsArray){
         contentsArray = [] as string[];
       };
 
       setStoryArray([...contentsArray]);
-      navigate(`/generated/1`);
+      
       setCheckStoryCall(true);
       setLoading(false);
 
@@ -52,56 +78,54 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
     }
   };
 
+ 
+
   const callNextSessionFunc = async () => {
     try {
-      setLoading(true);
-      const nextStorys = await callNextSession(selectedOption, selectedPage, page_id);
+      setLoading(true); // 로딩 시작
+      let nextStorys = await callNextSession(selectedOption, selectedPage, page_id);
+      if (!nextStorys) {
+        nextStorys = [] as string[];
+      };
       setStoryArray([...storyArray, ...nextStorys]);
-      setCheckStoryCall(true);
-      setLoading(false);
-      return nextStorys;
+      if (nextStorys.length !== 0) {
+        setCheckStoryCall(true);
+      }
     } catch (error) {
       console.error("callNextSession 에러: ", error);
+    } finally {
+      setLoading(false); // 로딩 종료
     }
   };
-
+  
 
   const callOptions = async () => {
     if( page_id !== selectedPage ){
     try {
       const optionResponse = await generateOption(); 
       setQnoption(optionResponse); 
-      setCheckStoryCall(false);
     } catch (error) {
       console.error('generateOption 호출 중 오류 발생:', error);
+    } finally {
+      setCheckStoryCall(false);
     }
   }
 };
 
-  ///////////////////////////////////////////////////////////////////
-
   useEffect(() => {
-    if(storyArray.length === 0){
-    firstApiRequest();
-}
-  }, []);
-
-
-  useEffect(() => {
-    if (checkStoryCall && page_id%3 === 1){
+    if (checkStoryCall && page_id%3 === 1 &&!isVisitedPage[page_id-1]){
     callOptions();
     }
-  }, [storyArray]); 
+  }, [page_id]); 
 
  
   useEffect(() => {
-    if (!checkStoryCall && page_id%3 === 1 && !isVisitedPage[page_id]){
+    if (!checkStoryCall && !isVisitedPage[page_id-1]){
       callNextSessionFunc();
     }
-  }, [selectedOption]);
+  }, [selectedOption, checkStoryCall]);
 
 
-  /////////////////////////////////////////////////
 
   // PDF 변환 테스트 함수입니다. 컴포넌트 옮길 예정 
   const testhandlePDFDownload = () => {
@@ -112,6 +136,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
     link.download = 'document.pdf';
     link.click();
   };
+
 
 
 
@@ -143,8 +168,6 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
           <GoToNextPage 
             setShowModal={setShowModal} 
             showModal={showModal} 
-            setPastpage={setPastpage} 
-            pastpage={pastpage}
             capturedPageImages={capturedPageImages}
             setCapturedPageImages={setCapturedPageImages}
             isVisitedPage={isVisitedPage}

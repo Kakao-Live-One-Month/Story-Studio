@@ -16,7 +16,7 @@ const App = () => {
     <Router>
       <Routes>
       <Route path="/" element={<MainPage />}/> 
-      <Route path="/generating" element={<GeneratingPage />}/>
+      <Route path="/generating" element={<GeneratingPage setStoryArray={setStoryArray} setIsVisitedPage={setIsVisitedPage}/>}/>
       <Route path="generated" element={<GeneratedPage setStoryArray={setStoryArray} storyArray={storyArray} setCheckStoryCall={setCheckStoryCall} checkStoryCall={checkStoryCall} isVisitedPage={isVisitedPage} />}>
         <Route 
           path=":page_id" 

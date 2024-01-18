@@ -4,21 +4,30 @@ import { ThemeInput, DescribeInput, GenreSelect, PageSelect } from '../component
 import { useTheme, useGenre, usePage, useDescribe } from '../contexts';
 import GeneratingButton from '../components/GeneratingButton';
 
-const GeneratingPage: React.FC = () => {
+interface GeneratingPageProps {
+  setStoryArray: React.Dispatch<React.SetStateAction<string[]>>;
+  setIsVisitedPage: React.Dispatch<React.SetStateAction<boolean[]>>;
+}
+const GeneratingPage: React.FC<GeneratingPageProps> = ({setStoryArray, setIsVisitedPage}) => {
 
 //입력값 초기화
   const { setSelectedGenre } = useGenre();
-  const { setSelectedPage } = usePage();
+  const { selectedPage } = usePage();
   const { setTheme } = useTheme();
   const { setDescribe } = useDescribe();
 
-  // useEffect(() => {
-  //   setSelectedPage(9);
-  //   setSelectedGenre('');
-  //   setTheme('');
-  //   setDescribe('');
-  // }, [setSelectedPage, setSelectedGenre, setTheme, setDescribe]);
-// 
+  useEffect(() => {
+    // GeneratingPage 마운트 시 storyArray 초기화
+    localStorage.removeItem('storyArray');
+    setStoryArray([]);
+  }, []);
+
+  useEffect(() => {
+    // GeneratingPage 마운트 시 storyArray 초기화
+    localStorage.removeItem('isVisitedPage');
+    setIsVisitedPage(new Array(selectedPage).fill(false));
+  }, []);
+ 
 
   return (
     <div className='min-h-screen w-full flex justify-center items-center'

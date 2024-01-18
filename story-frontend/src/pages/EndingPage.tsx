@@ -52,7 +52,7 @@ const EndingPage: React.FC<EndingPageProps> = ({
         >PDF 다운받기</button>
         </Link>
 
-        <Link to="/generated/">
+        <Link to="/generated/1">
         <button className="text-center text-white text-2xl w-[280px] h-[80px] rounded-[70px] font-bold font-gowun-batang"
           onClick={() => {}}
           style={{

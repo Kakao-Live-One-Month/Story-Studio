@@ -6,8 +6,6 @@ import { capturePage } from '../utils/capturePage';
 
 interface GoToNextPageProps {
   showModal: boolean;
-  setPastpage: React.Dispatch<React.SetStateAction<number[]>>;
-  pastpage: number[];
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   capturedPageImages: string[];
   setCapturedPageImages: React.Dispatch<React.SetStateAction<string[]>>;
@@ -17,8 +15,6 @@ interface GoToNextPageProps {
 export const GoToNextPage: React.FC<GoToNextPageProps> = ({ 
   setShowModal, 
   showModal, 
-  setPastpage, 
-  pastpage, 
   setCapturedPageImages, 
   capturedPageImages,
   isVisitedPage 
@@ -42,14 +38,13 @@ export const GoToNextPage: React.FC<GoToNextPageProps> = ({
     if (page_id === selectedPage) {
       navigate(`/ending`);
     } else if (page_id % 3 === 0 && !showModal && page_id !== selectedPage) {
-        if (!pastpage.includes(page_id)) {
+        if (!isVisitedPage[page_id]) {
           setShowModal(true);
         } else {
           setShowModal(false); 
           navigate(`/generated/${page_id + 1}`);
         }
     } else {
-      setPastpage([...pastpage, page_id]);
       navigate(`/generated/${page_id + 1}`);
     }
   };

@@ -30,30 +30,67 @@ const Page: React.FC<PageProps> = ({
   const param = useParams();
   const page_id = Number(param.page_id);
   const { isLoading, setLoading } = useLoading();
-                                                                                                                                                                                                                          
-  console.log(page_id);  
-
+                                                                                                                                                                        
   function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   async function LoadingDelay() {
-    console.log("지연 전");
-    setLoading(true);
-    await delay(1500);  // 3초 지연
-    console.log("지연 후");
-    setLoading(false);  
+    setLoading(true); 
+    await delay(1500); 
+    console.log("1.5s");
+    setLoading(false); 
   }
+
+
+  ////////////////////////////////////////////////////////////////////
+
+  const visitPage = (page_id: number) => {
+    setIsVisitedPage(prevIsVisitedPageArray => {
+      const newVisitedPageArray = [...prevIsVisitedPageArray];
+      newVisitedPageArray[page_id - 1] = true;
+      return newVisitedPageArray;
+    });
+  };
+
+  useEffect(() => {
+    if (!isVisitedPage[page_id - 1]) {
+      visitPage(page_id);
+    }
+  }, [page_id]);
+
+  const saveVisitToStorage = (isVisitedPage: boolean[]): void => {
+    localStorage.setItem('isVisitedPage', JSON.stringify(isVisitedPage));
+  };
+
+  const loadsaveVisitFromLocalStorage = (): boolean[] | null => {
+    const savedVisit = localStorage.getItem('isVisitedPage');
+    return savedVisit ? JSON.parse(savedVisit) : null;
+  };
+
+  useEffect(() => {
+    // 컴포넌트가 마운트될 때 localStorage에서 데이터 로드
+    const loadedStoryVisit = loadsaveVisitFromLocalStorage();
+    console.log("loadedStoryVisit", loadedStoryVisit)
+    if (loadedStoryVisit) {
+      setIsVisitedPage(loadedStoryVisit);
+    }
+  }, []);
+  useEffect(() => {
+    saveVisitToStorage(isVisitedPage);
+  }, [isVisitedPage]);
+
+////////////////////////////////////////////////////////////////////
+
 
   const currentText = async () => {
     try {
       if (storyArray[page_id - 1] !== undefined) {
-        // 문장부호 뒤에 두 개의 줄바꿈 문자 추가 및 첫 줄에 스페이스 추가
         const formattedStory = " " + storyArray[page_id - 1].replace(/([.?!])\s*/g, "$1\n\n\ ");
         setCurrentPageStory(formattedStory);
       }
       else {
-        setCurrentPageStory("undefined");
+        setCurrentPageStory("이야기 생성중...");
       }
     }
     catch (error) {
@@ -63,23 +100,21 @@ const Page: React.FC<PageProps> = ({
 
   useEffect(() => {
     currentText();
-    if(page_id==1){
-      console.log(storyArray);
-    }
   }, [page_id, storyArray]);
 
 
-  useEffect(() => {
-    if(page_id !== 1){
-      LoadingDelay();
-    }
-  }, [page_id]);
+  // useEffect(() => {
+  //   if(storyArray[page_id - 1]==undefined || storyArray[page_id - 1]=="undefined"){
+  //    LoadingDelay();
+  //   }
+  // }, [storyArray]);
+
 
 
 
   return (
     <div id="story-page" className="flex h-full w-[1200px] p-4 ">
-
+      {isLoading && (<Loading/>)}
       <div className="w-1/2 pr-4 flex justify-center items-center">
         <Image 
           imageUrlArray={imageUrlArray} 
@@ -88,6 +123,7 @@ const Page: React.FC<PageProps> = ({
           setIsVisitedPage={setIsVisitedPage}
           isVisitedPage={isVisitedPage}
           checkStoryCall={checkStoryCall}
+          storyArray={storyArray}
         />
       </div>
 
