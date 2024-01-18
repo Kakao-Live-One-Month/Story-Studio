@@ -28,9 +28,10 @@ const Page: React.FC<PageProps> = ({
   
   const [currentPageStory, setCurrentPageStory] = useState<string>("undefind");
   const param = useParams();
-  const page_id = Number(param.page_id);
   const { isLoading, setLoading } = useLoading();
-                                                                                                                                                                                                                          
+  const [page_id, setPageid] = useState<number>(NaN);         
+                    
+  const navigate = useNavigate();                                                                                                                                                                                    
   console.log(page_id);  
 
   function delay(ms: number): Promise<void> {
@@ -62,6 +63,15 @@ const Page: React.FC<PageProps> = ({
   };
 
   useEffect(() => {
+    if (param.page_id) {
+      // URL의 page_id를 읽어와 상태를 설정
+      setPageid(Number(param.page_id));
+      // 여기서 필요한 상태 업데이트 로직 추가
+    }
+  }, [param.page_id]); // page_id가 변경될 때마다 실행
+
+
+  useEffect(() => {
    
     currentText();
 
@@ -74,6 +84,7 @@ const Page: React.FC<PageProps> = ({
       LoadingDelay();
     }
   }, [page_id]);
+
 
 
 

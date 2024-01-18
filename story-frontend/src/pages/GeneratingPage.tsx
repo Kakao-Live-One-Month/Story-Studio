@@ -4,7 +4,11 @@ import { ThemeInput, DescribeInput, GenreSelect, PageSelect } from '../component
 import { useTheme, useGenre, usePage, useDescribe } from '../contexts';
 import GeneratingButton from '../components/GeneratingButton';
 
-const GeneratingPage: React.FC = () => {
+
+interface GeneratingPageProps {
+  setStoryArray: React.Dispatch<React.SetStateAction<string[]>>;
+}
+const GeneratingPage: React.FC<GeneratingPageProps> = ({setStoryArray}) => {
 
 //입력값 초기화
   const { setSelectedGenre } = useGenre();
@@ -19,6 +23,11 @@ const GeneratingPage: React.FC = () => {
   //   setDescribe('');
   // }, [setSelectedPage, setSelectedGenre, setTheme, setDescribe]);
 // 
+    useEffect(() => {
+      // GeneratingPage 마운트 시 storyArray 초기화
+      localStorage.removeItem('storyArray');
+      setStoryArray([]);
+    }, []);
 
   return (
     <div className='h-screen'

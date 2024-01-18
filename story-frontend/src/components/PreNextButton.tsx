@@ -46,7 +46,7 @@ export const GoToNextPage: React.FC<GoToNextPageProps> = ({
           setShowModal(true);
         } else {
           setShowModal(false); 
-          navigate(`/generated/${page_id + 1}`);
+          navigate(`/generated/${page_id + 1}`); 
         }
     } else {
       setPastpage([...pastpage, page_id]);

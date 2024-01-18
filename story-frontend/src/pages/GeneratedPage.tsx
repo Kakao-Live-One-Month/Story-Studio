@@ -18,7 +18,6 @@ interface GeneratedPageProps {
 
 const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray, setCheckStoryCall, checkStoryCall, isVisitedPage}) => {
   const param = useParams();
-  const page_id = Number(param.page_id);
   const { isLoading, setLoading } = useLoading();
   const { selectedGenre } = useGenre();
   const { theme } = useTheme();
@@ -31,19 +30,53 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
   const [pastpage, setPastpage] = useState<number[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [capturedPageImages, setCapturedPageImages] = useState<string[]>([]);
+  const [page_id, setPageid] = useState<number>(NaN);
   
+
+
+  // contentsArray를 localStorage에 저장하는 함수
+  const saveToLocalStorage = (storyArray: string[]): void => {
+    localStorage.setItem('storyArray', JSON.stringify(storyArray));
+  };
+
+  // localStorage에서 storyArray를 로드하는 함수
+  const loadFromLocalStorage = (): string[] | null => {
+    const savedData = localStorage.getItem('storyArray');
+    return savedData ? JSON.parse(savedData) : null;
+  };
+
+    useEffect(() => {
+      // 컴포넌트가 마운트될 때 localStorage에서 데이터 로드
+      const loadedStoryArray = loadFromLocalStorage();
+      console.log("loadedStoryArray", loadedStoryArray)
+      if (loadedStoryArray) {
+        setStoryArray(loadedStoryArray);
+      }else{
+        firstApiRequest();
+        setPageid(1);
+        navigate(`/generated/1`); 
+      }
+    }, []);
+
+    // contentsArray가 변경될 때마다 localStorage에 저장
+    useEffect(() => {
+      saveToLocalStorage(storyArray);
+    }, [storyArray]);
+  
+
+
   const firstApiRequest = async () => {
     try {
       setLoading(true);
       let contentsArray = await startApiRequest(theme, selectedGenre, selectedPage, describe);
-      console.log(contentsArray);
+      // console.log(contentsArray);
 
       if (!contentsArray){
         contentsArray = [] as string[];
       };
 
       setStoryArray([...contentsArray]);
-      navigate(`/generated/1`);
+      
       setCheckStoryCall(true);
       setLoading(false);
 
@@ -78,13 +111,16 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
   }
 };
 
-///////////////////////////////////////////////////////////////////
 
-  useEffect(() => {
-  if(storyArray.length === 0){
-    firstApiRequest();
+useEffect(() => {
+  if (param.page_id) {
+    // URL의 page_id를 읽어와 상태를 설정
+    setPageid(Number(param.page_id));
+    console.log("page_id:", page_id);
+    // 여기서 필요한 상태 업데이트 로직 추가
   }
-  }, []);
+}, []); // page_id가 변경될 때마다 실행
+
 
 
   useEffect(() => {
@@ -96,16 +132,30 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
  
   useEffect(() => {
     if (!checkStoryCall && page_id%3 === 1 && !isVisitedPage[page_id]){
-      callNextSessionFunc();
+      // callNextSessionFunc();
     }
   }, [selectedOption]);
 
 
   useEffect(() => {
-    if (selectedPage == page_id){
-      callNextSessionFunc();
+    // 컴포넌트 마운트 시 localStorage에서 storyArray를 로드합니다.
+    const savedStoryArray = localStorage.getItem('storyArray');
+    if (savedStoryArray) {
+      setStoryArray(JSON.parse(savedStoryArray));
     }
-  }, [selectedOption]);
+  }, []);
+  
+  useEffect(() => {
+    // storyArray가 변경될 때마다 localStorage에 저장합니다.
+    localStorage.setItem('storyArray', JSON.stringify(storyArray));
+  }, [storyArray]);
+  
+
+  // useEffect(() => {
+  //   if (selectedPage == page_id){
+  //     callNextSessionFunc();
+  //   }
+  // }, [selectedOption]);
 
   /////////////////////////////////////////////////
 
