@@ -34,7 +34,7 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
   const callImageUrl = async (i: number) => {
     try {
       if(!isVisitedPage[page_id - 1]){
-        setLoading(true);
+        // setLoading(true);
         await delay(6000);  // 3초 지연
         setImageUrlArray(['abc', 'def', 'ghi']);
         // const newImageUrl = await imageCreateApiRequest(page_id+i);
@@ -86,7 +86,7 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
 
   useEffect(() => {
     if(imageUrlArray.length !== 0){
-    currentImage();
+    // currentImage();
     }
   },[page_id, imageUrlArray]);
 
