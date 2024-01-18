@@ -12,7 +12,7 @@ module.exports = {
         'lg-dark': '0 2px 4px -3px rgba(0, 0, 0, 0.1), 0 3px 3px -2px rgba(0, 0, 0, 0.5)'
       },
       fontFamily: {
-        'gowun-batang': ['Gowun Batang', 'serif'],
+        'gowun-batang': ['Gowun Batang', 'sans-serif'],
         'gaegu':['Gaegu', 'sans-serif'],
       },
     },
