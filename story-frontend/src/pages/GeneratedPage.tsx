@@ -78,39 +78,28 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
   }
 };
 
-///////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////
 
   useEffect(() => {
-  if(storyArray.length === 0){
+    if(storyArray.length === 0){
     firstApiRequest();
-  }
+}
   }, []);
 
 
   useEffect(() => {
     if (checkStoryCall && page_id%3 === 1){
-    // callOptions();
+    callOptions();
     }
   }, [storyArray]); 
 
  
   useEffect(() => {
-<<<<<<< HEAD
-    if (!checkStoryCall)
-    {
-=======
     if (!checkStoryCall && page_id%3 === 1 && !isVisitedPage[page_id]){
->>>>>>> c211eb0134a2f91966ed7acdf9c033e3147e05fb
       callNextSessionFunc();
     }
   }, [selectedOption]);
 
-
-  useEffect(() => {
-    if (selectedPage == page_id){
-      callNextSessionFunc();
-    }
-  }, [selectedOption]);
 
   /////////////////////////////////////////////////
 

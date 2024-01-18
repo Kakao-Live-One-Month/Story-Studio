@@ -62,10 +62,10 @@ const Page: React.FC<PageProps> = ({
   };
 
   useEffect(() => {
-   
     currentText();
-
-
+    if(page_id==1){
+      console.log(storyArray);
+    }
   }, [page_id, storyArray]);
 
 
