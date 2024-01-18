@@ -35,7 +35,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
   
   const firstApiRequest = async () => {
     try {
-      setLoading(true);
+      // setLoading(true);
       let contentsArray = await startApiRequest(theme, selectedGenre, selectedPage, describe);
       console.log(contentsArray);
 
@@ -86,7 +86,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
   useEffect(() => {
     if (!checkStoryCall)
     {
-      //callNextSessionFunc();
+      callNextSessionFunc();
     }
 
   }, [selectedOption]);
@@ -102,21 +102,27 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
   };
 
   return (
-    <div className='h-screen w-screen flex justify-center items-center bg-blue-100 px-4 py-4'
+    <div className='h-screen w-screen flex justify-center items-center px-4 py-4'
       style={{
-        backgroundImage: `url('/img/bg-book.jpg')`,
+        backgroundImage: `url('/img/bg-book2.jpg')`,
         backgroundSize: 'cover',
       }}
     >
-      <div className='justify-center mx-auto flex h-[700px] w-[1440px] flex-wrap bg-black px-4 py-4 font-gaegu'>
-        <div className='relative flex bg-white'
-          style={{
-            backgroundImage: `url('/img/paper-wall.png')`,
-            backgroundSize: 'cover',
-          }}
+      <div 
+        className='justify-center mx-auto flex h-[700px] w-[1440px] flex-wrap bg-green-100 px-4 py-4 font-gaegu'
+        style={{
+          backgroundImage: `url('/img/book-paper2.png')`,
+          backgroundSize: 'cover',
+        }}
+      >
+        <div className='relative flex'
+          // style={{
+          //   backgroundImage: `url('/img/paper-wall.png')`,
+          //   backgroundSize: 'cover',
+          // }}
         >
           <Link to="/" >
-            <div className="absolute left-2 top-2 text-bold text-4xl bg-purple-300">x</div>
+            <div className="absolute left-4 top-1 text-bold text-4xl">x</div>
           </Link>
           <GoToPreviousPage/>
           <Outlet />
@@ -141,7 +147,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
         )}
 
         {/* PDF테스트 버튼 */}
-        <div className='bg-red-300 h-4 absolute'>
+        <div className='h-4 absolute'>
           <button onClick={testhandlePDFDownload}>Convert to PDF Test</button>
         </div>
       </div>

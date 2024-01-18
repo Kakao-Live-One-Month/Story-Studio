@@ -50,11 +50,12 @@ const Page: React.FC<PageProps> = ({
 
   useEffect(() => {
     currentText();
+    console.log(storyArray);
   }, [page_id, storyArray]);
 
   return (
-    <div id="story-page" className="flex h-full w-[1200px] p-4 bg-yellow-200">
-      <div className="w-1/2 bg-red-200 p-1 flex justify-center items-center">
+    <div id="story-page" className="flex h-full w-[1200px] p-4 ">
+      <div className="w-1/2 pr-4 flex justify-center items-center">
         <Image 
           imageUrlArray={imageUrlArray} 
           setImageUrlArray={setImageUrlArray}
@@ -65,9 +66,9 @@ const Page: React.FC<PageProps> = ({
         />
       </div>
 
-      <div className="w-1/2 bg-red-100 p-12 flex items-center">
+      <div className="w-1/2 p-12 flex items-center">
         <p 
-          className='text-3xl bg-blue-200 pt-12'
+          className='text-3xl pt-12 pl-16'
           style={{ whiteSpace: 'pre-wrap' }}
         >{currentPageStory}</p>
       </div>
