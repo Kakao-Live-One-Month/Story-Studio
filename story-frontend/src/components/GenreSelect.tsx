@@ -26,9 +26,9 @@ const GenreSelect = () => {
 
   return (
     <div className="pb-8 pt-4">
-      <p className="pb-4 text-center font-gowun-batang text-xl">장르</p>
+      <p className="pb-4 text-center font-gowun-batang text-xl lg:text-4xl lg:pt-8">장르</p>
 
-      <div className="grid grid-cols-2 gap-4 px-6 md:grid-cols-5 font-gowun-batang pb-4">
+      <div className="grid grid-cols-2 gap-4 px-6 md:grid-cols-5 font-gowun-batang pb-4 lg:text-xl">
         {options.map((option, index) => {
           const isSelected = selectedOptions.includes(option);
           const colorClass = isSelected ? 

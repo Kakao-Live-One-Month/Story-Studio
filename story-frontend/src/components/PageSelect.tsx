@@ -18,7 +18,7 @@ const PageSelect = () => {
 
   return (
     <div className="flex flex-col py-10 pt-4 px-10">
-      <p className="pb-4 text-center font-gowun-batang text-xl">페이지 수</p>
+      <p className="pb-4 text-center font-gowun-batang text-xl lg:text-4xl lg:pt-8">페이지 수</p>
       <input 
         type="range" 
         min="4" 

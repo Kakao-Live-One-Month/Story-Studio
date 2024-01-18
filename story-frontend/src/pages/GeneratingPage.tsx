@@ -21,7 +21,7 @@ const GeneratingPage: React.FC = () => {
 // 
 
   return (
-    <div className='min-h-screen w-full flex justify-center items-center bg-yellow-300'
+    <div className='min-h-screen w-full flex justify-center items-center'
       style={{
         backgroundImage: `url('/img/bg-book3.png')`,
         backgroundSize: 'cover',
