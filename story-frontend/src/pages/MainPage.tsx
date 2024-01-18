@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import { GenreProvider } from '../contexts/GenreContext';
 
 const MainPage: React.FC = () => {
   return (
@@ -12,7 +11,6 @@ const MainPage: React.FC = () => {
       />
       <div className="flex items-stretch max-md:max-w-full max-md:flex-wrap">
         <div className="font-sans relative w-full">
-          <GenreProvider>
             <header className="pt-16 pb-8 text-black text-center relative h-[80vh] flex flex-col justify-center items-center">
             <div
               className="absolute top-0 left-0 w-full h-full bg-cover bg-center z-[-1]"
@@ -29,12 +27,13 @@ const MainPage: React.FC = () => {
                 <br />
                 AI와 창작의 문을 열고 새로운 이야기를 만나보세요.
               </p>
+
               <Link to="/generating">
-                
               <button className="block mx-auto mt-10 px-14 py-7 lg:px-20 lg:py-10 bg-black rounded-full text-white text-2xl lg:text-4xl cursor-pointer">  
                 바로가기
               </button>
               </Link>
+
             </header>
 
             <section className="flex flex-col lg:flex-row flexbox justify-around ">
@@ -58,8 +57,6 @@ const MainPage: React.FC = () => {
                 </div>
               </div>
             </section>
-            {/* 기타 섹션/컴포넌트는 여기에 추가합니다. */}
-          </GenreProvider>
         </div>
       </div>
     </div>

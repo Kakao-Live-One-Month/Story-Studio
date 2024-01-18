@@ -5,15 +5,12 @@ import { usePage } from './contexts/PageContext';
 import { Page } from './components';
 
 const App = () => {
-  // 라우트 설정을 배열로 정의
+
+  const { selectedPage } = usePage();
   const [storyArray, setStoryArray] = useState<string[]>([]);
   const [imageUrlArray, setImageUrlArray] = useState<string[]>([]);
-  const param = useParams();
-  const page_id = Number(param.page_id);
-  console.log(page_id);
-  const { selectedPage } = usePage();
   const [isVisitedPage, setIsVisitedPage] = useState<boolean[]>(new Array(selectedPage).fill(false));
-  const [checkStoryCall, setCheckStoryCall] = useState<boolean>(true);
+  const [checkStoryCall, setCheckStoryCall] = useState<boolean>(false);
 
   return (
     <Router>
