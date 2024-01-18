@@ -49,7 +49,7 @@ const MainPage: React.FC = () => {
               </div>
 
               <div className="flex flex-col md:flex-row lg:flex-row mx-8 my-16 px-11 py-20 rounded-[30px] min-w-[300px]" style={{ backgroundColor: '#F8EEEE' }}>
-              <img src="../../img/1.png" alt="Image" className="flex justify-center mx-auto w-[230px] h-[220px] sm:mb-10 md:mb-0" />
+              <img src="../../img/1.png" alt="Image" className="flex justify-center mx-auto w-[230px] h-[220px] mb-10 md:mb-0" />
                 <div className="flex justify-center flex-col">
                   <h2 className="text-2xl md:text-3xl lg:text-3xl font-bold pb-2 pl-0 md:pl-8 font-gowun-batang">책과 상호작용하기</h2>
                   <p className="text-1xl md:text-2xl lg:text-2xl pl-0 md:pl-8 font-gowun-batang">
