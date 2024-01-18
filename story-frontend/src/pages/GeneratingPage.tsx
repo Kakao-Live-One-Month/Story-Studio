@@ -35,7 +35,7 @@ const GeneratingPage: React.FC = () => {
         </Link>
 
         <div className="h-full py-10">
-          <p className="text-center text-4xl font-gowun-batang lg:text-8xl">나만의 동화책 만들기</p>
+          <p className="text-center text-4xl font-gowun-batang lg:text-8xl">나만의 동화책 만들기.</p>
         </div>
 
         {/* 주제 입력 영역*/}
