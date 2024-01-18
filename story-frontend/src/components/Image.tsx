@@ -2,14 +2,16 @@
 import React, { useEffect, useState } from 'react';
 import { imageCreateApiRequest } from '../api/ApiRequest';
 import { useLoading, usePage } from '../contexts';
+import Loading from './Loading';
 
 interface ImageProps {
   imageUrlArray: string[];
-  setImageUrlArray: React.Dispatch<React.SetStateAction<string[]>>;
   page_id: number; 
   isVisitedPage: boolean[];
-  setIsVisitedPage: React.Dispatch<React.SetStateAction<boolean[]>>;
   checkStoryCall: boolean;
+  setImageUrlArray: React.Dispatch<React.SetStateAction<string[]>>;
+  setIsVisitedPage: React.Dispatch<React.SetStateAction<boolean[]>>;
+
 }
 
 const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, isVisitedPage, setIsVisitedPage, checkStoryCall}) => {
@@ -17,6 +19,9 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
   const { isLoading, setLoading } = useLoading();
   const { selectedPage } = usePage();
 
+  function delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
   const visitPage = (page_id: number) => {
     setIsVisitedPage(prevIsVisitedPageArray => {
@@ -28,10 +33,14 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
 
   const callImageUrl = async (i: number) => {
     try {
+      if(!isVisitedPage[page_id - 1]){
+        setLoading(true);
+        await delay(6000);  // 3초 지연
+        setImageUrlArray(['abc', 'def', 'ghi']);
         // const newImageUrl = await imageCreateApiRequest(page_id+i);
         // setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
         console.log("imageUrl");
-      setLoading(false);
+        }
     } catch (error) {
       console.error('이미지 생성 에러:', error);
     }
@@ -39,23 +48,25 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
 
   const currentImage = async () => {
     try {
+      console.log("currentImage");
       if (!isVisitedPage[page_id - 1]) {
-        if (imageUrlArray[page_id - 1]!== undefined) {
-          setImageUrl(imageUrlArray[page_id - 1]);
-          visitPage(page_id);
-        }
-      } else {
-        const prevImageUrl = imageUrlArray[page_id - 1];
-        setImageUrl(prevImageUrl);
+        visitPage(page_id);
       }
+      setImageUrl(imageUrlArray[page_id - 1]);
+      await delay(3000);
+      setLoading(false);
     }
      catch (error) {
       console.error('이미지 생성 에러:', error);
     }
   };
 
+
+
+///////////////////////////////////////////////////////////////////
+
   useEffect(() => {
-    if (!isVisitedPage[page_id - 1]) {
+    if (checkStoryCall) {
       if(page_id % 3 == 1){
         if (selectedPage-page_id > 1){
           for(let i=0; i<3; i++){
@@ -73,15 +84,19 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
   }, [page_id, checkStoryCall]);
 
 
-    useEffect(() => {
-      currentImage();
-      visitPage(page_id);
-    },[page_id]);
+  useEffect(() => {
+    if(imageUrlArray.length !== 0){
+    currentImage();
+    }
+  },[page_id, imageUrlArray]);
 
+
+///////////////////////////////////////////////////////////////////
 
 
   return (
     <div>
+      {isLoading && (<Loading/>)}
       <img id="prevImage" src={imageUrl} alt="이미지" />
     </div>
   );

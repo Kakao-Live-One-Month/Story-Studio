@@ -1,18 +1,17 @@
 // src/GeneratingPage.tsx
-import { useNavigate, Outlet,useParams, Link } from 'react-router-dom';
+import { useNavigate, Outlet, useParams, Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useTheme, useGenre, usePage, useDescribe, useLoading } from '../contexts';
 import { startApiRequest, callNextSession, generateOption } from '../api/ApiRequest';
-import OptionModal from '../components/OptionModal';
-import Loading from '../components/Loading';
+import{ OptionModal, Loading } from '../components';
 import { GoToNextPage, GoToPreviousPage } from '../components/PreNextButton';
 import { convertToPDF } from '../utils/jsPDF';
 
 // props의 타입을 정의하는 인터페이스
 interface GeneratedPageProps {
+  setCheckStoryCall: React.Dispatch<React.SetStateAction<boolean>>;
   setStoryArray: React.Dispatch<React.SetStateAction<string[]>>;
   storyArray: string[];
-  setCheckStoryCall: React.Dispatch<React.SetStateAction<boolean>>;
   checkStoryCall: boolean;
   isVisitedPage: boolean[];
 }
@@ -39,13 +38,15 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
       let contentsArray = await startApiRequest(theme, selectedGenre, selectedPage, describe);
       console.log(contentsArray);
 
-      if (!contentsArray)
-      {
-          contentsArray = [] as string[];
+      if (!contentsArray){
+        contentsArray = [] as string[];
       };
 
       setStoryArray([...contentsArray]);
       navigate(`/generated/1`);
+      setCheckStoryCall(true);
+      setLoading(false);
+
     } catch (error) {
       console.error('Error StartApiRequest data:', error);
     }
@@ -53,9 +54,11 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
 
   const callNextSessionFunc = async () => {
     try {
+      setLoading(true);
       const nextStorys = await callNextSession(selectedOption, selectedPage, page_id);
       setStoryArray([...storyArray, ...nextStorys]);
       setCheckStoryCall(true);
+      setLoading(false);
       return nextStorys;
     } catch (error) {
       console.error("callNextSession 에러: ", error);
@@ -64,7 +67,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
 
 
   const callOptions = async () => {
-    if(!Number.isNaN(page_id) && page_id !== undefined && page_id !== selectedPage){
+    if( page_id !== selectedPage ){
     try {
       const optionResponse = await generateOption(); 
       setQnoption(optionResponse); 
@@ -75,21 +78,27 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
   }
 };
 
-  useEffect(() => {
-    callOptions();
-  }, [storyArray]); 
+///////////////////////////////////////////////////////////////////
 
   useEffect(() => {
     firstApiRequest();
   }, []);
 
-  useEffect(() => {
-    if (!checkStoryCall)
-    {
-      //callNextSessionFunc();
-    }
 
+  useEffect(() => {
+    if (checkStoryCall && page_id%3 === 1){
+    // callOptions();
+    }
+  }, [storyArray]); 
+
+ 
+  useEffect(() => {
+    if (!checkStoryCall && page_id%3 === 1){
+      callNextSessionFunc();
+    }
   }, [selectedOption]);
+
+  /////////////////////////////////////////////////
 
   // PDF 변환 테스트 함수입니다. 컴포넌트 옮길 예정 
   const testhandlePDFDownload = () => {
@@ -101,6 +110,8 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
     link.click();
   };
 
+
+  
   return (
     <div className='h-screen w-screen flex justify-center items-center bg-blue-100 px-4 py-4'
       style={{
