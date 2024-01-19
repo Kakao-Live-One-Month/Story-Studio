@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 const MainPage: React.FC = () => {
   return (
     <div 
-      className="flex min-h-screen w-full items-center justify-center p-10"
+      className="flex min-h-screen items-center justify-center p-10 min-w-full"
       style={{
         backgroundImage: `url('/img/bg-book3.png')`,
         backgroundSize: 'cover',
@@ -21,7 +21,7 @@ const MainPage: React.FC = () => {
               </p>
             </div>
             <Link to="/generating">
-              <button className="text-3xl font-semibold text-white animate-bounce h-16 w-96 rounded-full bg-[#E8BB47] shadow-lg-dark lg:text-5xl lg:w-[500px] lg:h-24">  
+              <button className="text-3xl font-semibold text-white animate-bounce h-16 w-96 rounded-full bg-[#E5A500] shadow-lg-dark hover:shadow-inner-dark lg:text-5xl lg:w-[500px] lg:h-24 cursor-pointer active:cursor-auto">  
                 동화 만들기
               </button>
             </Link>

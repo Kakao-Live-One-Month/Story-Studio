@@ -154,12 +154,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
           backgroundSize: 'cover',
         }}
       >
-        <div className='relative flex'
-          // style={{
-          //   backgroundImage: `url('/img/paper-wall.png')`,
-          //   backgroundSize: 'cover',
-          // }}
-        >
+        <div className='relative flex'>
           <Link to="/" >
             <div className="absolute left-4 top-1 text-bold text-4xl">x</div>
           </Link>

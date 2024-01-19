@@ -11,10 +11,10 @@ const DescribeInpt: React.FC = () => {
   };
 
   return (
-    <div className='flex flex-col pb-10 pt-4'>
-      <p className="pb-4 text-center font-gowun-batang text-xl lg:text-4xl lg:pt-8">줄거리</p>
+    <div className='flex flex-col pb-10 pt-1'>
+      <p className="pb-4 text-center font-gowun-batang text-xl lg:text-3xl lg:pt-8">줄거리</p>
       <textarea 
-        className="mx-auto h-32 p-2 w-4/5 text-sm font-gowun-batang lg:text-lg" 
+        className="mx-auto h-28 p-2 w-4/5 text-sm font-gowun-batang lg:text-lg shadow-inner-darksm" 
         placeholder=" 예시) 인형이 친구들과 함께 여행했으면 좋겠어!"
         onChange={handleChange}
       />

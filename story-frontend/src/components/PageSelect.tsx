@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { usePage } from '../contexts/PageContext'; // 커스텀 훅 임포트
+import '../styles/slider.css';
 
 const PageSelect = () => {
   const {selectedPage, setSelectedPage } = usePage(); // setSelectedPage 함수 사용
@@ -17,8 +18,8 @@ const PageSelect = () => {
   const totalMarks = marks.length - 1; // 총 눈금의 개수 (0부터 시작)
 
   return (
-    <div className="flex flex-col py-10 pt-4 px-10">
-      <p className="pb-4 text-center font-gowun-batang text-xl lg:text-4xl lg:pt-8">페이지 수</p>
+    <div className="flex flex-col py-10 pt-3 px-10">
+      <p className="pb-4 text-center font-gowun-batang text-xl lg:text-3xl lg:pt-8">페이지 수</p>
       <input 
         type="range" 
         min="4" 
