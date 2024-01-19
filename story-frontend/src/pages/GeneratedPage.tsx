@@ -58,23 +58,28 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
   /////////////////////////////////////////////////////////////////////////////////
   
 
+  function delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   const firstApiRequest = async () => {
     try {
       setLoading(true);
       let contentsArray = await startApiRequest(theme, selectedGenre, selectedPage, describe);
-      console.log("firstApiRequest");
+      await delay(3000);
 
       if (!contentsArray){
         contentsArray = [] as string[];
       };
 
       setStoryArray([...contentsArray]);
-      
-      setCheckStoryCall(true);
       setLoading(false);
-
+      console.log("firstArray", contentsArray);
     } catch (error) {
       console.error('Error StartApiRequest data:', error);
+    } finally {
+      setCheckStoryCall(true); // 로딩 종료
+      console.log("firstApiRequest");
     }
   };
 

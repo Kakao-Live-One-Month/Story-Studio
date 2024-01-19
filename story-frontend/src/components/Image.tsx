@@ -19,28 +19,56 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
   const [imageUrl, setImageUrl] = useState<string>('');
   const { isLoading, setLoading } = useLoading();
   const { selectedPage } = usePage();
+  const [imageCall, setImageCall] = useState<boolean>(false);
 
   function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  const visitPage = (page_id: number) => {
-    setIsVisitedPage(prevIsVisitedPageArray => {
-      const newVisitedPageArray = [...prevIsVisitedPageArray];
-      newVisitedPageArray[page_id - 1] = true;
-      return newVisitedPageArray;
-    });
+
+
+  const saveimageUrlToStorage = (imageUrlArray: string[]): void => {
+    localStorage.setItem('imageUrlArray', JSON.stringify(imageUrlArray));
   };
+
+  const loadsaveimageUrlFromLocalStorage = (): string[] | null => {
+    const savedimageUrl = localStorage.getItem('imageUrlArray');
+    return savedimageUrl ? JSON.parse(savedimageUrl) : null;
+  };
+
+  useEffect(() => {
+    // 컴포넌트가 마운트될 때 localStorage에서 데이터 로드
+    const loadedImageUrl = loadsaveimageUrlFromLocalStorage();
+    console.log("loadedImageUrl", loadedImageUrl)
+    if (loadedImageUrl) {
+      setImageUrlArray(loadedImageUrl);
+    }
+
+  }, [page_id]);
+
+  useEffect(() => {
+    saveimageUrlToStorage(imageUrlArray);
+  }, [imageUrlArray]);
+
+
+  useEffect(() => {
+    console.log("page_id:", page_id);
+    console.log("imageUrl", imageUrl);
+  }, [imageUrl]);
+
+
 
   const callImageUrl = async (i: number) => {
     try {
       if(!isVisitedPage[page_id - 1]){
-   
+
         await delay(10000);  // 3초 지연
+        // setImageUrlArray([]);
         setImageUrlArray(['abc', 'def', 'ghi', 'abc', 'def', 'ghi', 'abc', 'def', 'ghi']);
         // const newImageUrl = await imageCreateApiRequest(page_id+i);
         // setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
         console.log("imageUrl");
+        setImageCall(true);
         }
     } catch (error) {
       console.error('이미지 생성 에러:', error);
@@ -49,14 +77,20 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
 
   const currentImage = async () => {
     try {
+      if (storyArray[page_id - 1] !== undefined) {
       console.log("currentImage");
-      setImageUrl(imageUrlArray[page_id - 1]);
       await delay(3000);
-      setLoading(false);
+      setImageUrl(imageUrlArray[page_id - 1]);
+    
+    }  
+      else {
+        setImageUrl("이미지 생성중...");
+      }
     }
      catch (error) {
       console.error('이미지 생성 에러:', error);
     }
+    
   };
 
 
@@ -64,7 +98,6 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
 ///////////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    setLoading(true);
     if ( checkStoryCall && storyArray[page_id - 1] !== undefined) {
       if(page_id % 3 == 1){
         if (selectedPage-page_id > 1){
@@ -84,15 +117,28 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
 
 
   useEffect(() => {
-    if(imageUrlArray.length !== 0){
+    if(imageUrlArray.length !== 0 && imageCall){
     currentImage();
     }
-  },[page_id, imageUrlArray]);
+  },[page_id, imageUrlArray, imageCall]);
+
+
+  useEffect(() => {
+    if (checkStoryCall){
+    setLoading(true);}
+    console.log("setLoading");
+    if (imageUrl !== "이미지 생성중..." && imageUrl !== ''){
+      setLoading(false);
+      console.log("setLoadingfalse");
+    }
+  },[checkStoryCall, imageUrl]);
 
 
   useEffect(() => {
     console.log("storyArrayChange");
   },[storyArray]);
+
+
 ///////////////////////////////////////////////////////////////////
 
 

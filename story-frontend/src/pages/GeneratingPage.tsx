@@ -7,8 +7,9 @@ import GeneratingButton from '../components/GeneratingButton';
 interface GeneratingPageProps {
   setStoryArray: React.Dispatch<React.SetStateAction<string[]>>;
   setIsVisitedPage: React.Dispatch<React.SetStateAction<boolean[]>>;
+  setImageUrlArray: React.Dispatch<React.SetStateAction<string[]>>;
 }
-const GeneratingPage: React.FC<GeneratingPageProps> = ({setStoryArray, setIsVisitedPage}) => {
+const GeneratingPage: React.FC<GeneratingPageProps> = ({setStoryArray, setIsVisitedPage, setImageUrlArray}) => {
 
 //입력값 초기화
   const { setSelectedGenre } = useGenre();
@@ -17,15 +18,22 @@ const GeneratingPage: React.FC<GeneratingPageProps> = ({setStoryArray, setIsVisi
   const { setDescribe } = useDescribe();
 
   useEffect(() => {
-    // GeneratingPage 마운트 시 storyArray 초기화
+    // storyArray 초기화
     localStorage.removeItem('storyArray');
     setStoryArray([]);
   }, []);
 
   useEffect(() => {
-    // GeneratingPage 마운트 시 storyArray 초기화
+    // isVisitedPage 초기화
     localStorage.removeItem('isVisitedPage');
     setIsVisitedPage(new Array(selectedPage).fill(false));
+  }, []);
+
+
+  useEffect(() => {
+    // ImageUrlArray 초기화
+    localStorage.removeItem('ImageUrlArray');
+    setImageUrlArray([]);
   }, []);
  
 
