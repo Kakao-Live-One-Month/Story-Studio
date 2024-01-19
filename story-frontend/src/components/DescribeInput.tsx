@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDescribe } from '../contexts/DescribeContext';
-import '../styles/GenreSelect.css';
+
 
 const DescribeInpt: React.FC = () => {
   const { setDescribe } = useDescribe();
