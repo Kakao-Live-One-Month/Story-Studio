@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { usePage } from '../contexts/PageContext'; // 커스텀 훅 임포트
-import '../styles/slider.css';
 
 const PageSelect = () => {
   const {selectedPage, setSelectedPage } = usePage(); // setSelectedPage 함수 사용
