@@ -69,12 +69,12 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
       if(page_id % 3 == 1){
         if (selectedPage-page_id > 1){
           for(let i=0; i<3; i++){
-          callImageUrl(i);
+          //callImageUrl(i);
           console.log("callImageUrl3:", page_id+i);
           }
         }else{
           for(let i=0; i<selectedPage-page_id+1 ; i++){
-          callImageUrl(i);
+          //callImageUrl(i);
           console.log("callImageUrl%3", page_id+i);
           }
         } 

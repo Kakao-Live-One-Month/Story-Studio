@@ -114,14 +114,14 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
 
   useEffect(() => {
     if (checkStoryCall && page_id%3 === 1 &&!isVisitedPage[page_id-1]){
-    callOptions();
+    //callOptions();
     }
   }, [page_id]); 
 
  
   useEffect(() => {
     if (!checkStoryCall && !isVisitedPage[page_id-1]){
-      callNextSessionFunc();
+      //callNextSessionFunc();
     }
   }, [selectedOption, checkStoryCall]);
 

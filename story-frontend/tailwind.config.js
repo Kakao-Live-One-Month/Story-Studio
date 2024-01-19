@@ -15,6 +15,15 @@ module.exports = {
         'gowun-batang': ['Gowun Batang', 'sans-serif'],
         'gaegu':['Gaegu', 'sans-serif'],
       },
+      keyframes:{
+        bounce: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '70%': { transform: 'translateY(-5%)' },
+        },
+      },
+      animation: {
+        bounce: 'bounce 2s infinite',
+      },
     },
   },
   variants: {},
