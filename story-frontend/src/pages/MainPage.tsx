@@ -4,16 +4,16 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 const MainPage: React.FC = () => {
   return (
     <div 
-      className="flex min-h-screen w-full items-center justify-center bg-red-400 p-10"
+      className="flex min-h-screen w-full items-center justify-center p-10"
       style={{
         backgroundImage: `url('/img/bg-book3.png')`,
         backgroundSize: 'cover',
       }}
     >
-      <div className="flex min-h-[700px] min-w-[1440px] justify-center bg-green-200 p-10 font-gowun-batang">
-        <div className="flex-1 bg-cyan-200">
-          <div className="flex h-full w-full flex-col items-center justify-center space-y-6 bg-pink-100 p-10">
-            <div className="space-y-10 p-4 text-start">
+      <div className="flex min-h-[600px] min-w-[1440px] justify-center p-10 font-gowun-batang">
+        <div className="flex-1">
+          <div className="flex h-full w-full flex-col items-center justify-center space-y-6  p-10">
+            <div className="space-y-10 p-4 mb-8 text-start">
               <p className="text-5xl font-extrabold">상상에서 피어나는 <br />큰 꿈의 이야기.</p>
               <p className="text-2xl">
                 AI와 창작의 문을 열고<br />
@@ -30,8 +30,8 @@ const MainPage: React.FC = () => {
 
         <div className="text-sm bg-amber-900 text-amber-900">.</div>
 
-        <div className="flex flex-1 items-center justify-center bg-amber-300">
-          <div className="bg-red-100 p-10">
+        <div className="flex flex-1 items-center justify-center">
+          <div className="p-10">
             <p className="text-9xl font-bold leading-tight">
               이야기 <br />
               작업실
