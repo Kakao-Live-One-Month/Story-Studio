@@ -10,6 +10,7 @@ interface GoToNextPageProps {
   capturedPageImages: string[];
   setCapturedPageImages: React.Dispatch<React.SetStateAction<string[]>>;
   isVisitedPage: boolean[];
+  setCheckStoryCall: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const GoToNextPage: React.FC<GoToNextPageProps> = ({ 
@@ -17,7 +18,8 @@ export const GoToNextPage: React.FC<GoToNextPageProps> = ({
   showModal, 
   setCapturedPageImages, 
   capturedPageImages,
-  isVisitedPage 
+  isVisitedPage, 
+  setCheckStoryCall
 }) => {
   const { selectedPage } = usePage();
   const navigate = useNavigate();

@@ -1,11 +1,12 @@
 // src/GeneratingPage.tsx
-import { useNavigate, Outlet, useParams, Link } from 'react-router-dom';
+import { Outlet, useParams, Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useTheme, useGenre, usePage, useDescribe, useLoading } from '../contexts';
 import { startApiRequest, callNextSession, generateOption } from '../api/ApiRequest';
 import { OptionModal, Loading } from '../components';
 import { GoToNextPage, GoToPreviousPage } from '../components/PreNextButton';
 import { convertToPDF } from '../utils/jsPDF';
+import { StoryStorage, VisitedPageStorage } from '../storage';
 
 interface GeneratedPageProps {
   setCheckStoryCall: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,122 +14,103 @@ interface GeneratedPageProps {
   storyArray: string[];
   checkStoryCall: boolean;
   isVisitedPage: boolean[];
+  setIsVisitedPage: React.Dispatch<React.SetStateAction<boolean[]>>;
+  imageUrlArray: string[];
 }
 
-const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray, setCheckStoryCall, checkStoryCall, isVisitedPage}) => {
+const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray, setCheckStoryCall, checkStoryCall, isVisitedPage, setIsVisitedPage, imageUrlArray}) => {
   const param = useParams();
+  const page_id = Number(param.page_id);
   const { isLoading, setLoading } = useLoading();
   const { selectedGenre } = useGenre();
   const { theme } = useTheme();
   const { describe } = useDescribe();
   const { selectedPage } = usePage();
-  const page_id = Number(param.page_id);
-
-  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [qnOptions, setQnoption] = useState<string[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [capturedPageImages, setCapturedPageImages] = useState<string[]>([]);
 
-  /////////////////////////////////////////////////////////////////////////////////
-  const saveToLocalStorage = (storyArray: string[]): void => {
-    localStorage.setItem('storyArray', JSON.stringify(storyArray));
-  };
-
-  const loadFromLocalStorage = (): string[] | null => {
-    const savedData = localStorage.getItem('storyArray');
-    return savedData ? JSON.parse(savedData) : null;
-  };
-
-  useEffect(() => {
-    const loadedStoryArray = loadFromLocalStorage();
-    console.log("loadedStoryArray", loadedStoryArray)
-    if (loadedStoryArray) {
-      setStoryArray(loadedStoryArray);
-    }else{
-      firstApiRequest();
-      navigate(`/generated/1`); 
-    }
-  }, []);
-
-  useEffect(() => {
-    saveToLocalStorage(storyArray);
-  }, [storyArray]);
-  
-  /////////////////////////////////////////////////////////////////////////////////
-  
-
   function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
+
 
   const firstApiRequest = async () => {
     try {
       setLoading(true);
       let contentsArray = await startApiRequest(theme, selectedGenre, selectedPage, describe);
-      await delay(3000);
-
+      // await delay(3000); 
       if (!contentsArray){
         contentsArray = [] as string[];
       };
-
       setStoryArray([...contentsArray]);
       setLoading(false);
       console.log("firstArray", contentsArray);
     } catch (error) {
       console.error('Error StartApiRequest data:', error);
     } finally {
-      setCheckStoryCall(true); // 로딩 종료
+      setCheckStoryCall(true);
       console.log("firstApiRequest");
     }
   };
 
+  //이야기 생성 후 이미지 생성까지의 로딩
+  useEffect(() => { 
+    if (checkStoryCall && imageUrlArray.length %3 == 0){
+      setLoading(true);
+    }
+    if (imageUrlArray[page_id - 1] !== undefined){
+      setLoading(false);
+    }
+  },[checkStoryCall, storyArray, imageUrlArray]);
  
 
   const callNextSessionFunc = async () => {
     try {
-      setLoading(true); // 로딩 시작
+      setLoading(true);
       let nextStorys = await callNextSession(selectedOption, selectedPage, page_id);
       if (!nextStorys) {
         nextStorys = [] as string[];
       };
       setStoryArray([...storyArray, ...nextStorys]);
       if (nextStorys.length !== 0) {
+        setLoading(false); // 로딩 종료
         setCheckStoryCall(true);
+        console.log("callNextSession:", nextStorys);
       }
     } catch (error) {
       console.error("callNextSession 에러: ", error);
-    } finally {
-      setLoading(false); // 로딩 종료
-    }
+    } 
   };
   
 
   const callOptions = async () => {
     if( page_id !== selectedPage ){
-    try {
-      const optionResponse = await generateOption(); 
-      setQnoption(optionResponse); 
-    } catch (error) {
-      console.error('generateOption 호출 중 오류 발생:', error);
-    } finally {
-      setCheckStoryCall(false);
+      try {
+        console.log("callOptions");
+        const optionResponse = await generateOption(); 
+        setQnoption(optionResponse); 
+        setCheckStoryCall(false);
+      } catch (error) {
+        console.error('generateOption 호출 중 오류 발생:', error);
+      } 
     }
-  }
-};
+  };
 
   useEffect(() => {
-    if (checkStoryCall && page_id%3 === 1 &&!isVisitedPage[page_id-1]){
+    if (checkStoryCall && page_id%3 === 1 &&!isVisitedPage[page_id]){
     callOptions();
     }
-  }, [page_id]); 
+  }, [page_id, checkStoryCall]); 
 
  
   useEffect(() => {
-    if (!checkStoryCall && !isVisitedPage[page_id-1]){
+    if (!isVisitedPage[page_id-1] && page_id !== 1 && storyArray.length == page_id-1){
       callNextSessionFunc();
+      console.log(selectedOption);
     }
-  }, [selectedOption, checkStoryCall]);
+  }, [selectedOption, page_id]);
 
 
 
@@ -176,6 +158,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
             capturedPageImages={capturedPageImages}
             setCapturedPageImages={setCapturedPageImages}
             isVisitedPage={isVisitedPage}
+            setCheckStoryCall={setCheckStoryCall}
           />
           <div className="absolute bottom-5 right-5 text-2xl">{page_id}/{selectedPage}</div>
         </div>
@@ -187,6 +170,19 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
         {showModal && (
           <OptionModal setShowModal={setShowModal} page_id={page_id} setSelectedOption={setSelectedOption} setCheckStoryCall={setCheckStoryCall} qnOptions={qnOptions} />
         )}
+
+        <VisitedPageStorage
+          isVisitedPage={isVisitedPage}
+          setIsVisitedPage={setIsVisitedPage}
+          imageUrlArray={imageUrlArray}
+          page_id={page_id}
+        />
+
+        <StoryStorage
+          setStoryArray={setStoryArray}
+          storyArray={storyArray}
+          firstApiRequest={firstApiRequest}
+        />
 
         {/* PDF테스트 버튼 */}
         <div className='h-4 absolute'>

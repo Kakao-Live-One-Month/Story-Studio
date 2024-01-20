@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, useParams} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import { MainPage, GeneratingPage, GeneratedPage, EndingPage }from './pages'; 
 import { usePage } from './contexts/PageContext';
 import { Page } from './components';
@@ -17,16 +17,25 @@ const App = () => {
       <Routes>
       <Route path="/" element={<MainPage />}/> 
       <Route path="/generating" element={<GeneratingPage setStoryArray={setStoryArray} setIsVisitedPage={setIsVisitedPage} setImageUrlArray={setImageUrlArray}/>}/>
-      <Route path="generated" element={<GeneratedPage setStoryArray={setStoryArray} storyArray={storyArray} setCheckStoryCall={setCheckStoryCall} checkStoryCall={checkStoryCall} isVisitedPage={isVisitedPage} />}>
+      <Route path="generated" 
+             element={
+               <GeneratedPage 
+                  setStoryArray={setStoryArray} 
+                  storyArray={storyArray} 
+                  setCheckStoryCall={setCheckStoryCall} 
+                  checkStoryCall={checkStoryCall} 
+                  isVisitedPage={isVisitedPage}
+                  setIsVisitedPage={setIsVisitedPage}
+                  imageUrlArray={imageUrlArray}
+                />}>
+                  
         <Route 
           path=":page_id" 
           element={
             <Page 
-              setStoryArray={setStoryArray} 
-              storyArray={storyArray} 
-              setImageUrlArray={setImageUrlArray}
+              storyArray={storyArray}
+              setImageUrlArray={setImageUrlArray} 
               imageUrlArray={imageUrlArray}
-              setIsVisitedPage={setIsVisitedPage}
               isVisitedPage={isVisitedPage}
               checkStoryCall={checkStoryCall}
             />

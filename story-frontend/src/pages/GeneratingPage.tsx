@@ -32,7 +32,7 @@ const GeneratingPage: React.FC<GeneratingPageProps> = ({setStoryArray, setIsVisi
 
   useEffect(() => {
     // ImageUrlArray 초기화
-    localStorage.removeItem('ImageUrlArray');
+    localStorage.removeItem('imageUrlArray');
     setImageUrlArray([]);
   }, []);
  
