@@ -33,7 +33,7 @@ const EndingPage: React.FC<EndingPageProps> = ({
       <p className="text-5xl md:text-6xl text-[#56044A] mb-24 font-bold font-gowun-batang">동화책이 완성됐어요!</p>
       
       <div className="flex gap-5 md:gap-8 flex-col md:flex-row">
-        <Link to="/">
+        <Link to="/generated/1">
         <button
           className="text-center text-[#D86FC7] text-2xl w-[280px] h-[80px] rounded-[70px] font-bold font-gowun-batang"
           onClick={() => {}}
@@ -49,7 +49,7 @@ const EndingPage: React.FC<EndingPageProps> = ({
           onMouseOut={(e) => {
             e.currentTarget.style.backgroundImage = `url('../../img/button1.png')`;
           }}
-        >PDF 다운받기</button>
+        >이야기 다시보기</button>
         </Link>
 
         <Link to="/generated/1">

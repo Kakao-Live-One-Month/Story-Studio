@@ -1,6 +1,6 @@
 // src/components/ThemeInput.tsx
 import React, { useEffect, useState } from 'react';
-import { generateOption } from '../api/ApiRequest';
+import {generateOption } from '../api/ApiRequest';
 import { usePage } from '../contexts';
 import { useNavigate} from 'react-router-dom';
 
