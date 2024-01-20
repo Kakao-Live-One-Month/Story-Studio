@@ -19,35 +19,35 @@ const GenreSelect = () => {
       if (prevSelectedOptions.length < 3) {
         return [...prevSelectedOptions, option];
       }
-      alert('최대 3개까지만 선택 가능해요!');
+      alert('최대 3개까지만 선택 가능합니다.');
       return prevSelectedOptions;
     });
   };
 
   return (
     <div className="pb-8 pt-4">
-      <p className="pb-4 text-center font-gowun-batang text-xl lg:text-3xl lg:pt-8">장르</p>
+      <p className="pb-4 text-center font-gowun-batang text-xl lg:text-4xl lg:pt-8">장르</p>
 
-      <div className="grid grid-cols-2 gap-4 px-6 text-lg text-white md:grid-cols-5 font-gowun-batang pb-4 lg:text-2xl">
+      <div className="grid grid-cols-2 gap-4 px-6 md:grid-cols-5 font-gowun-batang pb-4 lg:text-xl">
         {options.map((option, index) => {
           const isSelected = selectedOptions.includes(option);
           const colorClass = isSelected ? 
-                            (index % 5 === 0 ? 'bg-[#E98C00]' :
-                              index % 5 === 1 ? 'bg-[#E5A500]' :
-                              index % 5 === 2 ? 'bg-[#F3CE0C]' :
-                              index % 5 === 3 ? 'bg-[#E5A500]' :
-                                                'bg-[#E98C00]') :
-                            (index % 5 === 0 ? 'bg-[#E98C00] shadow-lg-dark' :
-                              index % 5 === 1 ? 'bg-[#E5A500] shadow-lg-dark' :
-                              index % 5 === 2 ? 'bg-[#F3CE0C] shadow-lg-dark' :
-                              index % 5 === 3 ? 'bg-[#E5A500] shadow-lg-dark' :
-                                                'bg-[#E98C00] shadow-lg-dark');
-          const shadowClass = isSelected ? 'shadow-inner-dark' : 'hover:shadow-inner-dark';
+                            (index % 5 === 0 ? 'bg-indigo-400' :
+                              index % 5 === 1 ? 'bg-violet-400' :
+                              index % 5 === 2 ? 'bg-purple-400' :
+                              index % 5 === 3 ? 'bg-fuchsia-300' :
+                                                'bg-pink-300') :
+                            (index % 5 === 0 ? 'bg-indigo-300' :
+                              index % 5 === 1 ? 'bg-violet-300' :
+                              index % 5 === 2 ? 'bg-purple-300' :
+                              index % 5 === 3 ? 'bg-fuchsia-200' :
+                                                'bg-pink-200');
+          const shadowClass = isSelected ? 'shadow-inner-dark' : 'hover:shadow-lg-dark';
           return (
             <button
               key={index}
               onClick={() => toggleOption(option)}
-              className={`h-9 w-full rounded-full cursor-pointer active:cursor-auto lg:h-12 ${colorClass} ${shadowClass}`}
+              className={`h-9 w-full rounded-full ${colorClass} ${shadowClass}`}
             >
               {option}
             </button>

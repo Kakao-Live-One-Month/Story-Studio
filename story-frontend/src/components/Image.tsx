@@ -1,8 +1,8 @@
 // src/components/ThemeInput.tsx
 import React, { useEffect, useState } from 'react';
+import {usePage } from '../contexts';
+import { ImageStorage } from '../storage';
 import { imageCreateApiRequest } from '../api/ApiRequest';
-import { useLoading, usePage } from '../contexts';
-import Loading from './Loading';
 
 interface ImageProps {
   imageUrlArray: string[];
@@ -10,95 +10,87 @@ interface ImageProps {
   isVisitedPage: boolean[];
   checkStoryCall: boolean;
   setImageUrlArray: React.Dispatch<React.SetStateAction<string[]>>;
-  setIsVisitedPage: React.Dispatch<React.SetStateAction<boolean[]>>;
   storyArray: string[];
-
 }
 
-const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, isVisitedPage, setIsVisitedPage, checkStoryCall, storyArray}) => {
+const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, isVisitedPage, checkStoryCall, storyArray}) => {
   const [imageUrl, setImageUrl] = useState<string>('');
-  const { isLoading, setLoading } = useLoading();
   const { selectedPage } = usePage();
 
   function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  const visitPage = (page_id: number) => {
-    setIsVisitedPage(prevIsVisitedPageArray => {
-      const newVisitedPageArray = [...prevIsVisitedPageArray];
-      newVisitedPageArray[page_id - 1] = true;
-      return newVisitedPageArray;
-    });
-  };
 
+//이야기 생성 후 이미지 3개 직렬 요청
   const callImageUrl = async (i: number) => {
     try {
       if(!isVisitedPage[page_id - 1]){
-   
-        await delay(10000);  // 3초 지연
-        setImageUrlArray(['abc', 'def', 'ghi', 'abc', 'def', 'ghi', 'abc', 'def', 'ghi']);
-        // const newImageUrl = await imageCreateApiRequest(page_id+i);
+        // await delay(10000);  // 3초 지연
+        // const newImageUrl = `image${i+1}` as string;
         // setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
-        console.log("imageUrl");
+        const newImageUrl = await imageCreateApiRequest(page_id+i);
+        setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
+        console.log("imageUrlCall:", i+newImageUrl);
         }
     } catch (error) {
       console.error('이미지 생성 에러:', error);
     }
   };
 
+  useEffect(() => {
+    if(checkStoryCall){
+     if (imageUrlArray[page_id - 1] == undefined) {
+      if(page_id % 3 == 1){
+        if (selectedPage-page_id > 1){
+          for(let i=0; i<3; i++){
+          callImageUrl(i);
+          console.log("callImageUrl3:", page_id+i);
+          }
+        }else{
+          for(let i=0; i<selectedPage-page_id+1 ; i++){
+          callImageUrl(i);
+          console.log("callImageUrl%3", page_id+i);
+          }
+        }
+      }
+     }
+    }
+  }, [page_id, checkStoryCall]);
+
+
+
+//현재페이지 이미지 셋
   const currentImage = async () => {
     try {
-      console.log("currentImage");
+      if (imageUrlArray[page_id - 1] !== '') {
       setImageUrl(imageUrlArray[page_id - 1]);
-      await delay(3000);
-      setLoading(false);
+      console.log("currentImage");
+      }  
+      else {
+        setImageUrl("이미지 생성중...");
+      }
     }
      catch (error) {
       console.error('이미지 생성 에러:', error);
     }
   };
 
-
-
-///////////////////////////////////////////////////////////////////
-
   useEffect(() => {
-    setLoading(true);
-    if ( checkStoryCall && storyArray[page_id - 1] !== undefined) {
-      if(page_id % 3 == 1){
-        if (selectedPage-page_id > 1){
-          for(let i=0; i<3; i++){
-          //callImageUrl(i);
-          console.log("callImageUrl3:", page_id+i);
-          }
-        }else{
-          for(let i=0; i<selectedPage-page_id+1 ; i++){
-          //callImageUrl(i);
-          console.log("callImageUrl%3", page_id+i);
-          }
-        } 
-      }
-     }
-  }, [page_id]);
-
-
-  useEffect(() => {
-    if(imageUrlArray.length !== 0){
-    currentImage();
+    if(imageUrlArray[page_id - 1] !== undefined ){
+      currentImage();
     }
-  },[page_id, imageUrlArray]);
+  },[page_id, imageUrlArray, imageUrl]);
 
-
-  useEffect(() => {
-    console.log("storyArrayChange");
-  },[storyArray]);
-///////////////////////////////////////////////////////////////////
 
 
   return (
     <div>
-      {isLoading && (<Loading/>)}
+      <ImageStorage
+        imageUrlArray={imageUrlArray}
+        setImageUrlArray={setImageUrlArray}
+        page_id={page_id}
+      />
       <img id="prevImage" src={imageUrl} alt="이미지" />
     </div>
   );
