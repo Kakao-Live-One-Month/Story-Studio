@@ -26,11 +26,11 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
   const callImageUrl = async (i: number) => {
     try {
       if(!isVisitedPage[page_id - 1]){
-        // await delay(10000);  // 3초 지연
-        // const newImageUrl = `image${i+1}` as string;
-        // setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
-        const newImageUrl = await imageCreateApiRequest(page_id+i);
+        await delay(10000);  // 3초 지연
+        const newImageUrl = `image${i+1}` as string;
         setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
+        // const newImageUrl = await imageCreateApiRequest(page_id+i);
+        // setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
         console.log("imageUrlCall:", i+newImageUrl);
         }
     } catch (error) {
@@ -83,14 +83,8 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
   },[page_id, imageUrlArray, imageUrl]);
 
 
-
   return (
     <div>
-      <ImageStorage
-        imageUrlArray={imageUrlArray}
-        setImageUrlArray={setImageUrlArray}
-        page_id={page_id}
-      />
       <img id="prevImage" src={imageUrl} alt="이미지" />
     </div>
   );

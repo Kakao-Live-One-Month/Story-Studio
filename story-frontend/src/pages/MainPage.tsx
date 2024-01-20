@@ -3,61 +3,44 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 const MainPage: React.FC = () => {
   return (
-    <div className="flex flex-col justify-center items-stretch">
-      {/* 상단 경계선 및 배경 설정 */}
-      <div
-        className="absolute top-0 left-0 w-full h-full bg-cover bg-center z-[-2]"
-        /* style={{ backgroundImage: 'url("../../img/bg.png")'}} */
-      />
-      <div className="flex items-stretch max-md:max-w-full max-md:flex-wrap">
-        <div className="font-sans relative w-full">
-            <header className="pt-16 pb-8 text-black text-center relative h-[80vh] flex flex-col justify-center items-center">
-            <div
-              className="absolute top-0 left-0 w-full h-full bg-cover bg-center z-[-1]"
-              style={{
-                backgroundImage: 'url("../../img/headerbg.png")',
-              }}
-            />
-            <Link to="/" className="absolute top-0 left-0 p-5">
-                <img src="../../img/logo.png" alt="Image" className="cursor-pointer w-20"/>
-              </Link>
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold">이야기 작업실</h1>
-              <p className="text-xl text-gray-700 my-4 lg:my-8 lg:text-2xl">
-                작은 작업실에서 펼쳐내는 큰 꿈의 이야기
-                <br />
-                AI와 창작의 문을 열고 새로운 이야기를 만나보세요.
+    <div 
+      className="flex min-h-screen items-center justify-center p-10 min-w-full"
+      style={{
+        backgroundImage: `url('/img/bg-book3.png')`,
+        backgroundSize: 'cover',
+      }}
+    >
+      <div className="flex min-h-[600px] min-w-[1440px] justify-center p-10 font-gowun-batang lg:w-[2000px]">
+        <div className="flex-1">
+          <div className="flex h-full w-full flex-col items-center justify-center space-y-6 p-10">
+            <div className="space-y-10 p-4 mb-8 text-start lg:mb-12">
+              <p className="text-5xl font-extrabold lg:text-7xl lg:leading-tight">상상에서 피어나는 <br />큰 꿈의 이야기.</p>
+              <p className="text-2xl lg:text-4xl lg:leading-tight">
+                AI와 창작의 문을 열고<br />
+                새로운 이야기를 만들어 보세요.
               </p>
-
-              <Link to="/generating">
-              <button className="block mx-auto mt-10 px-14 py-7 lg:px-20 lg:py-10 bg-black rounded-full text-white text-2xl lg:text-4xl cursor-pointer">  
-                바로가기
+            </div>
+            <Link to="/generating">
+              <button className="text-3xl font-semibold text-white animate-bounce h-16 w-96 rounded-full bg-[#E5A500] shadow-lg-dark hover:shadow-inner-dark lg:text-5xl lg:w-[500px] lg:h-24 cursor-pointer active:cursor-auto">  
+                동화 만들기
               </button>
-              </Link>
-
-            </header>
-
-            <section className="flex flex-col lg:flex-row flexbox justify-around ">
-              <div className="flex flex-col md:flex-row lg:flex-row mx-8 my-16 px-11 py-20 rounded-[30px] min-w-[300px]" style={{ backgroundColor: '#DCDBEB'}} >
-                <div className="flex justify-center flex-col pr-8">
-                  <h2 className="text-2xl md:text-3xl lg:text-3xl font-bold pb-2">AI를 활용한 맞춤형 이야기</h2>
-                  <p className="text-1xl md:text-2xl lg:text-2xl">
-                    AI가 사용자의 입력에 따른 맞춤형 이야기를 생성합니다. 주제와 컨셉을 입력하여 인공지능과 함께 스토리를 만들어 나갑니다.
-                  </p>
-                </div>
-                <img src="../../img/2.png" alt="Image" className="flex justify-center mx-auto w-[230px] h-[220px] mt-10 md:mt-0" />
-              </div>
-
-              <div className="flex flex-col md:flex-row lg:flex-row mx-8 my-16 px-11 py-20 rounded-[30px] min-w-[300px]" style={{ backgroundColor: '#F8EEEE' }}>
-              <img src="../../img/1.png" alt="Image" className="flex justify-center mx-auto w-[230px] h-[220px] sm:mb-10 md:mb-0" />
-                <div className="flex justify-center flex-col">
-                  <h2 className="text-2xl md:text-3xl lg:text-3xl font-bold pb-2 pl-0 md:pl-8">책과 상호작용하기</h2>
-                  <p className="text-1xl md:text-2xl lg:text-2xl pl-0 md:pl-8">
-                    사용자는 이야기의 전개에 직접 개입하여 새로운 흐름을 만듭니다. 이야기 속의 다양한 선택지를 골라 자신만의 동화 세계를 만들어 보세요.
-                  </p>
-                </div>
-              </div>
-            </section>
+            </Link>
+          </div>
         </div>
+
+        <div className="text-sm bg-amber-900 text-amber-900">.</div>
+
+        <div className="flex flex-1 items-center justify-center">
+          <div className="p-10">
+            <p className="text-9xl font-bold leading-tight lg:text-[200px]">
+              이야기 <br />
+              작업실
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="bottom-20 absolute font-bold text-xl lg:text-3xl">
+        Story Workshop.
       </div>
     </div>
   );
