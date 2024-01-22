@@ -32,16 +32,31 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
     });
   };
 
+  let id: number = 0;
   const callImageUrl = async (i: number) => {
     try {
       if(!isVisitedPage[page_id - 1]){
    
         await delay(10000);  // 3초 지연
-        setImageUrlArray(['abc', 'def', 'ghi', 'abc', 'def', 'ghi', 'abc', 'def', 'ghi']);
+        // setImageUrlArray(['abc', 'def', 'ghi', 'abc', 'def', 'ghi', 'abc', 'def', 'ghi']);
         // const newImageUrl = await imageCreateApiRequest(page_id+i);
         // setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
         console.log("imageUrl");
-        }
+
+      }
+      id++;
+      console.log("id: ", id);
+      // const url = newImageUrl;
+      // fetch('http://localhost:8080/api/convert', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     id,
+      //     url,
+      //   })
+      // });
     } catch (error) {
       console.error('이미지 생성 에러:', error);
     }
@@ -50,7 +65,12 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
   const currentImage = async () => {
     try {
       console.log("currentImage");
-      setImageUrl(imageUrlArray[page_id - 1]);
+      // setImageUrl(imageUrlArray[page_id - 1]);
+      const serverImageUrl = `http://localhost:8080/images/image-${page_id}.png`;
+      console.log("currentImage 호출", serverImageUrl);
+      setImageUrl(serverImageUrl);
+
+
       await delay(3000);
       setLoading(false);
     }
