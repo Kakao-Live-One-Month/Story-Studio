@@ -31,7 +31,7 @@ const EndingPage: React.FC<EndingPageProps> = ({
         backgroundSize: 'cover',
       }}
     > 
-      <div className='justify-between mx-auto flex flex-row h-[700px] w-[1440px] flex-wrap px-4 py-4 font-gaegu'
+      <div className='justify-between mx-auto flex flex-wrap flex-row h-[700px] w-[1440px] px-4 py-4 font-gaegu'
         style={{
           backgroundImage: `url('/img/book-paper2.png')`,
           backgroundSize: 'cover',
@@ -47,7 +47,7 @@ const EndingPage: React.FC<EndingPageProps> = ({
         </div>
 
         <div className="flex flex-col justify-center items-center w-1/2 h-full">
-          <h1 className="text-center text-4xl md:text-5xl text-black mb-12">동화책이 완성됐어요!</h1>
+          <h1 className="text-center text-4xl md:text-5xl text-black mb-16">동화책이 완성됐어요!</h1>
           
           <div className="grid items-end space-y-6 w-1/2 lg:w-[240px]">
             <Link to="/generated/1">
