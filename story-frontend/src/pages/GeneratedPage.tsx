@@ -16,9 +16,21 @@ interface GeneratedPageProps {
   isVisitedPage: boolean[];
   setIsVisitedPage: React.Dispatch<React.SetStateAction<boolean[]>>;
   imageUrlArray: string[];
+  setCapturedPageImages: React.Dispatch<React.SetStateAction<string[]>>;
+  capturedPageImages: string[];
 }
 
-const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray, setCheckStoryCall, checkStoryCall, isVisitedPage, setIsVisitedPage, imageUrlArray}) => {
+const GeneratedPage: React.FC<GeneratedPageProps> = ({
+  setStoryArray, 
+  storyArray, 
+  setCheckStoryCall, 
+  checkStoryCall, 
+  isVisitedPage, 
+  setIsVisitedPage, 
+  imageUrlArray, 
+  setCapturedPageImages,
+  capturedPageImages
+}) => {
   const param = useParams();
   const page_id = Number(param.page_id);
   const { isLoading, setLoading } = useLoading();
@@ -29,7 +41,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
   const [showModal, setShowModal] = useState(false);
   const [qnOptions, setQnoption] = useState<string[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>("");
-  const [capturedPageImages, setCapturedPageImages] = useState<string[]>([]);
+  
 
   function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -114,21 +126,11 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
 
 
 
-  // PDF 변환 테스트 함수입니다. 컴포넌트 옮길 예정 
-  const testhandlePDFDownload = () => {
-    const pdfBlob = convertToPDF(capturedPageImages);
-    const pdfUrl = URL.createObjectURL(pdfBlob);
-    const link = document.createElement('a');
-    link.href = pdfUrl;
-    link.download = 'document.pdf';
-    link.click();
-  };
-
 
 
 
   return (
-    <div className='h-screen w-screen flex justify-center items-center px-4 py-4'
+    <div id="generated" className='h-screen w-screen flex justify-center items-center px-4 py-4'
       style={{
         backgroundImage: `url('/img/bg-book2.jpg')`,
         backgroundSize: 'cover',
@@ -178,11 +180,6 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
           storyArray={storyArray}
           firstApiRequest={firstApiRequest}
         />
-
-        {/* PDF테스트 버튼 */}
-        <div className='h-4 absolute'>
-          <button onClick={testhandlePDFDownload}>Convert to PDF Test</button>
-        </div>
       </div>
     </div>
   );

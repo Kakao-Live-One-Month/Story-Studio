@@ -4,14 +4,15 @@ import React, { useState, useEffect } from 'react';
 import Image from '../components/Image';
 import { error } from 'console';
 import { Link } from 'react-router-dom';
+import { convertToPDF } from '../utils/jsPDF';
 
 // props의 타입을 정의하는 인터페이스
 interface EndingPageProps {
-
+  capturedPageImages: string[];
 }
 
 const EndingPage: React.FC<EndingPageProps> = ({
-
+  capturedPageImages
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [showLoading, setShowLoaging] = useState(false);
@@ -21,11 +22,26 @@ const EndingPage: React.FC<EndingPageProps> = ({
   const navigate = useNavigate();
   // console.log(page_id);  
 
+  // PDF 변환 함수입니다. 
+  const testhandlePDFDownload = () => {
+    const pdfBlob = convertToPDF(capturedPageImages);
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.download = 'document.pdf';
+    link.click();
+  };
+
 
 
 
   return (
     <div className="flex flex-col items-center text-center justify-center h-screen bg-cover bg-center" style={{ backgroundImage: `url('../../img/endingbg.png')` }}>
+      {/* PDF테스트 버튼 */}
+      <div className='h-4 absolute'>
+          <button onClick={testhandlePDFDownload}>Convert to PDF Test</button>
+      </div>
+
       <Link to="/" className="absolute top-0 left-0 p-5">
       <img src="../../img/logo.png" alt="Image" className="cursor-pointer w-20"/>
       </Link>

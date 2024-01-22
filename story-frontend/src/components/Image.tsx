@@ -32,19 +32,19 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
         setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
         console.log("imageUrlCall:", i+newImageUrl);
 
-        id++;
-        console.log("id: ", id);
-        const url = newImageUrl;
-        fetch('http://localhost:8080/api/convert', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            id,
-            url,
-          })
-        });
+          id++;
+          // console.log("id: ", id);
+          // const url = newImageUrl;
+          // fetch('http://localhost:8080/api/convert', {
+          //   method: 'POST',
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //   },
+          //   body: JSON.stringify({
+          //     id,
+          //     url,
+          //   })
+          // });
         }
 
     } catch (error) {

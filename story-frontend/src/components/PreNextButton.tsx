@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { usePage } from '../contexts';
-import { capturePage } from '../utils/capturePage';
+import { capturePageToImage } from '../utils/capturePage';
 
 
 interface GoToNextPageProps {
@@ -29,7 +29,7 @@ export const GoToNextPage: React.FC<GoToNextPageProps> = ({
 
   const goToNextPage = async () => {
     if (!isVisitedPage[page_id] && !allVisitedPage) {
-      const caputuredPageImage: string = await capturePage();
+      const caputuredPageImage: string = await capturePageToImage();
       setCapturedPageImages([...capturedPageImages, caputuredPageImage]);
       
       if (page_id === selectedPage) {
