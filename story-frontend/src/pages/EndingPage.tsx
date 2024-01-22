@@ -36,75 +36,45 @@ const EndingPage: React.FC<EndingPageProps> = ({
 
 
   return (
-    <div className="flex flex-col items-center text-center justify-center h-screen bg-cover bg-center" style={{ backgroundImage: `url('../../img/endingbg.png')` }}>
-      {/* PDF테스트 버튼 */}
-      <div className='h-4 absolute'>
-          <button onClick={testhandlePDFDownload}>Convert to PDF Test</button>
-      </div>
+          <div className="flex justify-center w-3/4 overflow-hidden">
+          <img src="https://picsum.photos/500/600" alt=""/>
+          </div>
+        </div>
 
-      <Link to="/" className="absolute top-0 left-0 p-5">
-      <img src="../../img/logo.png" alt="Image" className="cursor-pointer w-20"/>
-      </Link>
+        <div className="flex flex-col justify-center items-center w-1/2 h-full">
+          <h1 className="text-center text-4xl md:text-5xl text-black mb-16">동화책이 완성됐어요!</h1>
+          
+          <div className="grid items-end space-y-6 w-1/2 lg:w-[240px]">
+            <Link to="/generated/1">
+              <button
+                className="text-center text-white text-2xl md:text-3xl w-full h-16 px-5 rounded-lg bg-[#E5A500]"
+                onClick={() => {}}
+              >다시 보기</button>
+              </Link>
 
-      <p className="text-5xl md:text-6xl text-[#56044A] mb-24 font-bold font-gowun-batang">동화책이 완성됐어요!</p>
-      
-      <div className="flex gap-5 md:gap-8 flex-col md:flex-row">
-        <Link to="/generated/1">
-        <button
-          className="text-center text-[#D86FC7] text-2xl w-[280px] h-[80px] rounded-[70px] font-bold font-gowun-batang"
-          onClick={() => {}}
-          style={{
-            backgroundImage: `url('../../img/button1.png')`,
-            backgroundSize: '100% 100%',
-            backgroundPosition: 'center',
-            transition: 'background-image 0.3s',
-          }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.backgroundImage = `url('../../img/selectbutton1.png')`;
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.backgroundImage = `url('../../img/button1.png')`;
-          }}
-        >이야기 다시보기</button>
-        </Link>
+              <Link to="/">
+              <button
+                className="text-center text-white text-2xl md:text-3xl w-full h-16 px-5 rounded-lg bg-[#E5A500]"
+                onClick={() => {}}
+              >PDF로 저장</button>
+              </Link>
 
-        <Link to="/generated/1">
-        <button className="text-center text-white text-2xl w-[280px] h-[80px] rounded-[70px] font-bold font-gowun-batang"
-          onClick={() => {}}
-          style={{
-            backgroundImage: `url('../../img/button2.png')`,
-            backgroundSize: '100% 100%',
-            backgroundPosition: 'center',
-            transition: 'background-image 0.3s',
-          }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.backgroundImage = `url('../../img/selectbutton2.png')`;
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.backgroundImage = `url('../../img/button2.png')`;
-          }}
-          >이야기 다시보기</button>
-        </Link>
+              <Link to="/generating/">
+              <button
+                className="text-center text-white text-2xl md:text-3xl w-full h-16 px-5 rounded-lg bg-[#E5A500]"
+                onClick={() => {}}
+                >새로 만들기</button>
+              </Link>
 
-        <Link to="/">
-          <button
-          className="text-center text-[#D86FC7] text-2xl w-[280px] h-[80px] rounded-[70px] font-bold font-gowun-batang"
-          onClick={() => {}}
-          style={{
-            backgroundImage: `url('../../img/button1.png')`,
-            backgroundSize: '100% 100%',
-            backgroundPosition: 'center',
-            transition: 'background-image 0.3s',
-          }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.backgroundImage = `url('../../img/selectbutton1.png')`;
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.backgroundImage = `url('../../img/button1.png')`;
-          }}
-          >홈으로 가기</button>
-        </Link>
-      </div>
+              <Link to="/">
+                <button
+                className="text-center text-white text-2xl md:text-3xl w-full h-16 px-5 rounded-lg bg-[#736F62]"
+                onClick={() => {}}
+                >홈으로 가기</button>
+              </Link>
+          </div>
+        </div>
+     </div>
     </div>
   );
 }; 
