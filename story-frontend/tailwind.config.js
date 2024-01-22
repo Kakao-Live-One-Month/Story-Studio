@@ -4,7 +4,6 @@ module.exports = {
   theme: {
     extend: {
       screens: {
-        'lg': '2000px',
         // => @media (min-width: 992px) { ... }
       },
       boxShadow: {
