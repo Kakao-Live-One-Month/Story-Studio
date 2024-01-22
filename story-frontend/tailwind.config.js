@@ -3,21 +3,27 @@ module.exports = {
   content: ["./src/**/*.{html,js,ts,tsx}",],
   theme: {
     extend: {
-      // screens: {
-      //   'sm': '10px',   // 작은 화면 크기
-      //   'md': '768px',   // 중간 화면 크기
-      //   'lg': '1280px',  // 큰 화면 크기
-      //   'xl': '1360px',  // 매우 큰 화면 크기
-      //   '2xl': '1536px', // 특히 큰 화면 크기
-      //   '3xl': '1920px', //아주 큰 화면 크기
-      // },
+      screens: {
+        'lg': '2000px',
+        // => @media (min-width: 992px) { ... }
+      },
       boxShadow: {
         'inner-dark': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.6)',
-        'lg-dark': '0 2px 4px -3px rgba(0, 0, 0, 0.1), 0 3px 3px -2px rgba(0, 0, 0, 0.5)'
+        'inner-darksm': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.2)',
+        'lg-dark': '0 2px 4px -3px rgba(0, 0, 0, 0.1), 0 3px 3px -2px rgba(0, 0, 0, 0.5)',
       },
       fontFamily: {
-        'gowun-batang': ['Gowun Batang', 'serif'],
+        'gowun-batang': ['Gowun Batang', 'sans-serif'],
         'gaegu':['Gaegu', 'sans-serif'],
+      },
+      keyframes:{
+        bounce: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '70%': { transform: 'translateY(-5%)' },
+        },
+      },
+      animation: {
+        bounce: 'bounce 2s infinite',
       },
     },
   },

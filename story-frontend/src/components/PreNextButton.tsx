@@ -6,22 +6,20 @@ import { capturePage } from '../utils/capturePage';
 
 interface GoToNextPageProps {
   showModal: boolean;
-  setPastpage: React.Dispatch<React.SetStateAction<number[]>>;
-  pastpage: number[];
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   capturedPageImages: string[];
   setCapturedPageImages: React.Dispatch<React.SetStateAction<string[]>>;
   isVisitedPage: boolean[];
+  setCheckStoryCall: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const GoToNextPage: React.FC<GoToNextPageProps> = ({ 
   setShowModal, 
   showModal, 
-  setPastpage, 
-  pastpage, 
   setCapturedPageImages, 
   capturedPageImages,
-  isVisitedPage 
+  isVisitedPage, 
+  setCheckStoryCall
 }) => {
   const { selectedPage } = usePage();
   const navigate = useNavigate();
@@ -39,14 +37,15 @@ export const GoToNextPage: React.FC<GoToNextPageProps> = ({
       }
     }
 
-    if (page_id % 3 === 0 && !showModal && page_id !== selectedPage) {
-      if (!pastpage.includes(page_id)) {
-        setPastpage([...pastpage, page_id]);
-        setShowModal(true);
-      } else {
-        setShowModal(false); 
-        navigate(`/generated/${page_id + 1}`);
-      }
+    if (page_id === selectedPage) {
+      navigate(`/ending`);
+    } else if (page_id % 3 === 0 && !showModal && page_id !== selectedPage) {
+        if (!isVisitedPage[page_id]) {
+          setShowModal(true);
+        } else {
+          setShowModal(false); 
+          navigate(`/generated/${page_id + 1}`);
+        }
     } else {
       navigate(`/generated/${page_id + 1}`);
     }
@@ -54,7 +53,7 @@ export const GoToNextPage: React.FC<GoToNextPageProps> = ({
 
   return (
     <div 
-      className='mx-auto my-auto text-3xl z-10'
+      className='mx-auto my-auto text-3xl z-10 px-4'
       style={{
         cursor: 'pointer',
       }} 
@@ -79,7 +78,7 @@ export const GoToPreviousPage = () => {
   }
   return (
     <div 
-      className='mx-auto my-auto text-3xl z-10'
+      className='mx-auto my-auto text-3xl z-10 px-4'
       style={{
         cursor: page_id > 1 ? 'pointer' : 'default',
         opacity: page_id > 1 ? 1 : 0.5,
