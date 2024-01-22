@@ -4,14 +4,15 @@ import React, { useState, useEffect } from 'react';
 import Image from '../components/Image';
 import { error } from 'console';
 import { Link } from 'react-router-dom';
+import { convertToPDF } from '../utils/jsPDF';
 
 // props의 타입을 정의하는 인터페이스
 interface EndingPageProps {
-
+  capturedPageImages: string[];
 }
 
 const EndingPage: React.FC<EndingPageProps> = ({
-
+  capturedPageImages
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [showLoading, setShowLoaging] = useState(false);
@@ -21,26 +22,20 @@ const EndingPage: React.FC<EndingPageProps> = ({
   const navigate = useNavigate();
   // console.log(page_id);  
 
+  // PDF 변환 함수입니다. 
+  const testhandlePDFDownload = () => {
+    const pdfBlob = convertToPDF(capturedPageImages);
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.download = 'document.pdf';
+    link.click();
+  };
+
 
 
 
   return (
-    <div className='h-screen w-screen flex justify-center items-center px-4 py-4'
-      style={{
-        backgroundImage: `url('/img/bg-book2.jpg')`,
-        backgroundSize: 'cover',
-      }}
-    > 
-      <div className='justify-between mx-auto flex flex-wrap flex-row h-[700px] w-[1440px] px-4 py-4 font-gaegu'
-        style={{
-          backgroundImage: `url('/img/book-paper2.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
-        <div className="flex items-center justify-center flex-col w-1/2 h-full px-12 py-20">
-          <h1 className=" text-center text-3xl md:text-4xl text-black font-bold font-gowun-batang pb-12">책 제목</h1>
-
           <div className="flex justify-center w-3/4 overflow-hidden">
           <img src="https://picsum.photos/500/600" alt=""/>
           </div>
