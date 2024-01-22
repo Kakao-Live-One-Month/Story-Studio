@@ -86,7 +86,7 @@ export const generateOption = async () => {
                                   + `모든 값은 반드시 있어야 합니다. ` 
                                   + `JSON 외의 설명을 쓰지 마세요.`;
     console.log("옵션 요청: ", optionApiRequestPrompt);
-    const test = '{"selection" : {"question": "ㅇㄹㅁㄴㅇㄹ", "options": [{ "option_id": 1, "option": "1" }, { "option_id": 2, "option": "2" }, { "option_id": 3, "option": "3" }]}}'
+    const test = '{"selection" : {"question": "질문지 내용", "options": [{ "option_id": 1, "option": "선택지 1" }, { "option_id": 2, "option": "선택지 2" }, { "option_id": 3, "option": "선택지 3" }]}}'
     // const transformedResponse: string = await callOpenAIAndTransformApiResponse(optionApiRequestPrompt);
     console.log("옵션 반환 값: ", test);
 
