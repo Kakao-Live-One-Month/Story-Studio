@@ -158,9 +158,9 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
           <div className="absolute bottom-5 right-5 text-2xl">{page_id}/{selectedPage}</div>
         </div>
     
-        {isLoading && (
+        {/* {isLoading && (
           <Loading/>
-        )}
+        )} */}
         
         {showModal && (
           <OptionModal setShowModal={setShowModal} page_id={page_id} setSelectedOption={setSelectedOption} setCheckStoryCall={setCheckStoryCall} qnOptions={qnOptions} />

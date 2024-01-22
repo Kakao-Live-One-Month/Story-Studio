@@ -22,21 +22,59 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
   }
 
 
-//이야기 생성 후 이미지 3개 직렬 요청
+  let id: number = 0;
+
   const callImageUrl = async (i: number) => {
     try {
       if(!isVisitedPage[page_id - 1]){
         await delay(10000);  // 3초 지연
+
         const newImageUrl = `image${i+1}` as string;
         setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
         // const newImageUrl = await imageCreateApiRequest(page_id+i);
         // setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
         console.log("imageUrlCall:", i+newImageUrl);
         }
+
+
+      }
+      id++;
+      console.log("id: ", id);
+      // const url = newImageUrl;
+      // fetch('http://localhost:8080/api/convert', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     id,
+      //     url,
+      //   })
+      // });
     } catch (error) {
       console.error('이미지 생성 에러:', error);
     }
   };
+
+  const currentImage = async () => {
+    try {
+      console.log("currentImage");
+      // setImageUrl(imageUrlArray[page_id - 1]);
+      const serverImageUrl = `http://localhost:8080/images/image-${page_id}.png`;
+      console.log("currentImage 호출", serverImageUrl);
+      setImageUrl(serverImageUrl);
+
+
+      await delay(3000);
+      setLoading(false);
+    }
+     catch (error) {
+      console.error('이미지 생성 에러:', error);
+    }
+  };
+
+
+
 
   useEffect(() => {
     if(checkStoryCall){
