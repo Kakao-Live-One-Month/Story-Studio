@@ -10,38 +10,43 @@ interface ImageProps {
   isVisitedPage: boolean[];
   checkStoryCall: boolean;
   setImageUrlArray: React.Dispatch<React.SetStateAction<string[]>>;
-  setIsVisitedPage: React.Dispatch<React.SetStateAction<boolean[]>>;
   storyArray: string[];
-
 }
 
-const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, isVisitedPage, setIsVisitedPage, checkStoryCall, storyArray}) => {
+const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, isVisitedPage, checkStoryCall, storyArray}) => {
   const [imageUrl, setImageUrl] = useState<string>('');
-  const { isLoading, setLoading } = useLoading();
   const { selectedPage } = usePage();
 
   function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  const visitPage = (page_id: number) => {
-    setIsVisitedPage(prevIsVisitedPageArray => {
-      const newVisitedPageArray = [...prevIsVisitedPageArray];
-      newVisitedPageArray[page_id - 1] = true;
-      return newVisitedPageArray;
-    });
-  };
+  let id: number = 0;
 
   const callImageUrl = async (i: number) => {
     try {
       if(!isVisitedPage[page_id - 1]){
-   
         await delay(10000);  // 3초 지연
-        setImageUrlArray(['abc', 'def', 'ghi', 'abc', 'def', 'ghi', 'abc', 'def', 'ghi']);
-        // const newImageUrl = await imageCreateApiRequest(page_id+i);
-        // setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
-        console.log("imageUrl");
+
+        const newImageUrl = await imageCreateApiRequest(page_id+i);
+        setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
+        console.log("imageUrlCall:", i+newImageUrl);
+
+        id++;
+        console.log("id: ", id);
+        const url = newImageUrl;
+        fetch('http://localhost:8080/api/convert', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id,
+            url,
+          })
+        });
         }
+
     } catch (error) {
       console.error('이미지 생성 에러:', error);
     }
@@ -50,9 +55,12 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
   const currentImage = async () => {
     try {
       console.log("currentImage");
-      setImageUrl(imageUrlArray[page_id - 1]);
+
+      const serverImageUrl = `http://localhost:8080/images/image-${page_id}.png`;
+      console.log("currentImage 호출", serverImageUrl);
+      setImageUrl(serverImageUrl);
+
       await delay(3000);
-      setLoading(false);
     }
      catch (error) {
       console.error('이미지 생성 에러:', error);
@@ -61,11 +69,10 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
 
 
 
-///////////////////////////////////////////////////////////////////
 
   useEffect(() => {
-    setLoading(true);
-    if ( checkStoryCall && storyArray[page_id - 1] !== undefined) {
+    if(checkStoryCall){
+     if (imageUrlArray[page_id - 1] == undefined) {
       if(page_id % 3 == 1){
         if (selectedPage-page_id > 1){
           for(let i=0; i<3; i++){
@@ -77,28 +84,20 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
           callImageUrl(i);
           console.log("callImageUrl%3", page_id+i);
           }
-        } 
+        }
       }
      }
-  }, [page_id]);
-
-
-  useEffect(() => {
-    if(imageUrlArray.length !== 0){
-    currentImage();
     }
-  },[page_id, imageUrlArray]);
+  }, [page_id, checkStoryCall]);
 
 
   useEffect(() => {
-    console.log("storyArrayChange");
-  },[storyArray]);
-///////////////////////////////////////////////////////////////////
+    currentImage();
+  },[page_id]);
 
 
   return (
     <div>
-      {isLoading && (<Loading/>)}
       <img id="prevImage" src={imageUrl} alt="이미지" />
     </div>
   );
