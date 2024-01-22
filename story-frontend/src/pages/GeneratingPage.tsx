@@ -48,7 +48,7 @@ const GeneratingPage: React.FC<GeneratingPageProps> = ({setStoryArray, setIsVisi
     >
       <Link to="/">
         <div className="left-6 top-6 absolute font-bold md:left-20 md:top-20 md:text-xl lg:text-3xl">
-          Story<br/>Workshop.
+          Story Workshop.
         </div>
       </Link>
       <div 

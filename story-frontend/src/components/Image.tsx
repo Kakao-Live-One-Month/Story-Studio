@@ -1,8 +1,8 @@
 // src/components/ThemeInput.tsx
 import React, { useEffect, useState } from 'react';
 import { imageCreateApiRequest } from '../api/ApiRequest';
-import { useLoading, usePage } from '../contexts';
-import Loading from './Loading';
+import { usePage } from '../contexts';
+import { ImageStorage } from '../storage';
 
 interface ImageProps {
   imageUrlArray: string[];
@@ -10,10 +10,10 @@ interface ImageProps {
   isVisitedPage: boolean[];
   checkStoryCall: boolean;
   setImageUrlArray: React.Dispatch<React.SetStateAction<string[]>>;
-  storyArray: string[];
+  setCheckStoryCall: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, isVisitedPage, checkStoryCall, storyArray}) => {
+const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, isVisitedPage, checkStoryCall, setCheckStoryCall}) => {
   const [imageUrl, setImageUrl] = useState<string>('');
   const { selectedPage } = usePage();
 
@@ -26,10 +26,11 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
   const callImageUrl = async (i: number) => {
     try {
       if(!isVisitedPage[page_id - 1]){
-        await delay(10000);  // 3초 지연
-
-        const newImageUrl = await imageCreateApiRequest(page_id+i);
+     
+        const newImageUrl = `image${i+1}` as string;
         setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
+        // const newImageUrl = await imageCreateApiRequest(page_id+i);
+        // setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
         console.log("imageUrlCall:", i+newImageUrl);
 
           id++;
@@ -52,52 +53,64 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
     }
   };
 
-  const currentImage = async () => {
-    try {
-      console.log("currentImage");
-
-      const serverImageUrl = `http://localhost:8080/images/image-${page_id}.png`;
-      console.log("currentImage 호출", serverImageUrl);
-      setImageUrl(serverImageUrl);
-
-      await delay(3000);
-    }
-     catch (error) {
-      console.error('이미지 생성 에러:', error);
-    }
-  };
-
-
-
-
   useEffect(() => {
     if(checkStoryCall){
-     if (imageUrlArray[page_id - 1] == undefined) {
       if(page_id % 3 == 1){
         if (selectedPage-page_id > 1){
           for(let i=0; i<3; i++){
-          callImageUrl(i);
-          console.log("callImageUrl3:", page_id+i);
+            (async () => {
+              await callImageUrl(i);
+            })();
           }
         }else{
           for(let i=0; i<selectedPage-page_id+1 ; i++){
-          callImageUrl(i);
-          console.log("callImageUrl%3", page_id+i);
+            (async () => {
+              await callImageUrl(i);
+            })();
           }
         }
       }
-     }
     }
   }, [page_id, checkStoryCall]);
 
 
+
+
+
+  const currentImage = async () => {
+    try {
+      console.log("currentImage", page_id);
+
+      const serverImageUrl = `http://localhost:8080/images/image-${page_id}.png`;
+      console.log("currentImage 호출", serverImageUrl);
+      setImageUrl(serverImageUrl);
+      // setImageUrl("/img/Img_Loading.png");
+      await delay(3000);
+    }
+     catch (error) {
+      console.error('이미지 생성 에러:', error);
+      setImageUrl("/img/Img_Loading.png");
+    }
+  };
+
   useEffect(() => {
-    currentImage();
-  },[page_id]);
+    if(imageUrlArray[page_id - 1] !== undefined ){
+      currentImage();
+    }
+    // currentImage();
+  },[page_id, imageUrlArray]);
+
+
 
 
   return (
     <div>
+      <ImageStorage
+        imageUrlArray={imageUrlArray}
+        setImageUrlArray={setImageUrlArray}
+        checkStoryCall={checkStoryCall}
+        page_id={page_id}
+      />
       <img id="prevImage" src={imageUrl} alt="이미지" />
     </div>
   );
