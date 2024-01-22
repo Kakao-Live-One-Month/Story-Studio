@@ -4,13 +4,13 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 const MainPage: React.FC = () => {
   return (
     <div 
-      className="flex min-h-screen items-center justify-center p-10 min-w-full"
+      className="flex min-h-screen w-full items-center justify-center"
       style={{
         backgroundImage: `url('/img/bg-book3.png')`,
-        backgroundSize: 'cover',
+        backgroundSize: '100% 100%',
       }}
     >
-      <div className="flex min-h-[600px] min-w-[1440px] justify-center p-10 font-gowun-batang lg:w-[2000px]">
+      <div className="flex w-full justify-center p-10 font-gowun-batang lg:max-w-full">
         <div className="flex-1">
           <div className="flex h-full w-full flex-col items-center justify-center space-y-6 p-10">
             <div className="space-y-10 p-4 mb-8 text-start lg:mb-12">
