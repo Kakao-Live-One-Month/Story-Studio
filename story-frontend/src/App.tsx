@@ -41,6 +41,7 @@ const App = () => {
               imageUrlArray={imageUrlArray}
               isVisitedPage={isVisitedPage}
               checkStoryCall={checkStoryCall}
+              setCheckStoryCall={setCheckStoryCall}
             />
           }
         />

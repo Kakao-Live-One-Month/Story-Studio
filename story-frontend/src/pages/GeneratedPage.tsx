@@ -5,7 +5,7 @@ import { useTheme, useGenre, usePage, useDescribe, useLoading } from '../context
 import { startApiRequest, callNextSession, generateOption } from '../api/ApiRequest';
 import { OptionModal, Loading } from '../components';
 import { GoToNextPage, GoToPreviousPage } from '../components/PreNextButton';
-import { convertToPDF } from '../utils/jsPDF';
+import { ErrorPage } from '../pages';
 import { StoryStorage, VisitedPageStorage } from '../storage';
 
 interface GeneratedPageProps {
@@ -41,18 +41,27 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({
   const [showModal, setShowModal] = useState(false);
   const [qnOptions, setQnoption] = useState<string[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>("");
-  
+  const [isError, setIsError] = useState<boolean>(false);      
 
   function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
 
+
+  useEffect(() => {
+    if (page_id > storyArray.length) {
+     setIsError(true);
+    }else{
+      setIsError(false);
+    }
+  }, [page_id, storyArray.length]);
+
+
   const firstApiRequest = async () => {
     try {
       setLoading(true);
       let contentsArray = await startApiRequest(theme, selectedGenre, selectedPage, describe);
-      // await delay(3000); 
       if (!contentsArray){
         contentsArray = [] as string[];
       };
@@ -78,6 +87,30 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({
   },[checkStoryCall, storyArray, imageUrlArray]);
  
 
+  const callOptions = async () => {
+    if( page_id !== selectedPage ){
+      try {
+        console.log("callOptions");
+        const optionResponse = await generateOption(); 
+        setQnoption(optionResponse); 
+        await delay(300);
+        setCheckStoryCall(false);
+      } catch (error) {
+        console.error('generateOption 호출 중 오류 발생:', error);
+      } 
+    }
+  };
+
+  useEffect(() => {
+    if (checkStoryCall && page_id%3 === 1 &&!isVisitedPage[page_id]){
+    
+        callOptions();
+
+    
+    }
+  }, [page_id, checkStoryCall]); 
+
+ 
   const callNextSessionFunc = async () => {
     try {
       setLoading(true);
@@ -95,34 +128,16 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({
       console.error("callNextSession 에러: ", error);
     } 
   };
-  
 
-  const callOptions = async () => {
-    if( page_id !== selectedPage ){
-      try {
-        console.log("callOptions");
-        const optionResponse = await generateOption(); 
-        setQnoption(optionResponse); 
-        setCheckStoryCall(false);
-      } catch (error) {
-        console.error('generateOption 호출 중 오류 발생:', error);
-      } 
-    }
-  };
-
-  useEffect(() => {
-    if (checkStoryCall && page_id%3 === 1 &&!isVisitedPage[page_id]){
-    callOptions();
-    }
-  }, [page_id, checkStoryCall]); 
-
- 
   useEffect(() => {
     if (!isVisitedPage[page_id-1] && page_id !== 1 && storyArray.length == page_id-1){
       callNextSessionFunc();
       console.log(selectedOption);
     }
   }, [selectedOption, page_id]);
+
+
+
 
 
 
@@ -148,7 +163,13 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({
             <div className="absolute left-4 top-1 text-bold text-4xl">x</div>
           </Link>
           <GoToPreviousPage/>
-          <Outlet />
+          {
+            isError ? (
+              <ErrorPage/>
+            ) : (
+              <Outlet />
+            )
+          }
           <GoToNextPage 
             setShowModal={setShowModal} 
             showModal={showModal} 
@@ -160,10 +181,11 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({
           <div className="absolute bottom-5 right-5 text-2xl">{page_id}/{selectedPage}</div>
         </div>
     
-        {/* {isLoading && (
+    
+        {isLoading && (
           <Loading/>
-        )} */}
-        
+        )}
+
         {showModal && (
           <OptionModal setShowModal={setShowModal} page_id={page_id} setSelectedOption={setSelectedOption} setCheckStoryCall={setCheckStoryCall} qnOptions={qnOptions} />
         )}

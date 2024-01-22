@@ -1,4 +1,3 @@
-// src/GeneratingPage.tsx
 import { useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import Image from '../components/Image';
@@ -14,13 +13,8 @@ interface EndingPageProps {
 const EndingPage: React.FC<EndingPageProps> = ({
   capturedPageImages
 }) => {
-  const [showModal, setShowModal] = useState(false);
-  const [showLoading, setShowLoaging] = useState(false);
-  const [currentPageStory, setCurrentPageStory] = useState<string>("undefind");
   const param = useParams();
   const page_id = Number(param.page_id);
-  const navigate = useNavigate();
-  // console.log(page_id);  
 
   // PDF 변환 함수입니다. 
   const testhandlePDFDownload = () => {
@@ -36,6 +30,22 @@ const EndingPage: React.FC<EndingPageProps> = ({
 
 
   return (
+    <div className='h-screen w-screen flex justify-center items-center px-4 py-4'
+      style={{
+        backgroundImage: `url('/img/bg-book2.jpg')`,
+        backgroundSize: 'cover',
+      }}
+    > 
+      <div className='justify-between mx-auto flex flex-wrap flex-row h-[700px] w-[1440px] px-4 py-4 font-gaegu'
+        style={{
+          backgroundImage: `url('/img/book-paper2.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="flex items-center justify-center flex-col w-1/2 h-full px-12 py-20">
+          <h1 className=" text-center text-3xl md:text-4xl text-black font-bold font-gowun-batang pb-12">책 제목</h1>
+
           <div className="flex justify-center w-3/4 overflow-hidden">
           <img src="https://picsum.photos/500/600" alt=""/>
           </div>
@@ -47,28 +57,28 @@ const EndingPage: React.FC<EndingPageProps> = ({
           <div className="grid items-end space-y-6 w-1/2 lg:w-[240px]">
             <Link to="/generated/1">
               <button
-                className="text-center text-white text-2xl md:text-3xl w-full h-16 px-5 rounded-lg bg-[#E5A500]"
+                className="text-center text-white text-2xl md:text-3xl w-full h-16 px-5 rounded-lg bg-[#E5A500] shadow-lg-dark hover:shadow-inner-dark"
                 onClick={() => {}}
               >다시 보기</button>
               </Link>
 
               <Link to="/">
               <button
-                className="text-center text-white text-2xl md:text-3xl w-full h-16 px-5 rounded-lg bg-[#E5A500]"
-                onClick={() => {}}
+                className="text-center text-white text-2xl md:text-3xl w-full h-16 px-5 rounded-lg bg-[#E5A500] shadow-lg-dark hover:shadow-inner-dark"
+                onClick={testhandlePDFDownload}
               >PDF로 저장</button>
               </Link>
 
               <Link to="/generating/">
               <button
-                className="text-center text-white text-2xl md:text-3xl w-full h-16 px-5 rounded-lg bg-[#E5A500]"
-                onClick={() => {}}
+                className="text-center text-white text-2xl md:text-3xl w-full h-16 px-5 rounded-lg bg-[#E5A500] shadow-lg-dark hover:shadow-inner-dark"
+                // onClick={testhandlePDFDownload}
                 >새로 만들기</button>
               </Link>
 
               <Link to="/">
                 <button
-                className="text-center text-white text-2xl md:text-3xl w-full h-16 px-5 rounded-lg bg-[#736F62]"
+                className="text-center text-white text-2xl md:text-3xl w-full h-16 px-5 rounded-lg bg-[#736F62] shadow-lg-dark hover:shadow-inner-dark"
                 onClick={() => {}}
                 >홈으로 가기</button>
               </Link>
