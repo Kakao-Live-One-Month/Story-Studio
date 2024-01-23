@@ -56,7 +56,6 @@ const Page: React.FC<PageProps> = ({
   return (
     <div id="story-page" className="flex h-full w-[1200px] p-4 ">
       
-
       <div className="w-1/2 pr-4 flex justify-center items-center">
         <Image 
           imageUrlArray={imageUrlArray} 
@@ -73,8 +72,6 @@ const Page: React.FC<PageProps> = ({
           {currentPageStory}
         </p>
       </div>
-      
-
     </div>
   );
 }; 

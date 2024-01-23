@@ -39,15 +39,15 @@ const GeneratingPage: React.FC<GeneratingPageProps> = ({setStoryArray, setIsVisi
  
 
   return (
-    <div className='min-h-screen w-full flex justify-center items-center'
-      style={{
-        backgroundImage: `url('/img/bg-book3.png')`,
-        backgroundSize: 'cover',
-        backgroundAttachment: 'fixed'
-      }}
-    >
+    <div 
+    className="flex min-h-screen w-full items-center justify-center"
+    style={{
+      backgroundImage: `url('/img/bg-book2.jpg')`,
+      backgroundSize: '100% 100%',
+    }}
+  >
       <Link to="/">
-        <div className="left-6 top-6 absolute font-bold md:left-20 md:top-20 md:text-xl lg:text-3xl">
+        <div className="left-6 top-6 absolute font-bold md:left-24 md:top-24 md:text-xl lg:text-4xl">
           Story Workshop.
         </div>
       </Link>
@@ -59,7 +59,7 @@ const GeneratingPage: React.FC<GeneratingPageProps> = ({setStoryArray, setIsVisi
         }}
       >
         <div className="h-full py-10">
-          <p className="text-center text-4xl font-bold font-gowun-batang lg:text-6xl">나만의 동화책 만들기</p>
+          <p className="text-center text-4xl font-bold font-gowun-batang lg:text-5xl">나만의 동화책 만들기</p>
         </div>
 
         {/* 주제 입력 영역*/}

@@ -6,7 +6,7 @@ const MainPage: React.FC = () => {
     <div 
       className="flex min-h-screen w-full items-center justify-center"
       style={{
-        backgroundImage: `url('/img/bg-book3.png')`,
+        backgroundImage: `url('/img/bg-book2.jpg')`,
         backgroundSize: '100% 100%',
       }}
     >
@@ -14,7 +14,7 @@ const MainPage: React.FC = () => {
         <div className="flex-1">
           <div className="flex h-full w-full flex-col items-center justify-center space-y-6 p-10">
             <div className="space-y-10 p-4 mb-8 text-start lg:mb-12">
-              <p className="text-5xl font-extrabold lg:text-7xl lg:leading-tight">상상에서 피어나는 <br />큰 꿈의 이야기.</p>
+              <p className="text-5xl font-extrabold lg:text-6xl lg:leading-tight">상상에서 피어나는 <br />큰 꿈의 이야기.</p>
               <p className="text-2xl lg:text-4xl lg:leading-tight">
                 AI와 창작의 문을 열고<br />
                 새로운 이야기를 만들어 보세요.
@@ -32,7 +32,7 @@ const MainPage: React.FC = () => {
 
         <div className="flex flex-1 items-center justify-center">
           <div className="p-10">
-            <p className="text-9xl font-bold leading-tight lg:text-[200px]">
+            <p className="text-9xl font-bold leading-tight lg:text-[180px]">
               이야기 <br />
               작업실
             </p>

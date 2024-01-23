@@ -156,14 +156,15 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({
 
 
   return (
-    <div id="generated" className='h-screen w-screen flex justify-center items-center px-4 py-4'
+    <div 
+      className="flex min-h-screen w-full items-center justify-center"
       style={{
         backgroundImage: `url('/img/bg-book2.jpg')`,
-        backgroundSize: 'cover',
+        backgroundSize: '100% 100%',
       }}
     >
       <div 
-        className='justify-center mx-auto flex h-[700px] w-[1440px] flex-wrap bg-green-100 px-4 py-4 font-gaegu'
+        className='justify-center mx-auto flex h-[700px] w-[1440px] flex-wrap bg-green-100 px-4 py-4 font-gaegu cursor-pointer active:cursor-auto'
         style={{
           backgroundImage: `url('/img/book-paper2.png')`,
           backgroundSize: 'cover',

@@ -35,7 +35,7 @@ const EndingPage: React.FC<EndingPageProps> = ({
     <div className='h-screen w-screen flex justify-center items-center px-4 py-4'
       style={{
         backgroundImage: `url('/img/bg-book2.jpg')`,
-        backgroundSize: 'cover',
+        backgroundSize: '100% 100%',
       }}
     > 
       <div className='justify-between mx-auto flex flex-wrap flex-row h-[700px] w-[1440px] px-4 py-4 font-gaegu'
@@ -54,38 +54,37 @@ const EndingPage: React.FC<EndingPageProps> = ({
         </div>
 
         <div className="flex flex-col justify-center items-center w-1/2 h-full">
-          <h1 className="text-center text-4xl md:text-5xl text-black mb-16">동화책이 완성됐어요!</h1>
+          <h1 className="text-center text-4xl md:text-5xl text-black mb-16 font-gowun-batang font-bold">동화책이 완성됐어요!</h1>
           
-          <div className="grid items-end space-y-6 w-1/2 lg:w-[240px]">
+          <div className="grid items-end space-y-6 w-1/2 lg:w-[300px] font-gowun-batang font-bold">
             <Link to="/generated/1">
               <button
-                className="text-center text-white text-2xl md:text-3xl w-full h-16 px-5 rounded-lg bg-[#E5A500] shadow-lg-dark hover:shadow-inner-dark"
+                className="text-center text-white text-2xl w-full h-16 px-5 rounded-lg bg-[#E5A500] shadow-lg-dark hover:shadow-inner-dark"
                 onClick={() => {}}
               >다시 보기</button>
-              </Link>
+            </Link>
 
-   
-              <button
-                className="text-center text-white text-2xl md:text-3xl w-full h-16 px-5 rounded-lg bg-[#E5A500] shadow-lg-dark hover:shadow-inner-dark"
-                onClick={testhandlePDFDownload}
-              >PDF로 저장</button>
-        
+            <button
+              className="text-center text-white text-2xl w-full h-16 px-5 rounded-lg bg-[#E5A500] shadow-lg-dark hover:shadow-inner-dark"
+              onClick={testhandlePDFDownload}
+            >PDF로 저장
+            </button>
 
-              <Link to="/generating/">
+            <Link to="/generating/">
               <button
-                className="text-center text-white text-2xl md:text-3xl w-full h-16 px-5 rounded-lg bg-[#E5A500] shadow-lg-dark hover:shadow-inner-dark"
+                className="text-center text-white text-2xl w-full h-16 px-5 rounded-lg bg-[#E5A500] shadow-lg-dark hover:shadow-inner-dark"
                 >새로 만들기</button>
-              </Link>
+            </Link>
 
-              <Link to="/">
-                <button
-                className="text-center text-white text-2xl md:text-3xl w-full h-16 px-5 rounded-lg bg-[#736F62] shadow-lg-dark hover:shadow-inner-dark"
-                onClick={() => {}}
-                >홈으로 가기</button>
-              </Link>
+            <Link to="/">
+              <button
+              className="text-center text-white text-2xl w-full h-16 px-5 rounded-lg bg-[#736F62] shadow-lg-dark hover:shadow-inner-dark"
+              onClick={() => {}}
+              >홈으로 가기</button>
+            </Link>
           </div>
         </div>
-     </div>
+      </div>
     </div>
   );
 }; 
