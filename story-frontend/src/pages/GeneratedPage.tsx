@@ -134,7 +134,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({
       callNextSessionFunc();
       console.log(selectedOption);
     }
-  }, [selectedOption, page_id]);
+  }, [selectedOption]);
 
 
 
