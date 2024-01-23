@@ -2,7 +2,7 @@
 import { Outlet, useParams, Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useTheme, useGenre, usePage, useDescribe, useLoading } from '../contexts';
-import { startApiRequest, callNextSession, generateOption, callStoryTitle } from '../api/ApiRequest';
+import { startApiRequest, callNextSession, generateOption } from '../api/ApiRequest';
 import { OptionModal, Loading } from '../components';
 import { GoToNextPage, GoToPreviousPage } from '../components/PreNextButton';
 import { ErrorPage } from '../pages';
@@ -143,34 +143,6 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({
       console.log(selectedOption);
     }
   }, [page_id]);
-
-
-
-  const callTitle = async () => {
-    if(checkStoryCall){
-      try {
-        console.log("callStoryTitle");
-        const title = await callStoryTitle(storyArray); 
-        console.log("title", title);
-        setCheckStoryCall(false);
-      } catch (error) {
-        console.error('callStoryTitle 호출 중 오류 발생:', error);
-      } 
-    }
-  };
-
-
-  useEffect(() => {
-    if (!isVisitedPage[page_id-1] && page_id === selectedPage){
-      callTitle();
-      console.log(selectedOption);
-    }
-  }, [page_id, storyArray]);
-
-
-
-
-
 
   return (
     <div id="generated" className='h-screen w-screen flex justify-center items-center px-4 py-4'

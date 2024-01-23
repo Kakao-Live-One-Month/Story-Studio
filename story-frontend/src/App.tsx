@@ -18,19 +18,22 @@ const App = () => {
       <Routes>
       <Route path="/" element={<MainPage />}/> 
       <Route path="/generating" element={<GeneratingPage setStoryArray={setStoryArray} setIsVisitedPage={setIsVisitedPage} setImageUrlArray={setImageUrlArray}/>}/>
-      <Route path="generated" 
-             element={
-               <GeneratedPage 
-                  setStoryArray={setStoryArray} 
-                  storyArray={storyArray} 
-                  setCheckStoryCall={setCheckStoryCall} 
-                  checkStoryCall={checkStoryCall} 
-                  isVisitedPage={isVisitedPage}
-                  setIsVisitedPage={setIsVisitedPage}
-                  imageUrlArray={imageUrlArray}
-                  setCapturedPageImages={setCapturedPageImages}
-                  capturedPageImages={capturedPageImages}
-                />}>
+      <Route 
+        path="generated" 
+        element={
+          <GeneratedPage 
+            setStoryArray={setStoryArray} 
+            storyArray={storyArray} 
+            setCheckStoryCall={setCheckStoryCall} 
+            checkStoryCall={checkStoryCall} 
+            isVisitedPage={isVisitedPage}
+            setIsVisitedPage={setIsVisitedPage}
+            imageUrlArray={imageUrlArray}
+            setCapturedPageImages={setCapturedPageImages}
+            capturedPageImages={capturedPageImages}
+          />
+        }
+      >
                   
         <Route 
           path=":page_id" 
@@ -46,7 +49,15 @@ const App = () => {
           }
         />
         </Route>
-        <Route path="/ending" element={<EndingPage capturedPageImages={capturedPageImages} />}/>
+        <Route 
+          path="/ending" 
+          element={
+            <EndingPage 
+              capturedPageImages={capturedPageImages}
+              storyArray={storyArray}
+            />
+          }
+        />
       </Routes>
     </Router>
   );

@@ -1,20 +1,21 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import Image from '../components/Image';
-import { error } from 'console';
 import { Link } from 'react-router-dom';
 import { convertToPDF } from '../utils/jsPDF';
+import { callStoryTitle } from '../api/ApiRequest';
+
 
 // props의 타입을 정의하는 인터페이스
 interface EndingPageProps {
   capturedPageImages: string[];
+  storyArray: string[];
 }
 
 const EndingPage: React.FC<EndingPageProps> = ({
-  capturedPageImages
+  capturedPageImages,
+  storyArray,
 }) => {
-  const param = useParams();
-  const page_id = Number(param.page_id);
+  const [mainTitle, setMainTitle] = useState<string>("");
 
   // PDF 변환 함수입니다. 
   const testhandlePDFDownload = () => {
@@ -27,6 +28,19 @@ const EndingPage: React.FC<EndingPageProps> = ({
   };
 
 
+  const callTitle = async () => {
+    try {
+      const title = await callStoryTitle(storyArray); 
+      console.log("책 제목", title);
+      setMainTitle(title);
+    } catch (error) {
+      console.error('타이틀 호출 중 오류 발생:', error);
+    }
+  };
+
+  useEffect(() => {
+    callTitle();
+  }, []);
 
 
   return (
@@ -44,7 +58,7 @@ const EndingPage: React.FC<EndingPageProps> = ({
         }}
       >
         <div className="flex items-center justify-center flex-col w-1/2 h-full px-12 py-20">
-          <h1 className=" text-center text-3xl md:text-4xl text-black font-bold font-gowun-batang pb-12">책 제목</h1>
+          <h1 className=" text-center text-3xl md:text-4xl text-black font-bold font-gowun-batang pb-12">{mainTitle}</h1>
 
           <div className="flex justify-center w-3/4 overflow-hidden">
           <img src="http://localhost:8080/images/image-1.png" alt=""/>
@@ -72,7 +86,6 @@ const EndingPage: React.FC<EndingPageProps> = ({
               <Link to="/generating/">
               <button
                 className="text-center text-white text-2xl md:text-3xl w-full h-16 px-5 rounded-lg bg-[#E5A500] shadow-lg-dark hover:shadow-inner-dark"
-                // onClick={testhandlePDFDownload}
                 >새로 만들기</button>
               </Link>
 

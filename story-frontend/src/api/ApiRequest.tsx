@@ -172,17 +172,15 @@ export const callStoryTitle = async (storyArray: Array<string>) => {
     const storyString = storyArray.join(' '); // 배열의 요소를 공백 문자로 구분하여 문자열로 합침
 
     const titlePrompt: string =`[${storyString}] 다음 동화의 제목을 지어주세요. 제목만 보내주세요.`;
-   
+    console.log(titlePrompt);
   
     const storyTitle: string = await callTitleApiResponse(titlePrompt);
     console.log("제목 반환 값: ", storyTitle);
 
-    
-
     return storyTitle;
   } catch (error) {
     console.error("Api 요청 에러: ", error);
-    return [];
+    return "";
   }
 };
 
