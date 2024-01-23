@@ -83,4 +83,5 @@ const GeneratingPage: React.FC<GeneratingPageProps> = ({setStoryArray, setIsVisi
   );
 };
 
+
 export default GeneratingPage;

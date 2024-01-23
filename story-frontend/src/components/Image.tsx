@@ -28,25 +28,25 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
   const callImageUrl = async (i: number) => {
     try {
       if(!isVisitedPage[page_id - 1]){
-        const newImageUrl = "http://localhost:8080/images/image-" + (1+i) + ".png";
-        // const newImageUrl = await imageCreateApiRequest(page_id+i);
+        // const newImageUrl = "http://localhost:8080/images/image-" + (1+i) + ".png";
+        const newImageUrl = await imageCreateApiRequest(page_id+i);
         setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
         console.log("imageUrlCall:", i+newImageUrl);
 
-          // // id++;
-          // const id = page_id+i;
-          // console.log("id: ", id);
-          // const url = newImageUrl;
-          // fetch('http://localhost:8080/api/convert', {
-          //   method: 'POST',
-          //   headers: {
-          //     'Content-Type': 'application/json',
-          //   },
-          //   body: JSON.stringify({
-          //     id,
-          //     url,
-          //   })
-          // });
+          // id++;
+          const id = page_id+i;
+          console.log("id: ", id);
+          const url = newImageUrl;
+          fetch('http://localhost:8080/api/convert', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              id,
+              url,
+            })
+          });
         }
 
     } catch (error) {
@@ -57,8 +57,9 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
   const currentImage = async () => {
     try {
       console.log("currentImage", page_id);
-
-      const serverImageUrl = `http://localhost:8080/images/image-${page_id}.png`;
+      
+      const timestamp = Date.now();
+      const serverImageUrl = `http://localhost:8080/images/image-${page_id}.png?timestamp=${timestamp}`;
       console.log("currentImage 호출", serverImageUrl);
       setImageUrl(serverImageUrl);
 
@@ -72,15 +73,17 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
 
   const currentImageFunction = async () => {
     if (imageUrlArray[page_id - 1] !== undefined) {
+  
       if (page_id % 3 === 1 && !isVisitedPage[page_id-1] && check) {
         setLoading(true);
-        await new Promise(resolve => setTimeout(resolve, 10000));
+        await new Promise(resolve => setTimeout(resolve, 23000));
         await currentImage();
         setLoading(false);
       } 
       else {
         await currentImage();
       }
+
     }
   }
 

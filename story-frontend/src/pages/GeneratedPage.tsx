@@ -2,7 +2,7 @@
 import { Outlet, useParams, Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useTheme, useGenre, usePage, useDescribe, useLoading } from '../contexts';
-import { startApiRequest, callNextSession, generateOption } from '../api/ApiRequest';
+import { startApiRequest, callNextSession, generateOption, callStoryTitle } from '../api/ApiRequest';
 import { OptionModal, Loading } from '../components';
 import { GoToNextPage, GoToPreviousPage } from '../components/PreNextButton';
 import { ErrorPage } from '../pages';
@@ -18,6 +18,7 @@ interface GeneratedPageProps {
   imageUrlArray: string[];
   setCapturedPageImages: React.Dispatch<React.SetStateAction<string[]>>;
   capturedPageImages: string[];
+  setMainTitle: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const GeneratedPage: React.FC<GeneratedPageProps> = ({
@@ -29,7 +30,8 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({
   setIsVisitedPage, 
   imageUrlArray, 
   setCapturedPageImages,
-  capturedPageImages
+  capturedPageImages,
+  setMainTitle
 }) => {
   const param = useParams();
   const page_id = Number(param.page_id);
@@ -103,10 +105,7 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({
 
   useEffect(() => {
     if (checkStoryCall && page_id%3 === 1 &&!isVisitedPage[page_id]){
-    
         callOptions();
-
-    
     }
   }, [page_id, checkStoryCall]); 
 
@@ -137,12 +136,24 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({
   }, [selectedOption]);
 
 
-  useEffect(() => {
-    if (!isVisitedPage[page_id-1] && page_id !== 1 && storyArray.length == page_id-1){
-      callNextSessionFunc();
-      console.log(selectedOption);
+
+  const callTitle = async () => {
+    try {
+      const title = await callStoryTitle(storyArray); 
+      console.log("책 제목", title);
+      setMainTitle(title);
+    } catch (error) {
+      console.error('타이틀 호출 중 오류 발생:', error);
     }
-  }, [page_id]);
+  };
+
+  useEffect(() => {
+    if(page_id == selectedPage && storyArray.length >= selectedPage){
+    callTitle();
+    }
+  }, [page_id, storyArray]);
+
+
 
   return (
     <div id="generated" className='h-screen w-screen flex justify-center items-center px-4 py-4'

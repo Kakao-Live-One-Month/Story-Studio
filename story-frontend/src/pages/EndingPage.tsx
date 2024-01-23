@@ -2,20 +2,20 @@ import { useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { convertToPDF } from '../utils/jsPDF';
-import { callStoryTitle } from '../api/ApiRequest';
 
 
 // props의 타입을 정의하는 인터페이스
 interface EndingPageProps {
   capturedPageImages: string[];
-  storyArray: string[];
+  mainTitle: string;
 }
 
 const EndingPage: React.FC<EndingPageProps> = ({
   capturedPageImages,
-  storyArray,
+  mainTitle,
+
 }) => {
-  const [mainTitle, setMainTitle] = useState<string>("");
+ 
 
   // PDF 변환 함수입니다. 
   const testhandlePDFDownload = () => {
@@ -23,24 +23,12 @@ const EndingPage: React.FC<EndingPageProps> = ({
     const pdfUrl = URL.createObjectURL(pdfBlob);
     const link = document.createElement('a');
     link.href = pdfUrl;
-    link.download = 'document.pdf';
+    link.download = `${mainTitle}.pdf`;
     link.click();
   };
 
 
-  const callTitle = async () => {
-    try {
-      const title = await callStoryTitle(storyArray); 
-      console.log("책 제목", title);
-      setMainTitle(title);
-    } catch (error) {
-      console.error('타이틀 호출 중 오류 발생:', error);
-    }
-  };
 
-  useEffect(() => {
-    callTitle();
-  }, []);
 
 
   return (
@@ -76,12 +64,12 @@ const EndingPage: React.FC<EndingPageProps> = ({
               >다시 보기</button>
               </Link>
 
-              <Link to="/">
+   
               <button
                 className="text-center text-white text-2xl md:text-3xl w-full h-16 px-5 rounded-lg bg-[#E5A500] shadow-lg-dark hover:shadow-inner-dark"
                 onClick={testhandlePDFDownload}
               >PDF로 저장</button>
-              </Link>
+        
 
               <Link to="/generating/">
               <button

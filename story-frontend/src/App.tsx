@@ -12,7 +12,7 @@ const App = () => {
   const [isVisitedPage, setIsVisitedPage] = useState<boolean[]>(new Array(selectedPage).fill(false));
   const [checkStoryCall, setCheckStoryCall] = useState<boolean>(false);
   const [capturedPageImages, setCapturedPageImages] = useState<string[]>([]);
-
+  const [mainTitle, setMainTitle] = useState<string>("");
   return (
     <Router>
       <Routes>
@@ -31,6 +31,7 @@ const App = () => {
             imageUrlArray={imageUrlArray}
             setCapturedPageImages={setCapturedPageImages}
             capturedPageImages={capturedPageImages}
+            setMainTitle={setMainTitle}
           />
         }
       >
@@ -54,7 +55,7 @@ const App = () => {
           element={
             <EndingPage 
               capturedPageImages={capturedPageImages}
-              storyArray={storyArray}
+              mainTitle={mainTitle}
             />
           }
         />
