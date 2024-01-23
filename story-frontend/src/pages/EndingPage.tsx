@@ -47,7 +47,7 @@ const EndingPage: React.FC<EndingPageProps> = ({
           <h1 className=" text-center text-3xl md:text-4xl text-black font-bold font-gowun-batang pb-12">책 제목</h1>
 
           <div className="flex justify-center w-3/4 overflow-hidden">
-          <img src="https://picsum.photos/500/600" alt=""/>
+          <img src="http://localhost:8080/images/image-1.png" alt=""/>
           </div>
         </div>
 

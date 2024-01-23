@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { imageCreateApiRequest } from '../api/ApiRequest';
 import { usePage } from '../contexts';
 import { ImageStorage } from '../storage';
+import { Loading } from '../components';
 
 interface ImageProps {
   imageUrlArray: string[];
@@ -17,7 +18,7 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
   const [imageUrl, setImageUrl] = useState<string>('');
   const { selectedPage } = usePage();
   const [check, setCheck] = useState<boolean>(false);
-
+  const [isLoading, setLoading] = useState<boolean>(false);
   function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
@@ -27,24 +28,25 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
   const callImageUrl = async (i: number) => {
     try {
       if(!isVisitedPage[page_id - 1]){
-        const newImageUrl = await imageCreateApiRequest(page_id+i);
+        const newImageUrl = "http://localhost:8080/images/image-" + (1+i) + ".png";
+        // const newImageUrl = await imageCreateApiRequest(page_id+i);
         setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
         console.log("imageUrlCall:", i+newImageUrl);
 
-          // id++;
-          const id = page_id+i;
-          console.log("id: ", id);
-          const url = newImageUrl;
-          fetch('http://localhost:8080/api/convert', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              id,
-              url,
-            })
-          });
+          // // id++;
+          // const id = page_id+i;
+          // console.log("id: ", id);
+          // const url = newImageUrl;
+          // fetch('http://localhost:8080/api/convert', {
+          //   method: 'POST',
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //   },
+          //   body: JSON.stringify({
+          //     id,
+          //     url,
+          //   })
+          // });
         }
 
     } catch (error) {
@@ -70,9 +72,11 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
 
   const currentImageFunction = async () => {
     if (imageUrlArray[page_id - 1] !== undefined) {
-      if (page_id % 3 === 1 && !isVisitedPage[page_id] && check) {
+      if (page_id % 3 === 1 && !isVisitedPage[page_id-1] && check) {
+        setLoading(true);
         await new Promise(resolve => setTimeout(resolve, 10000));
         await currentImage();
+        setLoading(false);
       } 
       else {
         await currentImage();
@@ -114,6 +118,10 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
 
   return (
     <div>
+      
+      {isLoading && (
+          <Loading/>
+        )}
       <ImageStorage
         imageUrlArray={imageUrlArray}
         setImageUrlArray={setImageUrlArray}
