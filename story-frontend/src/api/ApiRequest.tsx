@@ -117,9 +117,9 @@ function delay(ms: number): Promise<void> {
 export const callNextSession = async (selectedOption : string, selectedPage: number, currentPage: number) => {
   try {
     const optionPrompt: string = `[${prevStory}]에 [${selectedOption}]을 반영해서 다음 이어질 이야기를 만들어 주세요. `
-                                + `page_id = ${currentPage + 1} 부터 page_id = ${selectedPage}까지 작성해야 하고 page_id = ${selectedPage}에서 이야기의 결말이 나와야 합니다. `
+                                + `page_id = ${currentPage} 부터 page_id = ${selectedPage}까지 작성해야 하고 page_id = ${selectedPage}에서 이야기의 결말이 나와야 합니다. `
     const totalPrompt: string = optionPrompt + jsonPrompt;
-
+    console.log("중간 페이지 요청 값 total : ", totalPrompt);
     const transformedResponse: string = await callOpenAIAndTransformApiResponse(totalPrompt);
     console.log("중간 페이지 반환 값: ", transformedResponse);
     await delay(6000);
