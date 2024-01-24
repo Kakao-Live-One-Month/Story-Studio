@@ -28,12 +28,12 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
   const callImageUrl = async (i: number) => {
     try {
       if(!isVisitedPage[page_id - 1]){
-        const newImageUrl = "http://localhost:8080/images/image-" + (1+i) + ".png";
-        // const newImageUrl = await imageCreateApiRequest(page_id+i);
+        // const newImageUrl = "http://localhost:8080/images/image-" + (1+i) + ".png";
+        const newImageUrl = await imageCreateApiRequest(page_id+i);
         setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
         console.log("imageUrlCall:", i+newImageUrl);
 
-          // id++;
+          //id++;
           const id = page_id+i;
           console.log("id: ", id);
           const url = newImageUrl;
@@ -60,6 +60,7 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
       
       const timestamp = Date.now();
       const serverImageUrl = `http://localhost:8080/images/image-${page_id}.png?timestamp=${timestamp}`;
+      // const serverImageUrl = `http://localhost:8080/images/image-${page_id}.png`;
       console.log("currentImage 호출", serverImageUrl);
       setImageUrl(serverImageUrl);
 

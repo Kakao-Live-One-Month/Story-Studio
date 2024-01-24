@@ -36,7 +36,7 @@ const Page: React.FC<PageProps> = ({
   const currentText = async () => {
     try {
       if (storyArray[page_id - 1] !== undefined) {
-        const formattedStory = " " + storyArray[page_id - 1].replace(/([.!?]['’]?)\s*/g, "$1\n\n\ ");
+        const formattedStory = " " + storyArray[page_id - 1].replace(/([.!?])(?![‘’'"])\s*/g, "$1\n\n\ ");
         setCurrentPageStory(formattedStory);
       }
       else {
