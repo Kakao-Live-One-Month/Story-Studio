@@ -77,7 +77,7 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
   
       if (page_id % 3 === 1 && !isVisitedPage[page_id-1] && check) {
         setLoading(true);
-        await new Promise(resolve => setTimeout(resolve, 23000));
+        await new Promise(resolve => setTimeout(resolve, 15000));
         await currentImage();
         setLoading(false);
       } 

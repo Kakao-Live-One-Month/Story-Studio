@@ -157,7 +157,6 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({
 
   return (
     <div 
-      id="generated"
       className="flex min-h-screen w-full items-center justify-center"
       style={{
         backgroundImage: `url('/img/bg-book2.jpg')`,
