@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import { MainPage, GeneratingPage, GeneratedPage, EndingPage }from './pages'; 
+import { MainPage, GeneratingPage, GeneratedPage, EndingPage, LoginPage }from './pages'; 
 import { usePage } from './contexts/PageContext';
 import { Page } from './components';
 import { testFirestoreWriteRead } from './firebase/firebaseTest';
@@ -29,6 +29,7 @@ const App = () => {
     <Router>
       <Routes>
       <Route path="/" element={<MainPage />}/> 
+      <Route path="/login" element={<LoginPage />}/>
       <Route path="/generating" element={<GeneratingPage setStoryArray={setStoryArray} setIsVisitedPage={setIsVisitedPage} setImageUrlArray={setImageUrlArray}/>}/>
       <Route 
         path="generated" 
