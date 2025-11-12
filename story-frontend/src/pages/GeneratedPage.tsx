@@ -2,10 +2,10 @@
 import { Outlet, useParams, Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useTheme, useGenre, usePage, useDescribe, useLoading } from '../contexts';
-import { startApiRequest, callNextSession, generateOption } from '../api/ApiRequest';
+import { startApiRequest, callNextSession, generateOption, callStoryTitle } from '../api/ApiRequest';
 import { OptionModal, Loading } from '../components';
 import { GoToNextPage, GoToPreviousPage } from '../components/PreNextButton';
-import { convertToPDF } from '../utils/jsPDF';
+import { ErrorPage } from '../pages';
 import { StoryStorage, VisitedPageStorage } from '../storage';
 
 interface GeneratedPageProps {
@@ -16,9 +16,23 @@ interface GeneratedPageProps {
   isVisitedPage: boolean[];
   setIsVisitedPage: React.Dispatch<React.SetStateAction<boolean[]>>;
   imageUrlArray: string[];
+  setCapturedPageImages: React.Dispatch<React.SetStateAction<string[]>>;
+  capturedPageImages: string[];
+  setMainTitle: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray, setCheckStoryCall, checkStoryCall, isVisitedPage, setIsVisitedPage, imageUrlArray}) => {
+const GeneratedPage: React.FC<GeneratedPageProps> = ({
+  setStoryArray, 
+  storyArray, 
+  setCheckStoryCall, 
+  checkStoryCall, 
+  isVisitedPage, 
+  setIsVisitedPage, 
+  imageUrlArray, 
+  setCapturedPageImages,
+  capturedPageImages,
+  setMainTitle
+}) => {
   const param = useParams();
   const page_id = Number(param.page_id);
   const { isLoading, setLoading } = useLoading();
@@ -29,18 +43,27 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
   const [showModal, setShowModal] = useState(false);
   const [qnOptions, setQnoption] = useState<string[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>("");
-  const [capturedPageImages, setCapturedPageImages] = useState<string[]>([]);
+  const [isError, setIsError] = useState<boolean>(false);      
 
   function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
 
+
+  useEffect(() => {
+    if (page_id > storyArray.length) {
+     setIsError(true);
+    }else{
+      setIsError(false);
+    }
+  }, [page_id, storyArray.length]);
+
+
   const firstApiRequest = async () => {
     try {
       setLoading(true);
       let contentsArray = await startApiRequest(theme, selectedGenre, selectedPage, describe);
-      // await delay(3000); 
       if (!contentsArray){
         contentsArray = [] as string[];
       };
@@ -66,6 +89,27 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
   },[checkStoryCall, storyArray, imageUrlArray]);
  
 
+  const callOptions = async () => {
+    if( page_id !== selectedPage ){
+      try {
+        console.log("callOptions");
+        const optionResponse = await generateOption(); 
+        setQnoption(optionResponse); 
+        await delay(300);
+        setCheckStoryCall(false);
+      } catch (error) {
+        console.error('generateOption 호출 중 오류 발생:', error);
+      } 
+    }
+  };
+
+  useEffect(() => {
+    if (checkStoryCall && page_id%3 === 1 &&!isVisitedPage[page_id]){
+        callOptions();
+    }
+  }, [page_id, checkStoryCall]); 
+
+ 
   const callNextSessionFunc = async () => {
     try {
       setLoading(true);
@@ -83,59 +127,45 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
       console.error("callNextSession 에러: ", error);
     } 
   };
-  
 
-  const callOptions = async () => {
-    if( page_id !== selectedPage ){
-      try {
-        console.log("callOptions");
-        const optionResponse = await generateOption(); 
-        setQnoption(optionResponse); 
-        setCheckStoryCall(false);
-      } catch (error) {
-        console.error('generateOption 호출 중 오류 발생:', error);
-      } 
-    }
-  };
-
-  useEffect(() => {
-    if (checkStoryCall && page_id%3 === 1 &&!isVisitedPage[page_id]){
-    callOptions();
-    }
-  }, [page_id, checkStoryCall]); 
-
- 
   useEffect(() => {
     if (!isVisitedPage[page_id-1] && page_id !== 1 && storyArray.length == page_id-1){
       callNextSessionFunc();
       console.log(selectedOption);
     }
-  }, [selectedOption, page_id]);
+  }, [selectedOption]);
 
 
 
-  // PDF 변환 테스트 함수입니다. 컴포넌트 옮길 예정 
-  const testhandlePDFDownload = () => {
-    const pdfBlob = convertToPDF(capturedPageImages);
-    const pdfUrl = URL.createObjectURL(pdfBlob);
-    const link = document.createElement('a');
-    link.href = pdfUrl;
-    link.download = 'document.pdf';
-    link.click();
+  const callTitle = async () => {
+    try {
+      const title = await callStoryTitle(storyArray); 
+      console.log("책 제목", title);
+      setMainTitle(title);
+    } catch (error) {
+      console.error('타이틀 호출 중 오류 발생:', error);
+    }
   };
 
+  useEffect(() => {
+    if(page_id == selectedPage && storyArray.length >= selectedPage){
+    callTitle();
+    }
+  }, [page_id, storyArray]);
 
 
 
   return (
-    <div className='h-screen w-screen flex justify-center items-center px-4 py-4'
+    <div 
+      id="generated"
+      className="flex min-h-screen w-full items-center justify-center"
       style={{
         backgroundImage: `url('/img/bg-book2.jpg')`,
-        backgroundSize: 'cover',
+        backgroundSize: '100% 100%',
       }}
     >
       <div 
-        className='justify-center mx-auto flex h-[700px] w-[1440px] flex-wrap bg-green-100 px-4 py-4 font-gaegu'
+        className='justify-center mx-auto flex h-[700px] w-[1440px] flex-wrap bg-green-100 px-4 py-4 font-gaegu cursor-pointer active:cursor-auto'
         style={{
           backgroundImage: `url('/img/book-paper2.png')`,
           backgroundSize: 'cover',
@@ -146,7 +176,13 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
             <div className="absolute left-4 top-1 text-bold text-4xl">x</div>
           </Link>
           <GoToPreviousPage/>
-          <Outlet />
+          {
+            isError ? (
+              <ErrorPage/>
+            ) : (
+              <Outlet />
+            )
+          }
           <GoToNextPage 
             setShowModal={setShowModal} 
             showModal={showModal} 
@@ -158,10 +194,11 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
           <div className="absolute bottom-5 right-5 text-2xl">{page_id}/{selectedPage}</div>
         </div>
     
-        {/* {isLoading && (
+    
+        {isLoading && (
           <Loading/>
-        )} */}
-        
+        )}
+
         {showModal && (
           <OptionModal setShowModal={setShowModal} page_id={page_id} setSelectedOption={setSelectedOption} setCheckStoryCall={setCheckStoryCall} qnOptions={qnOptions} />
         )}
@@ -178,11 +215,6 @@ const GeneratedPage: React.FC<GeneratedPageProps> = ({setStoryArray, storyArray,
           storyArray={storyArray}
           firstApiRequest={firstApiRequest}
         />
-
-        {/* PDF테스트 버튼 */}
-        <div className='h-4 absolute'>
-          <button onClick={testhandlePDFDownload}>Convert to PDF Test</button>
-        </div>
       </div>
     </div>
   );

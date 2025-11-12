@@ -32,11 +32,11 @@ const GenreSelect = () => {
         {options.map((option, index) => {
           const isSelected = selectedOptions.includes(option);
           const colorClass = isSelected ? 
-                            (index % 5 === 0 ? 'bg-[#E98C00]' :
-                              index % 5 === 1 ? 'bg-[#E5A500]' :
-                              index % 5 === 2 ? 'bg-[#F3CE0C]' :
-                              index % 5 === 3 ? 'bg-[#E5A500]' :
-                                                'bg-[#E98C00]') :
+                            (index % 5 === 0 ? 'bg-[#E98C00] font-bold' :
+                              index % 5 === 1 ? 'bg-[#E5A500] font-bold' :
+                              index % 5 === 2 ? 'bg-[#F3CE0C] font-bold' :
+                              index % 5 === 3 ? 'bg-[#E5A500] font-bold' :
+                                                'bg-[#E98C00] font-bold') :
                             (index % 5 === 0 ? 'bg-[#E98C00] shadow-lg-dark' :
                               index % 5 === 1 ? 'bg-[#E5A500] shadow-lg-dark' :
                               index % 5 === 2 ? 'bg-[#F3CE0C] shadow-lg-dark' :
