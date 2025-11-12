@@ -1,9 +1,9 @@
-import secretJsonData from './application-secret.json';
 import axios from 'axios';
+import { getOpenAIKey } from '../utils/env';
 
 export const ImageAI = async (prompt: string): Promise<string> => {
   const apiEndpoint = 'https://api.openai.com/v1/images/generations'
-
+  const openAIKey = getOpenAIKey();
   try {
     const response = await axios.post(
       apiEndpoint,
@@ -15,7 +15,7 @@ export const ImageAI = async (prompt: string): Promise<string> => {
       },
       {
         headers: {
-          Authorization: `Bearer ${secretJsonData.OPENAI_API_KEY}`,
+          Authorization: `Bearer ${openAIKey}`,
           'Content-Type': 'application/json',
         },
       }
