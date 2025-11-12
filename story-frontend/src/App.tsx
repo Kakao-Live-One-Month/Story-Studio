@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import { MainPage, GeneratingPage, GeneratedPage, EndingPage }from './pages'; 
+import { MainPage, GeneratingPage, GeneratedPage, EndingPage, LoginPage }from './pages'; 
 import { usePage } from './contexts/PageContext';
 import { Page } from './components';
+import { testFirestoreWriteRead } from './firebase/firebaseTest';
 
 const App = () => {
+  useEffect(() => {
+    const run = async () => {
+      try {
+        const result = await testFirestoreWriteRead();
+        console.log('firebase db 테스트 결과:', result);
+      } catch (error) {
+        console.error('firebase db 테스트 실행 중 오류:', error);
+      }
+    };
 
+    run();
+  }, []);
   const { selectedPage } = usePage();
   const [storyArray, setStoryArray] = useState<string[]>([]);
   const [imageUrlArray, setImageUrlArray] = useState<string[]>([]);
@@ -17,6 +29,7 @@ const App = () => {
     <Router>
       <Routes>
       <Route path="/" element={<MainPage />}/> 
+      <Route path="/login" element={<LoginPage />}/>
       <Route path="/generating" element={<GeneratingPage setStoryArray={setStoryArray} setIsVisitedPage={setIsVisitedPage} setImageUrlArray={setImageUrlArray}/>}/>
       <Route 
         path="generated" 

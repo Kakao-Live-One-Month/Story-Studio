@@ -20,7 +20,7 @@ const MainPage: React.FC = () => {
                 새로운 이야기를 만들어 보세요.
               </p>
             </div>
-            <Link to="/generating">
+            <Link to="/login">
               <button className="text-3xl font-semibold text-white animate-bounce h-16 w-96 rounded-full bg-[#E5A500] shadow-lg-dark hover:shadow-inner-dark lg:text-5xl lg:w-[500px] lg:h-24 cursor-pointer active:cursor-auto">  
                 동화 만들기
               </button>
