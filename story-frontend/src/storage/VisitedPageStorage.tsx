@@ -42,6 +42,7 @@ const VisitedPageStorage: React.FC<VisitedPageStorageProps> = ({isVisitedPage, s
       setIsVisitedPage(loadedStoryVisit);
       console.log("loadedStoryVisit", loadedStoryVisit)
       console.log("isVisitedPage", isVisitedPage)
+
     }
   }, []);
 

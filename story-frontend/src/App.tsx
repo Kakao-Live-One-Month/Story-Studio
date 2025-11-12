@@ -11,23 +11,30 @@ const App = () => {
   const [imageUrlArray, setImageUrlArray] = useState<string[]>([]);
   const [isVisitedPage, setIsVisitedPage] = useState<boolean[]>(new Array(selectedPage).fill(false));
   const [checkStoryCall, setCheckStoryCall] = useState<boolean>(false);
-
+  const [capturedPageImages, setCapturedPageImages] = useState<string[]>([]);
+  const [mainTitle, setMainTitle] = useState<string>("");
   return (
     <Router>
       <Routes>
       <Route path="/" element={<MainPage />}/> 
       <Route path="/generating" element={<GeneratingPage setStoryArray={setStoryArray} setIsVisitedPage={setIsVisitedPage} setImageUrlArray={setImageUrlArray}/>}/>
-      <Route path="generated" 
-             element={
-               <GeneratedPage 
-                  setStoryArray={setStoryArray} 
-                  storyArray={storyArray} 
-                  setCheckStoryCall={setCheckStoryCall} 
-                  checkStoryCall={checkStoryCall} 
-                  isVisitedPage={isVisitedPage}
-                  setIsVisitedPage={setIsVisitedPage}
-                  imageUrlArray={imageUrlArray}
-                />}>
+      <Route 
+        path="generated" 
+        element={
+          <GeneratedPage 
+            setStoryArray={setStoryArray} 
+            storyArray={storyArray} 
+            setCheckStoryCall={setCheckStoryCall} 
+            checkStoryCall={checkStoryCall} 
+            isVisitedPage={isVisitedPage}
+            setIsVisitedPage={setIsVisitedPage}
+            imageUrlArray={imageUrlArray}
+            setCapturedPageImages={setCapturedPageImages}
+            capturedPageImages={capturedPageImages}
+            setMainTitle={setMainTitle}
+          />
+        }
+      >
                   
         <Route 
           path=":page_id" 
@@ -38,11 +45,20 @@ const App = () => {
               imageUrlArray={imageUrlArray}
               isVisitedPage={isVisitedPage}
               checkStoryCall={checkStoryCall}
+              setCheckStoryCall={setCheckStoryCall}
             />
           }
         />
         </Route>
-        <Route path="/ending" element={<EndingPage />}/>
+        <Route 
+          path="/ending" 
+          element={
+            <EndingPage 
+              capturedPageImages={capturedPageImages}
+              mainTitle={mainTitle}
+            />
+          }
+        />
       </Routes>
     </Router>
   );

@@ -15,7 +15,7 @@ class Loading extends Component<Props, State> {
             left: 0,
             width: '100vw',  // 뷰포트 전체 너비
             height: '100vh', // 뷰포트 전체 높이
-            backgroundColor: 'rgba(255, 255, 255, 0.9)', // 반투명 배경
+            backgroundColor: 'rgb(255, 255, 255)', // 반투명 배경
             zIndex: 9999 // 다른 요소들 위에 표시
         };
 
