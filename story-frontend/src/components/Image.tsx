@@ -12,9 +12,22 @@ interface ImageProps {
   checkStoryCall: boolean;
   setImageUrlArray: React.Dispatch<React.SetStateAction<string[]>>;
   setCheckStoryCall: React.Dispatch<React.SetStateAction<boolean>>;
+  storyArray?: string[]; // 추가
+  title?: string; // 추가
+  summary?: string; // 추가
 }
 
-const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, isVisitedPage, checkStoryCall, setCheckStoryCall}) => {
+const Image: React.FC<ImageProps> = ({
+  imageUrlArray,
+  setImageUrlArray, 
+  page_id, 
+  isVisitedPage, 
+  checkStoryCall, 
+  setCheckStoryCall,
+  storyArray = [], // 추가
+  title = '', // 추가
+  summary = '', // 추가
+}) => {
   const [imageUrl, setImageUrl] = useState<string>('');
   const { selectedPage } = usePage();
   const [check, setCheck] = useState<boolean>(false);
@@ -27,28 +40,24 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
 
   const callImageUrl = async (i: number) => {
     try {
-      if(!isVisitedPage[page_id - 1]){
-        // const newImageUrl = "http://localhost:8080/images/image-" + (1+i) + ".png";
-        const newImageUrl = await imageCreateApiRequest(page_id+i);
-        setImageUrlArray(prevArray => [...prevArray, newImageUrl]);
-        console.log("imageUrlCall:", i+newImageUrl);
-
-          //id++;
-          const id = page_id+i;
-          console.log("id: ", id);
-          const url = newImageUrl;
-          fetch('http://localhost:8080/api/convert', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              id,
-              url,
-            })
+      if (!isVisitedPage[page_id - 1]) {
+        // OpenAI API로 이미지 URL 생성
+        const newImageUrl = await imageCreateApiRequest(page_id + i);
+        
+        if (newImageUrl) {
+          // imageUrlArray에 URL 추가 (Firestore에 자동 저장됨)
+          setImageUrlArray((prevArray) => {
+            const newArray = [...prevArray];
+            // 배열 인덱스는 0부터 시작하므로 page_id + i - 1
+            const index = page_id + i - 1;
+            newArray[index] = newImageUrl;
+            return newArray;
           });
+          console.log("imageUrlCall:", i, newImageUrl);
+        } else {
+          console.error('이미지 URL 생성 실패');
         }
-
+      }
     } catch (error) {
       console.error('이미지 생성 에러:', error);
     }
@@ -58,15 +67,19 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
     try {
       console.log("currentImage", page_id);
       
-      const timestamp = Date.now();
-      const serverImageUrl = `http://localhost:8080/images/image-${page_id}.png?timestamp=${timestamp}`;
-      // const serverImageUrl = `http://localhost:8080/images/image-${page_id}.png`;
-      console.log("currentImage 호출", serverImageUrl);
-      setImageUrl(serverImageUrl);
+      // imageUrlArray에서 해당 페이지 이미지 URL 가져오기
+      if (imageUrlArray[page_id - 1]) {
+        const imageUrlFromArray = imageUrlArray[page_id - 1];
+        console.log("currentImage 호출 - imageUrlArray에서:", imageUrlFromArray);
+        setImageUrl(imageUrlFromArray);
+      } else {
+        // 이미지가 없으면 로딩 이미지 표시
+        console.log("이미지가 없어 로딩 이미지 표시");
+        setImageUrl("/img/Img_Loading.png");
+      }
 
       await delay(3000);
-    }
-    catch (error) {
+    } catch (error) {
       console.error('이미지 생성 에러:', error);
       setImageUrl("/img/Img_Loading.png");
     }
@@ -130,6 +143,9 @@ const Image: React.FC<ImageProps> = ({imageUrlArray, setImageUrlArray, page_id, 
         setImageUrlArray={setImageUrlArray}
         checkStoryCall={checkStoryCall}
         page_id={page_id}
+        storyArray={storyArray} // 추가
+        title={title} // 추가
+        summary={summary} // 추가
       />
       <img id="prevImage" src={imageUrl} alt="이미지" />
     </div>

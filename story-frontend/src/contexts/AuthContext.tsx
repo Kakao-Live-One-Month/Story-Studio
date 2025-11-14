@@ -39,8 +39,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
     });
 
+    console.log('Current User:', user);
+    console.log('Is Authenticated:', !!user);
+    console.log('User Email:', user?.email);
+    console.log('User UID:', user?.uid);
+
     return () => unsubscribe();
   }, []);
+
+  const isAuthenticated = !!user;
+
+  useEffect(() => {
+    console.log('🔍 Auth State:', { loading, isAuthenticated, user: user?.email });
+  }, [loading, isAuthenticated, user]);
 
   const signIn = async () => {
     try {

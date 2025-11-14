@@ -4,6 +4,7 @@ import { MainPage, GeneratingPage, GeneratedPage, EndingPage, LoginPage }from '.
 import { usePage } from './contexts/PageContext';
 import { Page } from './components';
 import { testFirestoreWriteRead } from './firebase/firebaseTest';
+import { ProtectedRoute } from './ProtectedRoute';
 
 const App = () => {
   useEffect(() => {
@@ -30,7 +31,12 @@ const App = () => {
       <Routes>
       <Route path="/" element={<MainPage />}/> 
       <Route path="/login" element={<LoginPage />}/>
-      <Route path="/generating" element={<GeneratingPage setStoryArray={setStoryArray} setIsVisitedPage={setIsVisitedPage} setImageUrlArray={setImageUrlArray}/>}/>
+      <Route path="/generating" element={
+        <ProtectedRoute>
+        <GeneratingPage setStoryArray={setStoryArray} setIsVisitedPage={setIsVisitedPage} setImageUrlArray={setImageUrlArray}/>
+        </ProtectedRoute>
+      }
+        />
       <Route 
         path="generated" 
         element={
@@ -59,6 +65,8 @@ const App = () => {
               isVisitedPage={isVisitedPage}
               checkStoryCall={checkStoryCall}
               setCheckStoryCall={setCheckStoryCall}
+              title={mainTitle} // 추가
+              summary={storyArray.join(' ').substring(0, 200)} // 추가 - 전체 스토리 요약
             />
           }
         />
