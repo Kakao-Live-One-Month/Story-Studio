@@ -11,6 +11,8 @@ interface PageProps {
   isVisitedPage: boolean[];
   checkStoryCall: boolean;
   setCheckStoryCall: React.Dispatch<React.SetStateAction<boolean>>;
+  title?: string; // 추가
+  summary?: string; // 추가
 }
 
 const Page: React.FC<PageProps> = ({
@@ -19,7 +21,9 @@ const Page: React.FC<PageProps> = ({
   imageUrlArray,
   isVisitedPage,
   checkStoryCall,
-  setCheckStoryCall
+  setCheckStoryCall,
+  title = '', // 추가
+  summary = '', // 추가
 }) => {
   
   const [currentPageStory, setCurrentPageStory] = useState<string>("undefind");
@@ -64,6 +68,9 @@ const Page: React.FC<PageProps> = ({
           isVisitedPage={isVisitedPage}
           checkStoryCall={checkStoryCall}
           setCheckStoryCall={setCheckStoryCall}
+          storyArray={storyArray} // 추가
+          title={title} // 추가
+          summary={summary} // 추가
         />
       </div>
 

@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 스토리 정보 (이미지 URL 배열 포함)
+    match /stories/{storyId} {
+      // 본인의 스토리만 조회 가능
+      allow read: if request.auth != null 
+                  && request.auth.uid == resource.data.userId;
+      // 본인의 스토리만 생성/수정 가능
+      allow create: if request.auth != null 
+                    && request.resource.data.userId == request.auth.uid;
+      allow update: if request.auth != null 
+                    && request.auth.uid == resource.data.userId
+                    && request.resource.data.userId == request.auth.uid;
+      // 삭제는 본인만
+      allow delete: if request.auth != null 
+                    && request.auth.uid == resource.data.userId;
+    }
+    
+    // 사용자별 현재 스토리 ID 관리
+    match /user-stories/{userId} {
+      // 본인의 스토리 정보만 조회/수정 가능
+      allow read, write: if request.auth != null 
+                         && request.auth.uid == userId;
+    }
+    
+    // 기존 story-book 컬렉션 (호환성 유지)
+    match /story-book/{storyId} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
+
