@@ -33,8 +33,33 @@ app.use('/api/story', authMiddleware, storyLimiter, createServiceProxy({
     pathRewrite: { '^/api/upload': '' },
   }));
   
+
+
   app.get('/health', (req, res) => {
     res.json({ status: 'ok', service: 'gateway' });
   });
+
+  app.use('/api/story/health',  storyLimiter, createServiceProxy({
+    target: process.env.STORY_SERVICE_URL,
+    pathRewrite: { '^/api/story/health': '' },
+  }));
+  
+  app.use('/api/payment/health', paymentLimiter, createServiceProxy({
+    target: process.env.PAYMENT_SERVICE_URL,
+    pathRewrite: { '^/api/payment/health': '' },
+  }));
+  
+  app.use('/api/pdf/health', createServiceProxy({
+    target: process.env.PDF_SERVICE_URL,
+    pathRewrite: { '^/api/pdf.health': '' },
+  }));
+  
+  app.use('/api/upload/health', createServiceProxy({
+    target: process.env.UPLOAD_SERVICE_URL,
+    pathRewrite: { '^/api/upload.health': '' },
+  }));
+  
+
+
 
 export default app;
