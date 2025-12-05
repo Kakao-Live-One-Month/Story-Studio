@@ -5,7 +5,7 @@ const router = Router();
 router.get('/', (req: Request, res: Response) => {
   res.json({
     status: 'ok',
-    service: 'payment-service',
+    service: 'upload-service',
     timestamp: new Date().toISOString(),
     version: '1.0.0',
   });
