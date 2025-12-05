@@ -9,7 +9,7 @@ const app = express();
 app.use(corsMiddleware);
 app.use(rateLimiter);
 
-// Story Service
+// Story Service..
 app.use('/api/story', authMiddleware, storyLimiter, createServiceProxy({
     target: process.env.STORY_SERVICE_URL,
     pathRewrite: { '^/api/story': '' },
