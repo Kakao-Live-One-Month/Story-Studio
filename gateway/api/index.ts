@@ -9,6 +9,33 @@ const app = express();
 app.use(corsMiddleware);
 app.use(rateLimiter);
 
+
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', service: 'gateway' });
+  });
+
+  app.use('/api/story/health', createServiceProxy({
+    target: process.env.STORY_SERVICE_URL,
+    pathRewrite: { '^/api/story/health': '/health' },
+  }));
+  
+  app.use('/api/payment/health', createServiceProxy({
+    target: process.env.PAYMENT_SERVICE_URL,
+    pathRewrite: { '^/api/payment/health': '/health' },
+  }));
+  
+  app.use('/api/pdf/health', createServiceProxy({
+    target: process.env.PDF_SERVICE_URL,
+    pathRewrite: { '^/api/pdf/health': '/health' },
+  }));
+  
+  app.use('/api/upload/health', createServiceProxy({
+    target: process.env.UPLOAD_SERVICE_URL,
+    pathRewrite: { '^/api/upload/health': '/health' },
+  }));
+
+
+
 // Story Service..
 app.use('/api/story', authMiddleware, storyLimiter, createServiceProxy({
     target: process.env.STORY_SERVICE_URL,
@@ -35,30 +62,6 @@ app.use('/api/story', authMiddleware, storyLimiter, createServiceProxy({
   
 
 
-  app.get('/health', (req, res) => {
-    res.json({ status: 'ok', service: 'gateway' });
-  });
-
-  app.use('/api/story/health',  storyLimiter, createServiceProxy({
-    target: process.env.STORY_SERVICE_URL,
-    pathRewrite: { '^/api/story/health': '' },
-  }));
-  
-  app.use('/api/payment/health', paymentLimiter, createServiceProxy({
-    target: process.env.PAYMENT_SERVICE_URL,
-    pathRewrite: { '^/api/payment/health': '' },
-  }));
-  
-  app.use('/api/pdf/health', createServiceProxy({
-    target: process.env.PDF_SERVICE_URL,
-    pathRewrite: { '^/api/pdf.health': '' },
-  }));
-  
-  app.use('/api/upload/health', createServiceProxy({
-    target: process.env.UPLOAD_SERVICE_URL,
-    pathRewrite: { '^/api/upload.health': '' },
-  }));
-  
 
 
 
