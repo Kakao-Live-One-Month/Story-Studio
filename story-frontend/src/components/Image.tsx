@@ -4,6 +4,7 @@ import { imageCreateApiRequest } from '../api/ApiRequest';
 import { usePage } from '../contexts';
 import { ImageStorage } from '../storage';
 import { Loading } from '../components';
+import { saveImageToDB, getImageFromDB } from '../utils/imageDB';
 
 interface ImageProps {
   imageUrlArray: string[];
@@ -39,48 +40,42 @@ const Image: React.FC<ImageProps> = ({
   // let id: number = 0;
 
   const callImageUrl = async (i: number) => {
-    try {
-      if (!isVisitedPage[page_id - 1]) {
-        // OpenAI API로 이미지 URL 생성
-        const newImageUrl = await imageCreateApiRequest(page_id + i);
+    if (!isVisitedPage[page_id - 1]) {
+      const newImageUrl = await imageCreateApiRequest(page_id + i);
+      
+      if (newImageUrl) {
+        const index = page_id + i - 1;
+        const key = `page-${index + 1}`;
         
-        if (newImageUrl) {
-          // imageUrlArray에 URL 추가 (Firestore에 자동 저장됨)
-          setImageUrlArray((prevArray) => {
-            const newArray = [...prevArray];
-            // 배열 인덱스는 0부터 시작하므로 page_id + i - 1
-            const index = page_id + i - 1;
-            newArray[index] = newImageUrl;
-            return newArray;
-          });
-          console.log("imageUrlCall:", i, newImageUrl);
-        } else {
-          console.error('이미지 URL 생성 실패');
-        }
+        // 1. IndexedDB에 이미지 저장
+        await saveImageToDB(key, newImageUrl);
+        
+        // 2. Firebase에 URL 저장 (기존 로직 유지)
+        setImageUrlArray((prev) => {
+          const newArray = [...prev];
+          newArray[index] = newImageUrl;
+          return newArray;
+        });
       }
-    } catch (error) {
-      console.error('이미지 생성 에러:', error);
     }
   };
-
+  
   const currentImage = async () => {
-    try {
-      console.log("currentImage", page_id);
-      
-      // imageUrlArray에서 해당 페이지 이미지 URL 가져오기
-      if (imageUrlArray[page_id - 1]) {
-        const imageUrlFromArray = imageUrlArray[page_id - 1];
-        console.log("currentImage 호출 - imageUrlArray에서:", imageUrlFromArray);
-        setImageUrl(imageUrlFromArray);
-      } else {
-        // 이미지가 없으면 로딩 이미지 표시
-        console.log("이미지가 없어 로딩 이미지 표시");
-        setImageUrl("/img/Img_Loading.png");
-      }
-
-      await delay(3000);
-    } catch (error) {
-      console.error('이미지 생성 에러:', error);
+    const key = `page-${page_id}`;
+    
+    // 1. IndexedDB 먼저 확인
+    const cachedUrl = await getImageFromDB(key);
+    if (cachedUrl) {
+      setImageUrl(cachedUrl);
+      return;
+    }
+    
+    // 2. imageUrlArray(Firebase)에서 가져오고 IndexedDB 캐싱
+    if (imageUrlArray[page_id - 1]) {
+      const url = imageUrlArray[page_id - 1];
+      setImageUrl(url);
+      await saveImageToDB(key, url); // 캐싱
+    } else {
       setImageUrl("/img/Img_Loading.png");
     }
   };
