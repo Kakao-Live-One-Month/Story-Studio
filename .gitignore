@@ -25,3 +25,9 @@ application-secret.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+dist/
+.vercel
+*.log
+
+firebase-service-account.json
