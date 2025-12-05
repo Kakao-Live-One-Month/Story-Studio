@@ -1,52 +1,40 @@
 import express from 'express';
-import { createProxyMiddleware } from 'http-proxy-middleware';
-import cors from 'cors';
+import { createServiceProxy } from '../src/lib/proxy';
+import corsMiddleware from '../src/middleware/cors';
 import { authMiddleware } from '../src/middleware/auth';
+import { rateLimiter, storyLimiter, paymentLimiter } from '../src/middleware/rateLimit';
 
 const app = express();
 
-const allowedOrigins = [
-    'https://story-studio-ashen.vercel.app',
-    'http://localhost:5173',
-    'http://localhost:5174',
-  ];
-
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true,
-}));
+app.use(corsMiddleware);
+app.use(rateLimiter);
 
 // Story Service
-app.use('/api/story', authMiddleware, createProxyMiddleware({
-  target: 'https://story-service.vercel.app',
-  changeOrigin: true,
-  pathRewrite: { '^/api/story': '' },
-}));
-
-// Payment Service
-app.use('/api/payment', authMiddleware, createProxyMiddleware({
-  target: 'https://payment-service-fawn.vercel.app',
-  changeOrigin: true,
-  pathRewrite: { '^/api/payment': '' },
-}));
-
-// PDF Service
-app.use('/api/pdf', authMiddleware, createProxyMiddleware({
-  target: 'https://pdf-service-pied.vercel.app',
-  changeOrigin: true,
-  pathRewrite: { '^/api/pdf': '' },
-}));
-
-// Upload Service
-app.use('/api/upload', authMiddleware, createProxyMiddleware({
-  target: 'https://upload-service-psi.vercel.app',
-  changeOrigin: true,
-  pathRewrite: { '^/api/upload': '' },
-}));
-
-// Health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', service: 'gateway' });
-});
+app.use('/api/story', authMiddleware, storyLimiter, createServiceProxy({
+    target: process.env.STORY_SERVICE_URL,
+    pathRewrite: { '^/api/story': '' },
+  }));
+  
+  // Payment Service
+  app.use('/api/payment', authMiddleware, paymentLimiter, createServiceProxy({
+    target: process.env.PAYMENT_SERVICE_URL,
+    pathRewrite: { '^/api/payment': '' },
+  }));
+  
+  // PDF Service
+  app.use('/api/pdf', authMiddleware, createServiceProxy({
+    target: process.env.PDF_SERVICE_URL,
+    pathRewrite: { '^/api/pdf': '' },
+  }));
+  
+  // Upload Service
+  app.use('/api/upload', authMiddleware, createServiceProxy({
+    target: process.env.UPLOAD_SERVICE_URL,
+    pathRewrite: { '^/api/upload': '' },
+  }));
+  
+  app.get('/health', (req, res) => {
+    res.json({ status: 'ok', service: 'gateway' });
+  });
 
 export default app;
