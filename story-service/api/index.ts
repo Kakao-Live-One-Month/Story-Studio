@@ -9,7 +9,6 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// 라우트
 // app.use('/generate', generateRoute);
 // app.use('/save', saveRoute);
 app.use('/health', healthRoute);
