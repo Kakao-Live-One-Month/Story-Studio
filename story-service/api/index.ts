@@ -12,5 +12,6 @@ app.use(express.json());
 // app.use('/generate', generateRoute);
 // app.use('/save', saveRoute);
 app.use('/api/health', healthRoute);
+app.use('/health', healthRoute);
 
 export default app;
