@@ -1,0 +1,19 @@
+name: Deploy Gateway Service
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'gateway-service/**'
+      - 'shared/**'
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: npm install -g vercel
+      - working-directory: ./gateway-service
+        run: vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_GATEWAY_PROJECT_ID }}
